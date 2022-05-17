@@ -1,0 +1,9 @@
+/nbproject/private
+/dist/default/production
+*.d
+*.o
+*.tmp
+.generated_files/*
+.generated_files/flags/*
+.generated_files/flags/default/*
+
