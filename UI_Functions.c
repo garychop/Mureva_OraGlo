@@ -12,6 +12,9 @@
 #include <math.h>
 #include <float.h>
 
+//#define TESTING_MOUTHPIECE_EXPIRED 1
+#define TESTING_OUT_OF_TRIES 1
+
 #define    FCY    16000000UL  // required by libpic30.h    
 #include <libpic30.h>
 
@@ -128,10 +131,10 @@ static bool g_MCA_error = false;
 
 static uint8_t g_display_xpos = 75;
 
-static uint8_t g_display_ypos_1_4 = 90;
+//static uint8_t g_display_ypos_1_4 = 90;
 static uint8_t g_display_ypos_2_4 = 123;
-static uint8_t g_display_ypos_3_4 = 156;
-static uint8_t g_display_ypos_4_4 = 190;
+//static uint8_t g_display_ypos_3_4 = 156;
+//static uint8_t g_display_ypos_4_4 = 190;
 
 static uint8_t g_display_ypos_1_3 = 100;
 static uint8_t g_display_ypos_2_3 = 140;
@@ -525,7 +528,11 @@ static void ExecutePowerUpStateEvents(uint16_t hw_wdog_status,
         }
         else
         {
+#ifdef TESTING_MOUTHPIECE_EXPIRED            
+            EnterUIState(p_current_phase, MCA_EXPIRED_STATE, IMAGE_1, 0);
+#else
             EnterUIState(p_current_phase, INSERT_MCA_STATE, IMAGE_1, 0);
+#endif
         }
     }
     else 
@@ -614,14 +621,14 @@ static void ExecuteInsertMCAStateEvents(uint16_t hw_wdog_status,
 static void ExecuteReadingErrorMCAStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *p_current_phase)
 {
-    if (!ScreenSaverIsActive())
-    {
-        //Display message on LCD                       
-        DisplayText("   MOUTH", g_display_xpos , g_display_ypos_1_4);
-        DisplayText("    PIECE", g_display_xpos, g_display_ypos_2_4);
-        DisplayText(" READING", g_display_xpos , g_display_ypos_3_4);
-        DisplayText("    ERROR", g_display_xpos, g_display_ypos_4_4);
-    }
+//    if (!ScreenSaverIsActive())
+//    {
+//        //Display message on LCD                       
+//        DisplayText("   MOUTH", g_display_xpos , g_display_ypos_1_4);
+//        DisplayText("    PIECE", g_display_xpos, g_display_ypos_2_4);
+//        DisplayText(" READING", g_display_xpos , g_display_ypos_3_4);
+//        DisplayText("    ERROR", g_display_xpos, g_display_ypos_4_4);
+//    }
     
     if(ScreenShouldBeBlank())
     {
@@ -660,9 +667,8 @@ static void ExecuteExpiredMCAStateEvents(uint16_t hw_wdog_status,
     if (!ScreenSaverIsActive())
     {
         //Display message on LCD                       
-        DisplayText("   MOUTH", g_display_xpos, g_display_ypos_1_3);
-        DisplayText("    PIECE", g_display_xpos, g_display_ypos_2_3);
-        DisplayText(" EXPIRED", g_display_xpos, g_display_ypos_3_3);
+        //DisplayText("MOUTHPIECE", g_display_xpos, g_display_ypos_1_2);
+        //DisplayText(" EXPIRED", g_display_xpos, g_display_ypos_2_2);
     }
         
     if(ScreenShouldBeBlank())
@@ -674,12 +680,14 @@ static void ExecuteExpiredMCAStateEvents(uint16_t hw_wdog_status,
         EnterUIState(p_current_phase, ERROR_STATE, IMAGE_1,
                         hw_wdog_status & STARTUP_ERROR);
     }
+#ifndef TESTING_MOUTHPIECE_EXPIRED            
     else if ((hw_wdog_status & MOUTHPIECE_ATTACHED) == 0)
     {
         // Wait in this state until Mouthpiece removed (== 0)
         // There is an error with MCA and must be removed to continue
         EnterUIState(p_current_phase, INSERT_MCA_STATE, IMAGE_1, 0);
     }
+#endif
     else if (!EnterErrorStateIfBistFails(p_current_phase, false))
     {
         /* No error was detected, so we proceed normally, i.e. wait for
@@ -699,13 +707,13 @@ static void ExecuteExpiredMCAStateEvents(uint16_t hw_wdog_status,
 static void ExecuteDetachedMCAStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *p_current_phase)
 {
-    if (!ScreenSaverIsActive())
-    {
-        //Display message on LCD                       
-        DisplayText("   MOUTH", g_display_xpos, g_display_ypos_1_3);
-        DisplayText("    PIECE", g_display_xpos, g_display_ypos_2_3);
-        DisplayText("DETACHED", g_display_xpos, g_display_ypos_3_3);
-    }
+//    if (!ScreenSaverIsActive())
+//    {
+//        //Display message on LCD                       
+//        DisplayText("   MOUTH", g_display_xpos, g_display_ypos_1_3);
+//        DisplayText("    PIECE", g_display_xpos, g_display_ypos_2_3);
+//        DisplayText("DETACHED", g_display_xpos, g_display_ypos_3_3);
+//    }
         
     if(ScreenShouldBeBlank())
     {
@@ -873,7 +881,10 @@ static void ExecuteVerifySNStateEvents(uint16_t hw_wdog_status,
         }
         else if ((hw_wdog_status & MOUTHPIECE_ATTACHED) ==0)
         {
-            EnterUIState(p_current_phase, MCA_DETACHED_STATE, IMAGE_1, 0);
+            //EnterUIState(p_current_phase, MCA_DETACHED_STATE, IMAGE_1, 0);
+            // If Mouthpiece is removed, let's go back to the
+            // "Insert Mouthpiece" state.
+            EnterUIState(p_current_phase, INSERT_MCA_STATE, IMAGE_1, 0);
         }
         if (ScreenSaverIsActive())
         {
@@ -917,7 +928,10 @@ static void ExecuteReadyStateEvents(uint16_t hw_wdog_status,
     }
     else if ((hw_wdog_status & MOUTHPIECE_ATTACHED)==0)
     {
-        EnterUIState(p_current_phase, MCA_DETACHED_STATE, IMAGE_1, 0);
+        //EnterUIState(p_current_phase, MCA_DETACHED_STATE, IMAGE_1, 0);
+        // If Mouthpiece is removed, let's go back to the
+        // "Insert Mouthpiece" state.
+        EnterUIState(p_current_phase, INSERT_MCA_STATE, IMAGE_1, 0);
     }
     else if (!EnterErrorStateIfBistFails(p_current_phase, false))
     {
@@ -1342,7 +1356,7 @@ static void UpdateTimerDial(uint16_t timer)
 static void EnterUIState(ui_state_t *p_current_phase, ui_state_t next_phase,
                          ui_setting_t img_setting, uint64_t aux_info)
 {
-    char error_message[10];
+    char error_message[32];
     
     WriteRGBLED(LED_CUSTOM, ReadUISetting(next_phase, COLOR_1_R),
                             ReadUISetting(next_phase, COLOR_1_TIME),
@@ -1467,17 +1481,23 @@ static void EnterUIState(ui_state_t *p_current_phase, ui_state_t next_phase,
             EnableScreenSaver();
             break; 
         case MCA_DETACHED_STATE:  
-            WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
+            //WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
+            WriteImageToLCD(2005, true, false);    // Red Box 
+            WriteImageToLCD(2007, false, false);    // "MOUTHPIECE DETACHED, Reinsert Mouthpiece"
             EnableScreenSaver();
             break;
         case MCA_READING_ERROR_STATE:
             // Turn current off just in case not already done
             WriteLEDCurrent(0.0, false);
-            WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false); 
+            //WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false); 
+            WriteImageToLCD(2005, true, false);    // Red Box 
+            WriteImageToLCD(2004, false, false);    // "Reading Error, Re-insert Mouthpiece"
             EnableScreenSaver();
             break;
         case MCA_EXPIRED_STATE:
-            WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
+            //WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
+            WriteImageToLCD(2005, true, false);    // Red Box 
+            WriteImageToLCD(2006, false, false);   // "MOUTHPIECE EXPIRED"
             EnableScreenSaver();
             break;
         default: 
@@ -1719,13 +1739,13 @@ static error_index_t DisplayTestResultsByPriority(uint16_t selftest_status, uint
     // WriteImageToLCD(ReadUISetting(ERROR_STATE, IMAGE_1) + (uint16_t) ndx, false, false);
     
     // Write white background
-    WriteImageToLCD(ReadUISetting(ERROR_STATE, IMAGE_1), true, false);
-    
+    //WriteImageToLCD(ReadUISetting(ERROR_STATE, IMAGE_1), true, false);
+    WriteImageToLCD (2005, true, false);    // Draw Red Box
     // Display message on LCD                       
-    DisplayText(" CONTROL", g_display_xpos, g_display_ypos_1_3);
-    DisplayText("     UNIT" , g_display_xpos, g_display_ypos_2_3);
+    DisplayText(" SYSTEM", g_display_xpos, g_display_ypos_1_2);
+    //DisplayText("UNIT" , g_display_xpos, g_display_ypos_2_3);
     sprintf(error_message, " ERROR %02d", (uint16_t)ndx_image);
-    DisplayText(error_message, g_display_xpos, g_display_ypos_3_3);
+    DisplayText(error_message, g_display_xpos, g_display_ypos_2_2);
     
     return ndx;
 }
