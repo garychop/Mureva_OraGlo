@@ -13,7 +13,7 @@
 #include <float.h>
 
 //#define TESTING_MOUTHPIECE_EXPIRED 1
-#define TESTING_OUT_OF_TRIES 1
+#define USE_SHORT_THERAPY_TIME 1
 
 #define    FCY    16000000UL  // required by libpic30.h    
 #include <libpic30.h>
@@ -142,6 +142,8 @@ static uint8_t g_display_ypos_3_3 = 180;
 
 static uint8_t g_display_ypos_1_2 = 115;
 static uint8_t g_display_ypos_2_2 = 165;
+
+static bool g_ResumeFromPause = false;
 
 static void ExecutePowerUpStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *p_current_phase);
@@ -316,14 +318,16 @@ uint16_t GetCurrentlyUsedLEDCurrent(void)
  */
 void GenerateCountdownDisplay(void)
 {
-    WriteImageToLCD(ReadUISetting(OPERATION_STATE, IMAGE_1), false, false); 
     int i;
+
+    WriteImageToLCD(ReadUISetting(OPERATION_STATE, IMAGE_1), false, false); 
     for (i = 60; i > 0; i--)
     {
         StartGenericCountdownTimer(1);
         WriteImageToLCD(CNTDWN_DISPLAY_BASE + i, false, false);
         WaitForGenericCountdownTimer(1);
     }
+
     StartGenericCountdownTimer(1);
     WriteImageToLCD(CNTDWN_DISPLAY_BASE + 61, false, false);
     WaitForGenericCountdownTimer(0);
@@ -414,6 +418,7 @@ void UpdateUIStateMachine(void)
     {   
         case POWER_UP_STATE:
             ExecutePowerUpStateEvents(hw_wdog_status, &current_phase);
+            g_ResumeFromPause = false;
             break;  
             
         case STANDBY_STATE:
@@ -442,10 +447,12 @@ void UpdateUIStateMachine(void)
             
         case THERAPY_COMPLETE_STATE:
             ExecuteTherapyCompleteStateEvents(hw_wdog_status, &current_phase);
+            g_ResumeFromPause = false;
             break;  
             
         case PAUSED_STATE: 
             ExecutePausedStateEvents(hw_wdog_status, &current_phase);
+            g_ResumeFromPause = true;
             break;  
             
         case ERROR_STATE:  
@@ -948,11 +955,18 @@ static void ExecuteReadyStateEvents(uint16_t hw_wdog_status,
         else if (PushbuttonPressed(PUSHBUTTON_1))
         {
             uint32_t therapy_on_time = ReadUISetting(OPERATION_STATE, SPARE0);
+#ifdef USE_SHORT_THERAPY_TIME
+            therapy_on_time = 10;
+#endif
             EnterUIState(p_current_phase, OPERATION_STATE, IMAGE_2,
                             therapy_on_time/60);
             WriteLEDCurrent(((float) g_specified_LED_current)/1000.0, false); 
             // Set number of seconds of operation
+#ifdef USE_SHORT_THERAPY_TIME
+            StartOperationStateCountdown(therapy_on_time);
+#else
             StartOperationStateCountdown(ReadUISetting(OPERATION_STATE, SPARE0));
+#endif
             /*  Elsewhere in the code, g_most_recent_update_time is used to
              *  determine which clock ticks need to be erased. If the 
              *  therapy time is an even multiple of 60 (i.e. an even number
@@ -1051,8 +1065,8 @@ static void ExecuteOperationStateEvents(uint16_t hw_wdog_status,
                 /* Take advantage of the fact that we need to perform
                  * BIST once per second, the same rate at which the
                  * clock display is updated  */
-                uint16_t bist_results;
-                TestBIST(1, &bist_results, false);
+                uint16_t bist_results = 0;
+                //TestBIST(1, &bist_results, false);
                 //Update the MCA usage time, once per second
                 MCAReadingSuccess = MCAIncActiveUseTime();
                             
@@ -1079,6 +1093,7 @@ static void ExecuteOperationStateEvents(uint16_t hw_wdog_status,
             {
                 WriteLEDCurrent(0.0, false);
                 EnterUIState(p_current_phase, THERAPY_COMPLETE_STATE, IMAGE_1, 0);
+                g_ResumeFromPause = false;
             }
         }
     }
@@ -1100,9 +1115,10 @@ static void ExecuteTherapyCompleteStateEvents(uint16_t hw_wdog_status,
         
     if (!ScreenSaverIsActive())
     {
-        //Display message on LCD                       
-        DisplayText("  THERAPY", g_display_xpos, g_display_ypos_1_2);
-        DisplayText(" COMPLETE", g_display_xpos, g_display_ypos_2_2);
+//        //Display message on LCD                       
+//        DisplayText("  THERAPY", g_display_xpos, g_display_ypos_1_2);
+//        DisplayText(" COMPLETE", g_display_xpos, g_display_ypos_2_2);
+        WriteImageToLCD (2010, false, false);   // "Therapy Complete" bmp
     }
 
     if(ScreenShouldBeBlank())
@@ -1161,7 +1177,7 @@ static void ExecutePausedStateEvents(uint16_t hw_wdog_status,
     {
 		// Do not show only the text with "DisplayText"
 		// The screen loaded is directly the "PAUSED" image with blue background
-        // DisplayText("  PAUSED", g_display_xpos, g_display_ypos_1_3);
+        //DisplayText("  PAUSED", g_display_xpos, g_display_ypos_1_3);
     }
         
     if(ScreenShouldBeBlank())
@@ -1206,6 +1222,7 @@ static void ExecutePausedStateEvents(uint16_t hw_wdog_status,
                 g_most_recent_update_time : (g_most_recent_update_time + 60));
             
             WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_2) + MAX_NUM_MINUTES + 1, false, false);
+            WriteImageToLCD (2009, false, false);
             ResumeOperationStateCountdown();
         }
     }    
@@ -1305,7 +1322,7 @@ static void UpdateTimerDisplay(uint16_t timer, bool first_minute)
  */
 static void UpdateTimerDial(uint16_t timer)
 {
-    if ((g_most_recent_update_time-1)/60 == timer/60)
+    if (((g_most_recent_update_time-1)/60 == timer/60) || g_ResumeFromPause)
     {
         /* The most recent update time and the current time are
          * within the same minute.  Only erase the required tick marks. */
@@ -1437,10 +1454,13 @@ static void EnterUIState(ui_state_t *p_current_phase, ui_state_t next_phase,
             
             if (img_setting == IMAGE_2)
             {
-                //Write whole clock image
-                WriteImageToLCD(ReadUISetting(next_phase, IMAGE_1), false, false);  
-                // This only updates the minutes numeral within the clock dial
-                WriteImageToLCD(ReadUISetting(next_phase, img_setting) + aux_info, false, false);  
+                if (!g_ResumeFromPause)
+                {
+                    //Write whole clock image
+                    WriteImageToLCD(ReadUISetting(next_phase, IMAGE_1), false, false);  
+                    // This only updates the minutes numeral within the clock dial
+                    WriteImageToLCD(ReadUISetting(next_phase, img_setting) + aux_info, false, false);  
+                }
             }
             break;
         case STANDBY_STATE: 
@@ -1471,9 +1491,10 @@ static void EnterUIState(ui_state_t *p_current_phase, ui_state_t next_phase,
             EnableScreenSaver();
             break; 
         case PAUSED_STATE:
-            WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
+            //WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
             // Also display overlay indicating number of minutes remaining
-            WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_2) + aux_info, false, false);            
+            //WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_2) + aux_info, false, false);
+            WriteImageToLCD (2008, false, false);
             EnableScreenSaver();
             break; 
         case THERAPY_COMPLETE_STATE: 
@@ -1745,7 +1766,7 @@ static error_index_t DisplayTestResultsByPriority(uint16_t selftest_status, uint
     DisplayText(" SYSTEM", g_display_xpos, g_display_ypos_1_2);
     //DisplayText("UNIT" , g_display_xpos, g_display_ypos_2_3);
     sprintf(error_message, " ERROR %02d", (uint16_t)ndx_image);
-    DisplayText(error_message, g_display_xpos, g_display_ypos_2_2);
+    DisplayText(error_message, g_display_xpos, (g_display_ypos_2_2 - 10));
     
     return ndx;
 }
