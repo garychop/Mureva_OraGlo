@@ -49,6 +49,7 @@ int main(void)
     //Main while loop that implements the user interface state machine, error checking, BIST
     while (true)
     {
+        TEST_LED_Toggle();
         //Determine if a phase change is required and update the LCD and RGB LED accordingly
         UpdateUIStateMachine();
         

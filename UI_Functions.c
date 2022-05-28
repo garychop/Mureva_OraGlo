@@ -12,6 +12,7 @@
 #include <math.h>
 #include <float.h>
 
+// Debugging macros, ensure they are NOT defined for production builds
 //#define TESTING_MOUTHPIECE_EXPIRED 1
 #define USE_SHORT_THERAPY_TIME 1
 
@@ -128,6 +129,7 @@ static uint16_t g_specified_LED_current = 0;
 
 static bool g_mouthpiece_removed_during_operation = false;
 static bool g_MCA_error = false;
+static uint8_t g_MCA_SwitchDebounceCounter; 
 
 static uint8_t g_display_xpos = 75;
 
@@ -411,64 +413,66 @@ void UpdateUIStateMachine(void)
     // happens to be over the lifetime of the program
     static ui_state_t current_phase = POWER_UP_STATE; 
     
-    uint16_t hw_wdog_status;   //This holds the status bits from the hardware watchdog function   
-    TestHWWdog(&hw_wdog_status, NULL, false);  //Get the current status from the hardware watchdog 
+    // I changed the variable name to "local_" to reduce confusion of local variable
+    // versus passed parameter.
+    uint16_t local_hw_wdog_status;   //This holds the status bits from the hardware watchdog function   
+    TestHWWdog(&local_hw_wdog_status, NULL, false);  //Get the current status from the hardware watchdog 
     
     switch (current_phase)
     {   
         case POWER_UP_STATE:
-            ExecutePowerUpStateEvents(hw_wdog_status, &current_phase);
+            ExecutePowerUpStateEvents(local_hw_wdog_status, &current_phase);
             g_ResumeFromPause = false;
             break;  
             
         case STANDBY_STATE:
-            ExecuteStandbyStateEvents(hw_wdog_status, &current_phase);
+            ExecuteStandbyStateEvents(local_hw_wdog_status, &current_phase);
             break;  
             
         case INSERT_MCA_STATE:
-            ExecuteInsertMCAStateEvents(hw_wdog_status, &current_phase);
+            ExecuteInsertMCAStateEvents(local_hw_wdog_status, &current_phase);
             break;  
             
         case READING_MCA_STATE:
-            ExecuteReadingMCAStateEvents(hw_wdog_status, &current_phase);
+            ExecuteReadingMCAStateEvents(local_hw_wdog_status, &current_phase);
             break;  
             
         case VERIFY_SN_STATE:
-            ExecuteVerifySNStateEvents(hw_wdog_status, &current_phase);
+            ExecuteVerifySNStateEvents(local_hw_wdog_status, &current_phase);
             break;  
             
         case READY_STATE:
-            ExecuteReadyStateEvents(hw_wdog_status, &current_phase);
+            ExecuteReadyStateEvents(local_hw_wdog_status, &current_phase);
             break;  
 
         case OPERATION_STATE: 
-            ExecuteOperationStateEvents(hw_wdog_status, &current_phase);
+            ExecuteOperationStateEvents(local_hw_wdog_status, &current_phase);
             break;  
             
         case THERAPY_COMPLETE_STATE:
-            ExecuteTherapyCompleteStateEvents(hw_wdog_status, &current_phase);
+            ExecuteTherapyCompleteStateEvents(local_hw_wdog_status, &current_phase);
             g_ResumeFromPause = false;
             break;  
             
         case PAUSED_STATE: 
-            ExecutePausedStateEvents(hw_wdog_status, &current_phase);
+            ExecutePausedStateEvents(local_hw_wdog_status, &current_phase);
             g_ResumeFromPause = true;
             break;  
             
         case ERROR_STATE:  
-            ExecuteErrorStateEvents(hw_wdog_status, &current_phase);
+            ExecuteErrorStateEvents(local_hw_wdog_status, &current_phase);
             break;  
             
         case MCA_DETACHED_STATE:  
-            ExecuteDetachedMCAStateEvents(hw_wdog_status, &current_phase);
+            ExecuteDetachedMCAStateEvents(local_hw_wdog_status, &current_phase);
             break;
         
         case MCA_READING_ERROR_STATE:
-            ExecuteReadingErrorMCAStateEvents(hw_wdog_status, &current_phase);
+            ExecuteReadingErrorMCAStateEvents(local_hw_wdog_status, &current_phase);
             break;
          
         case MCA_EXPIRED_STATE:
-            ExecuteExpiredMCAStateEvents(hw_wdog_status, &current_phase);
+            ExecuteExpiredMCAStateEvents(local_hw_wdog_status, &current_phase);
             break;
             
         default:
@@ -733,9 +737,12 @@ static void ExecuteDetachedMCAStateEvents(uint16_t hw_wdog_status,
     }
     else if (hw_wdog_status & MOUTHPIECE_ATTACHED)
     {
-        // Wait in this state until Mouthpiece is attached again. Then, read state
-        g_MCA_error = false;  //clear any previous MCA error now that we are inserting a new one
-        EnterUIState(p_current_phase, READING_MCA_STATE, IMAGE_1, 0);
+        if (++g_MCA_SwitchDebounceCounter > 4)
+        {
+            // Wait in this state until Mouthpiece is attached again. Then, read state
+            g_MCA_error = false;  //clear any previous MCA error now that we are inserting a new one
+            EnterUIState(p_current_phase, READING_MCA_STATE, IMAGE_1, 0);
+        }
     }
     else if (!EnterErrorStateIfBistFails(p_current_phase, false))
     {
@@ -765,6 +772,10 @@ static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *p_current_phase)
 {
     uint16_t system_status;
+    uint16_t timer;
+    uint16_t ndx, i;
+    bool first_minute; // Should be true within the first minute of countdown
+    //char myString[64];
     
 //    if (!ScreenSaverIsActive())
 //    {
@@ -801,8 +812,37 @@ static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
         }
         else if (g_mouthpiece_removed_during_operation && strcmp((const char*)g_MCA_SN_old, (const char*)g_MCA_SN) == 0)
         {
+            //ResumeOperationStateCountdown();
+
             // If the MCA was removed during operation, and it is the same as the one inserted before, go directly to Pause. Otherwise, verify
+            //EnterUIState(p_current_phase, OPERATION_STATE, IMAGE_2, g_most_recent_update_time/60);
+//            WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_2) + MAX_NUM_MINUTES + 1, false, false);
+//            WriteImageToLCD (2009, false, false);
             EnterUIState(p_current_phase, PAUSED_STATE, IMAGE_1, 0);
+//            WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_2) + MAX_NUM_MINUTES + 1, false, false);
+            //TimeToUpdateDisplay(&timer, &first_minute);
+            timer = GetOperationStateTimer();
+            first_minute = true;
+            g_ResumeFromPause = true;
+            WriteImageToLCD(ReadUISetting(OPERATION_STATE, IMAGE_1), false, false);  // This displays the full clock tick marks.
+            WriteImageToLCD(ReadUISetting(OPERATION_STATE, IMAGE_2) + timer/60, false, false);  
+            //UpdateTimerDisplay(timer, first_minute);
+            ndx = ((timer % 60) ? (timer % 60) : 60);
+            //sprintf (myString, "@825 timer = %d    FM = %d  ndx = %d\n", timer, first_minute, ndx);
+            //printf (myString);
+            for (i = 59; i >= ndx; i--)
+            {
+                WriteImageToLCD(CNTDWN_DISPLAY_BASE + i, false, false);
+            }
+            //UpdateTimerDial (timer); // this is called by UpdateTimerDisplay()
+            WriteImageToLCD (2008, false, false);   // "PAUSED".
+
+//            //Write whole clock image
+//            WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_1), false, false);  
+//            // This only updates the minutes numeral within the clock dial
+//            WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_2) + 0, false, false);  
+
+            //g_ResumeFromPause = true;
         }
         else  
         {
@@ -956,7 +996,7 @@ static void ExecuteReadyStateEvents(uint16_t hw_wdog_status,
         {
             uint32_t therapy_on_time = ReadUISetting(OPERATION_STATE, SPARE0);
 #ifdef USE_SHORT_THERAPY_TIME
-            therapy_on_time = 10;
+            therapy_on_time = 30;
 #endif
             EnterUIState(p_current_phase, OPERATION_STATE, IMAGE_2,
                             therapy_on_time/60);
@@ -998,7 +1038,12 @@ static void ExecuteOperationStateEvents(uint16_t hw_wdog_status,
                                         ui_state_t *p_current_phase)
 {
     static uint16_t consec_low_current_detections = 0;
-    const uint16_t MAX_LOW_CURRENT_DETECTIONS = 2; // Max allowed before
+    // 5/2/22 GChop. I increased the iterations from 2 to 16 because
+    // the low current error was superceding the mouthpiece disconnected
+    // status and not allowing the system to continue normally.
+    // "5" and "8" were also too short, "10" is marginal on my prototype
+    // unit.
+    const uint16_t MAX_LOW_CURRENT_DETECTIONS = 16; // 2; // Max allowed before
                                                    // we treat this as an error
     const uint16_t OPERATION_ERROR = (BASIC_DEVICE_READY_ERROR |
             CURRENT_SOURCE_FAULT | CURRENT_TOO_HIGH | CURRENT_TOO_LOW);
@@ -1065,8 +1110,8 @@ static void ExecuteOperationStateEvents(uint16_t hw_wdog_status,
                 /* Take advantage of the fact that we need to perform
                  * BIST once per second, the same rate at which the
                  * clock display is updated  */
-                uint16_t bist_results = 0;
-                //TestBIST(1, &bist_results, false);
+                uint16_t bist_results;
+                TestBIST(1, &bist_results, false);
                 //Update the MCA usage time, once per second
                 MCAReadingSuccess = MCAIncActiveUseTime();
                             
@@ -1322,6 +1367,11 @@ static void UpdateTimerDisplay(uint16_t timer, bool first_minute)
  */
 static void UpdateTimerDial(uint16_t timer)
 {
+    //char myString[64];
+    
+    //sprintf (myString, "UpdateTimerDial timer = %d  g_MRUT = %d g_RFP = %d\n", timer, g_most_recent_update_time, g_ResumeFromPause);
+    //printf (myString);
+    
     if (((g_most_recent_update_time-1)/60 == timer/60) || g_ResumeFromPause)
     {
         /* The most recent update time and the current time are
@@ -1329,6 +1379,8 @@ static void UpdateTimerDial(uint16_t timer)
         uint16_t start_tick = 
             ((g_most_recent_update_time % 60) ? (g_most_recent_update_time % 60) : 60) - 1;
         uint16_t i;
+        //sprintf (myString, "@1373, ST = %d\n", start_tick);
+        //printf (myString);
         for (i=start_tick; i>=(timer % 60); i--)
         {
             WriteImageToLCD(CNTDWN_DISPLAY_BASE + i, false, false); 
@@ -1342,6 +1394,8 @@ static void UpdateTimerDial(uint16_t timer)
         WriteImageToLCD(ReadUISetting(OPERATION_STATE, IMAGE_2) + timer/60, false, false);  
         uint16_t ndx = ((timer % 60) ? (timer % 60) : 60);
         uint16_t i;
+        //sprintf (myString, "@1390, ndx = %d\n", ndx);
+        //printf (myString);
         for (i=59; i>=ndx; i--)
         {
             WriteImageToLCD(CNTDWN_DISPLAY_BASE + i, false, false);
@@ -1502,6 +1556,7 @@ static void EnterUIState(ui_state_t *p_current_phase, ui_state_t next_phase,
             EnableScreenSaver();
             break; 
         case MCA_DETACHED_STATE:  
+            g_MCA_SwitchDebounceCounter = 0;
             //WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
             WriteImageToLCD(2005, true, false);    // Red Box 
             WriteImageToLCD(2007, false, false);    // "MOUTHPIECE DETACHED, Reinsert Mouthpiece"
