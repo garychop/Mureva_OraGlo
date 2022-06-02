@@ -1113,7 +1113,7 @@ static void ExecuteOperationStateEvents(uint16_t hw_wdog_status,
                 uint16_t bist_results;
                 TestBIST(1, &bist_results, false);
                 //Update the MCA usage time, once per second
-                MCAReadingSuccess = MCAIncActiveUseTime();
+                MCAReadingSuccess = MCAIncrementWriteElapsedTherapyTime();
                             
                 if (((bist_results & BIST_REQUIREMENTS) == BIST_REQUIREMENTS) && MCAReadingSuccess)
                 {

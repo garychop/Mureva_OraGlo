@@ -1470,20 +1470,21 @@ static void EEPROMSubmenu(void)
 		printf("  0 = Display contents of MCA EEPROM\r\n");
 		printf("  1 = Set serial number\r\n");
 		printf("  2 = Set MCA calibration constant\r\n");
-		printf("  3 = Set active use time in seconds\r\n");
-		printf("  4 = Set maximum use time in seconds\r\n");
-		printf("  5 = Set time stamp (number entry)\r\n");
-		printf("  6 = Set time stamp (auto = 20%d%d/%d%d/%d%d %d%d:%d%d:%d%d)\r\n", r.rtcyear.yrten, r.rtcyear.yrone, r.rtcmth.mthten, r.rtcmth.mthone, r.rtcdate.dateten, r.rtcdate.dateone, r.rtchour.hrten, r.rtchour.hrone, r.rtcmin.minten, r.rtcmin.minone, r.rtcsec.secten, r.rtcsec.secone);
-		printf("  7 = Dump memory, device notes\r\n");
-		printf("  8 = Read memory\r\n");
-		printf("  9 = Write memory\r\n");
-		printf("  a = Erase memory\r\n");
-		printf("  b = Read MFG ID\r\n");
-		printf("  c = Lock serial number\r\n");
-		printf("  d = Perform data integrity check\r\n");
-		printf("  e = Exit\r\n");
+		printf("  3 = Set Elapsed Therapy Time in seconds\r\n");     // changed to "active time of current therapy"
+		printf("  4 = Set Max Number of Therapies\r\n");    // Changed to "Max Number of Therapies.
+        printf("  5 = Set Completed Therapies\r\n");
+		printf("  6 = Set Last Completed Therapy time stamp (number entry)\r\n");
+		printf("  7 = Set Last Completed Therapy time stamp (auto = 20%d%d/%d%d/%d%d %d%d:%d%d:%d%d)\r\n", r.rtcyear.yrten, r.rtcyear.yrone, r.rtcmth.mthten, r.rtcmth.mthone, r.rtcdate.dateten, r.rtcdate.dateone, r.rtchour.hrten, r.rtchour.hrone, r.rtcmin.minten, r.rtcmin.minone, r.rtcsec.secten, r.rtcsec.secone);
+		printf("  8 = Dump memory, device notes\r\n");
+		printf("  9 = Read memory\r\n");
+		printf("  a = Write memory\r\n");
+		printf("  b = Erase memory\r\n");
+		printf("  c = Read MFG ID\r\n");
+		printf("  d = Lock serial number\r\n");
+		printf("  e = Perform data integrity check\r\n");
+		printf("  f = Exit\r\n");
         printf("\n\r");
-		switch (GetCharWithinLimits('0', 'e'))
+		switch (GetCharWithinLimits('0', 'f'))
 		{
 		case '0':
 			MCADisplayContents();
@@ -1495,42 +1496,45 @@ static void EEPROMSubmenu(void)
 			MCASetCalibration();
 			break;
 		case '3':
-			MCASetActiveUseTime();
+			MCASetElapsedTherapyTime();
 			break;
 		case '4':
-			MCASetMaxUseTime();
+			MCAEnterMaxNumOfTherapies();
 			break;
-		case '5':
+        case '5':  //printf("  5 = Set Completed Therapies\r\n");
+            MCAEnterCompletedTherapies();
+            break;
+		case '6':
 			MCASetTimeStamp(false);
 			break;
-		case '6':
+		case '7':
 			MCASetTimeStamp(true);
 			break;
-        case '7':
+        case '8':
 			printf("\r\n");
 			EEPROMDump(0);
 			break;
-		case '8':
+		case '9':
 			MCAMemoryRead();
 			break;
-		case '9':
+		case 'a':
 			MCAMemoryWrite();
 			break;
-		case 'a':
+		case 'b':
 			MCAMemoryErase();
 			break;
-		case 'b':
+		case 'c':
 			printf("\r\n");
 			EEPROMReadManufID(0);
 			break;
-		case 'c':
+		case 'd':
 			MCALockSerial();
 			break;
-		case 'd':
+		case 'e':
 			printf("\r\n");
 			MCADataIntegrityCheck();
 			break;
-		case 'e':
+		case 'f':
 			done = true;
 			break;
 		default:

@@ -19,14 +19,18 @@ bool MCAReadSerialNumber(uint8_t *MCASerialNumber);
 bool MCAWriteSerialNumber(uint8_t *MCASerialNumber);
 bool MCASetSerialNumber(void);
 //
-bool MCAReadActiveUseTime(uint16_t *MCATotalUsageTime);
-bool MCAWriteActiveUseTime(uint16_t MCATotalUsageTime);
-bool MCASetActiveUseTime(void);
-bool MCAIncActiveUseTime(void);
+bool MCAReadCompletedTherapies (uint16_t *completedTherpies);
+bool MCAWriteCompletedTherapies (uint16_t completedTherpies);
+bool MCAEnterCompletedTherapies(void);
 //
-bool MCAReadMaxUseTime(uint16_t *MCAMaxUsageTime);
-bool MCAWriteMaxUseTime(uint16_t MCAMaxUsageTime);
-bool MCASetMaxUseTime(void);
+bool MCAReadElapsedTherapyTime(uint16_t *elapsedTherapyTime);
+bool MCAWriteElapsedTherapyTime(uint16_t elapsedTherapyTime);
+bool MCASetElapsedTherapyTime(void);    // Diagnostic tool to set time in MCA
+bool MCAIncrementWriteElapsedTherapyTime(void);
+//
+bool MCAReadMaxNumOfTherapies(uint16_t *maxNumOfTherapies);
+bool MCAWriteMaxNumOfTherapies(uint16_t maxNumOfTherapies);
+bool MCAEnterMaxNumOfTherapies(void);
 //
 bool MCAReadCalibration(uint16_t *MCAMCACalibration);
 bool MCAWriteCalibration(uint16_t MCAMCACalibration);
