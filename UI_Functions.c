@@ -157,6 +157,8 @@ static void ExecuteReadingErrorMCAStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *current_phase);
 static void ExecuteExpiredMCAStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *current_phase);
+static void ExecuteMCAPeriodStateEvents(uint16_t hw_wdog_status, 
+                                      ui_state_t *current_phase);
 static void ExecuteDetachedMCAStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *current_phase);
 static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
@@ -475,6 +477,10 @@ void UpdateUIStateMachine(void)
             ExecuteExpiredMCAStateEvents(local_hw_wdog_status, &current_phase);
             break;
             
+        case MCA_PERIOD_ERROR_STATE:
+            ExecuteMCAPeriodStateEvents(local_hw_wdog_status, &current_phase);
+            break;
+            
         default:
             // Generate "unknown error" message
             EnterUIState(&current_phase, ERROR_STATE, IMAGE_1, 0);
@@ -691,14 +697,51 @@ static void ExecuteExpiredMCAStateEvents(uint16_t hw_wdog_status,
         EnterUIState(p_current_phase, ERROR_STATE, IMAGE_1,
                         hw_wdog_status & STARTUP_ERROR);
     }
-#ifndef TESTING_MOUTHPIECE_EXPIRED            
     else if ((hw_wdog_status & MOUTHPIECE_ATTACHED) == 0)
     {
         // Wait in this state until Mouthpiece removed (== 0)
         // There is an error with MCA and must be removed to continue
         EnterUIState(p_current_phase, INSERT_MCA_STATE, IMAGE_1, 0);
     }
-#endif
+    else if (!EnterErrorStateIfBistFails(p_current_phase, false))
+    {
+        /* No error was detected, so we proceed normally, i.e. wait for
+         * the button to be pressed and execute screensaver ops as needed */
+        if (PushbuttonPressed(PUSHBUTTON_1))
+        {
+            // Return to same state, resetting the display and screensaver timer
+            EnterUIState(p_current_phase, *p_current_phase, IMAGE_1, 0);
+        }
+        if (ScreenSaverIsActive())
+        {
+            ExecuteScreenSaverMode();
+        }
+    }
+}
+
+/*
+ * This state function gets execute if the MCA is tried to be used
+ * within the 12 hour window.
+ */
+
+static void ExecuteMCAPeriodStateEvents(uint16_t hw_wdog_status, 
+                                      ui_state_t *p_current_phase)
+{
+    if(ScreenShouldBeBlank())
+    {
+        EnterUIState(p_current_phase, STANDBY_STATE, IMAGE_1, 0);
+    }    
+    else if (hw_wdog_status & STARTUP_ERROR)
+    {
+        EnterUIState(p_current_phase, ERROR_STATE, IMAGE_1,
+                        hw_wdog_status & STARTUP_ERROR);
+    }
+    else if ((hw_wdog_status & MOUTHPIECE_ATTACHED) == 0)
+    {
+        // Wait in this state until Mouthpiece removed (== 0)
+        // There is an error with MCA and must be removed to continue
+        EnterUIState(p_current_phase, INSERT_MCA_STATE, IMAGE_1, 0);
+    }
     else if (!EnterErrorStateIfBistFails(p_current_phase, false))
     {
         /* No error was detected, so we proceed normally, i.e. wait for
@@ -803,6 +846,11 @@ static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
         {
             // If error MCA expired, Go to Insert Mouthpiece
             EnterUIState(p_current_phase, MCA_EXPIRED_STATE, IMAGE_1, 0);
+        }
+        else if (system_status & MCA_PERIOD)
+        {
+            // If error MCA expired, Go to Insert Mouthpiece
+            EnterUIState(p_current_phase, MCA_PERIOD_ERROR_STATE, IMAGE_1, 0);
         }
         else if (system_status & MCA_ERROR)	// Attention, this must be bitwise operator, not logic as was before
         {
@@ -1574,6 +1622,11 @@ static void EnterUIState(ui_state_t *p_current_phase, ui_state_t next_phase,
             //WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
             WriteImageToLCD(2005, true, false);    // Red Box 
             WriteImageToLCD(2006, false, false);   // "MOUTHPIECE EXPIRED"
+            EnableScreenSaver();
+            break;
+        case MCA_PERIOD_ERROR_STATE:
+            WriteImageToLCD(2005, true, false);    // Red Box 
+            WriteImageToLCD(2011, false, false);   // "MOUTHPIECE DAILY LIMIT REACHED"
             EnableScreenSaver();
             break;
         default: 

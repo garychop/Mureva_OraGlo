@@ -793,9 +793,10 @@ bool MCAGetStatus(uint8_t *MCAStatus)
     MCAReadingSuccess = MCAReadingSuccess && MCAReadCompletedTherapies(&completedTherapies);
     MCAReadingSuccess = MCAReadingSuccess && MCAReadTimeStamp(&MCATimeStamp);
 
+    printf("\n\r MCA Completed Therapies = %d", completedTherapies);
     printf("\n\r MCA Elapsed Therapy Time = %d", elapsedTherapyTime);
     printf("\n\r MCA Max Number of Therapies = %d", maxNumOfTherapies);
-    printf("\n\r MCA Completed Therapies = %d", completedTherapies);
+    printf("\n\r MCA Last Time Stamp = %ld", MCATimeStamp);
     printf("\n\r LCUTimeStamp = %ld", LCUTimeStamp);
     printf("\n\r");
 

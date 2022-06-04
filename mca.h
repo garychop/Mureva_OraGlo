@@ -10,7 +10,7 @@
 #define MCA_EXPIRED        0x0002    //the MCA has been used too many times and cannot be used again
 #define MCA_PERIOD         0x0004    //the MCA is being used too soon from the last time it was used
 
-#define MCA_ERROR          0x0007    //Any error
+#define MCA_ERROR          (MCA_READING_ERROR | MCA_EXPIRED | MCA_PERIOD) //0x0007    //Any error
 
 
 bool MCADisplayContents(void);

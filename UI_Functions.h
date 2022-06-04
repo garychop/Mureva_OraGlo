@@ -30,6 +30,7 @@ typedef enum {
     MCA_DETACHED_STATE,
     MCA_READING_ERROR_STATE,
     MCA_EXPIRED_STATE,
+    MCA_PERIOD_ERROR_STATE,
     NUM_UI_STATES // This is not an actual state.
                   // It just reports the number of states in use.
 } ui_state_t;
