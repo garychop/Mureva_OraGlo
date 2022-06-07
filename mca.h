@@ -12,6 +12,11 @@
 
 #define MCA_ERROR          (MCA_READING_ERROR | MCA_EXPIRED | MCA_PERIOD) //0x0007    //Any error
 
+#define MCA_TIME_LIMIT (43200)          // 12 hours in seconds.
+#define MCA_MINIMUM_THERAPY_TIME (270)  // 4:30 in seconds.
+#define MCA_THERAPY_NOT_STARTED_TIME (0)// Indicate that therapy has not started.
+#define MCA_THERAPY_COMPLETE_TIME (300)// 5:00 in seconds.
+
 
 bool MCADisplayContents(void);
 //

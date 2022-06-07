@@ -4,13 +4,13 @@ Tool Name:
   c:\program files (x86)\microchip\xc16\bin\bin\..\bin/elf-ld.exe
 
 Command:
-  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004f9c.00 \
-  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004f9c.01 \
-  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004f9c.02 \
-  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004f9c.03 \
-  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004f9c.04 \
-  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004f9c.05 \
-  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004f9c.06 \
+  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004900.00 \
+  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004900.01 \
+  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004900.02 \
+  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004900.03 \
+  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004900.04 \
+  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004900.05 \
+  -TC:\\Users\\gchop\\AppData\\Local\\Temp\\tmp00004900.06 \
   -p24FJ1024GA606 \
   --mdfp=C:/Users/gchop/.mchp_packs/Microchip/PIC24F-GA-GB_DFP/1.4.141/xc16 \
   -o \
@@ -134,9 +134,9 @@ c:/program files (x86)/microchip/xc16/bin/bin/../../lib\libm-elf.a(sinf.daeo)
 c:/program files (x86)/microchip/xc16/bin/bin/../../lib\libm-elf.a(sqrtf.daeo)
                               build/default/debug/lcd.o (_sqrtf)
 c:/program files (x86)/microchip/xc16/bin/bin/../../lib\libm-elf.a(udivsi3.daeo)
-                              build/default/debug/flashmem.o (___udivsi3)
+                              build/default/debug/UI_Functions.o (___udivsi3)
 c:/program files (x86)/microchip/xc16/bin/bin/../../lib\libm-elf.a(umodsi3.daeo)
-                              build/default/debug/flashmem.o (___umodsi3)
+                              build/default/debug/UI_Functions.o (___umodsi3)
 c:/program files (x86)/microchip/xc16/bin/bin/../../lib\libm-elf.a(errno.daeo)
                               c:/program files (x86)/microchip/xc16/bin/bin/../../lib\libm-elf.a(sincosf.daeo) (_errno)
 c:/program files (x86)/microchip/xc16/bin/bin/../../lib\libm-elf.a(fcompare.daeo)
@@ -303,22 +303,22 @@ Default Scalar Model: Small
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x100              0x35c2          0x50a3  (20643)
-.text                       0x36c2              0x32f8          0x4c74  (19572)
-.text                       0x69ba               0xd66          0x1419  (5145)
-.text                       0x7720               0x4aa           0x6ff  (1791)
-.dinit                      0x7bca               0x342           0x4e3  (1251)
-.text                       0x7f0c                0xf2           0x16b  (363)
+.text                       0x36c2              0x3376          0x4d31  (19761)
+.text                       0x6a38               0xd66          0x1419  (5145)
+.text                       0x779e               0x4aa           0x6ff  (1791)
+.dinit                      0x7c48               0x342           0x4e3  (1251)
+.text                       0x7f8a                0x76            0xb1  (177)
 .const                      0x8000              0x7424          0xae36  (44598)
-_051ddbe0629b9b05           0xf424             0x30000         0x48000  (294912)
-.text                      0x3f424              0x172c          0x22c2  (8898)
-.text                      0x40b50              0x1f22          0x2eb3  (11955)
-.text                      0x42a72               0x43e           0x65d  (1629)
-.text                      0x42eb0               0xf1e          0x16ad  (5805)
-.text                      0x43dce               0x846           0xc69  (3177)
-.init.delay32              0x44614                0x1c            0x2a  (42)
-.text                      0x44630                0x10            0x18  (24)
+_0518dbe0629e06ca           0xf424             0x30000         0x48000  (294912)
+.text                      0x3f424              0x17f0          0x23e8  (9192)
+.text                      0x40c14              0x1f54          0x2efe  (12030)
+.text                      0x42b68               0x43e           0x65d  (1629)
+.text                      0x42fa6              0x1520          0x1fb0  (8112)
+.text                      0x444c6               0x2c0           0x420  (1056)
+.init.delay32              0x44786                0x1c            0x2a  (42)
+.text                      0x447a2                0x10            0x18  (24)
 
-                 Total "program" memory used (bytes):        0x667dd  (419805) 39%
+                 Total "program" memory used (bytes):        0x66a0b  (420363) 39%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x8000]
@@ -478,19 +478,19 @@ External Symbols in Program Memory (by address):
                   0x00116c                  _strlen
                   0x001186                  _strncmp
                   0x0011ba                  _putchar
-                  0x00134e                  __vfprintf_cdnopsuxX
-                  0x00134e                  __vfprintf_s
                   0x00134e                  __vfprintf_fFs
-                  0x00134e                  __vfprintf_fF
                   0x00134e                  __vfprintf_cdfFnopuxX
-                  0x00134e                  __vfprintf_0
+                  0x00134e                  __vfprintf_s
                   0x00134e                  __vfprintf_cdnopuxX
                   0x00134e                  __vfprintf_cdfFnopsuxX
+                  0x00134e                  __vfprintf_0
+                  0x00134e                  __vfprintf_fF
+                  0x00134e                  __vfprintf_cdnopsuxX
                   0x001e76                  _vfprintf
                   0x0030e0                  ___adddf3
-                  0x0031dc                  ___ltdf2
                   0x0031dc                  ___eqdf2
                   0x0031dc                  ___ledf2
+                  0x0031dc                  ___ltdf2
                   0x0031e6                  ___gtdf2
                   0x0031e6                  ___gedf2
                   0x0031f0                  ___divdf3
@@ -503,14 +503,14 @@ External Symbols in Program Memory (by address):
                   0x003376                  ___fixunsdfdi
                   0x0033d8                  ___floatunsidf
                   0x0033dc                  ___nesf2
-                  0x0033e0                  _frexp
                   0x0033e0                  _frexpl
+                  0x0033e0                  _frexp
                   0x00341a                  _frexpf
                   0x003420                  ___muldf3
                   0x00350c                  ___subdf3
                   0x003510                  ___truncdfsf2
-                  0x003566                  ___mulp32peds3
                   0x003566                  ___mulp32eds3
+                  0x003566                  ___mulp32peds3
                   0x003566                  ___mulsi3
                   0x003572                  __frexpf
                   0x00358c                  __dcompare
@@ -534,643 +534,643 @@ External Symbols in Program Memory (by address):
                   0x00485c                  _EraseDataFromFlash
                   0x0048ac                  _WriteImageToFlash
                   0x005104                  _ReadFlashDMA
-                  0x005b58                  _Test5VDC
-                  0x005e1e                  _TestPOST
-                  0x005f5a                  _TestBIST
-                  0x006064                  _PrintMenu
-                  0x006418                  _TestInterface
-                  0x0069ba                  _RTCCIdentify
-                  0x0069be                  _RTCCGetStartStatus
-                  0x006a4a                  _RTCCSetStartStatus
-                  0x006b32                  _RTCCGetDateTimeData
-                  0x006bbc                  _RTCCSetDateTimeData
-                  0x006c16                  _RTCCPrint
-                  0x006c56                  _RTCCCalcLCUTimestamp
-                  0x006de0                  _RTCCGetTimestamp
-                  0x006df8                  _RTCCGetVBATEN
-                  0x006e86                  _RTCCSetVBATEN
-                  0x006f6e                  _RTCCInit
-                  0x006f86                  _RTCCGetPWRFAIL
-                  0x007014                  _RTCCClearPWRFAIL
-                  0x0070e6                  _RTCCDisplayPowerFailStatus
-                  0x007100                  _RTCCSetTime
-                  0x0071d4                  _RTCCDumpRegisters
-                  0x007388                  _RTCCReadRegister
-                  0x007448                  _RTCCWriteRegister
-                  0x0074de                  _RTCCInitSRAM
-                  0x00755a                  _RTCCSetDate
-                  0x00762a                  _RTCCGetSRAM
-                  0x0076ce                  _RTCCDisplayDateTime
-                  0x007720                  _EEPROMReadManufID
-                  0x0077e2                  _EEPROMIdentify
-                  0x007842                  _EEPROMRead
-                  0x0078aa                  _EEPROMWrite
-                  0x007912                  _EEPROMWritePage
-                  0x0079b6                  _EEPROMReadSecurity
-                  0x007a24                  _EEPROMWriteSecurity
-                  0x007a7e                  _EEPROMDump
-                  0x007b72                  _EEPROMLockSecurity
-                  0x007f32                  _I2C1_Initialize
-                  0x007f56                  _I2C1_ErrorCountGet
-                  0x007f5a                  _I2C1_MasterTRBInsert
-                  0x007f9a                  _I2C1_MasterReadTRBBuild
-                  0x007fa6                  _I2C1_MasterRead
-                  0x007fc8                  _I2C1_MasterWriteTRBBuild
-                  0x007fd0                  _I2C1_MasterWrite
-                  0x007ff2                  _I2C1_MasterQueueIsEmpty
-                  0x007ff8                  _I2C1_MasterQueueIsFull
+                  0x00578c                  _UserInterfacePrintNotes
+                  0x0058c6                  _UserInterfaceSubmenu
+                  0x005982                  _GetCurrentlyUsedLEDCurrent
+                  0x005986                  _ReadUISetting
+                  0x0068da                  _GenerateCountdownDisplay
+                  0x006946                  _InitializeUserInterface
+                  0x00697c                  _UpdateUIStateMachine
+                  0x006a38                  _RTCCIdentify
+                  0x006a3c                  _RTCCGetStartStatus
+                  0x006ac8                  _RTCCSetStartStatus
+                  0x006bb0                  _RTCCGetDateTimeData
+                  0x006c3a                  _RTCCSetDateTimeData
+                  0x006c94                  _RTCCPrint
+                  0x006cd4                  _RTCCCalcLCUTimestamp
+                  0x006e5e                  _RTCCGetTimestamp
+                  0x006e76                  _RTCCGetVBATEN
+                  0x006f04                  _RTCCSetVBATEN
+                  0x006fec                  _RTCCInit
+                  0x007004                  _RTCCGetPWRFAIL
+                  0x007092                  _RTCCClearPWRFAIL
+                  0x007164                  _RTCCDisplayPowerFailStatus
+                  0x00717e                  _RTCCSetTime
+                  0x007252                  _RTCCDumpRegisters
+                  0x007406                  _RTCCReadRegister
+                  0x0074c6                  _RTCCWriteRegister
+                  0x00755c                  _RTCCInitSRAM
+                  0x0075d8                  _RTCCSetDate
+                  0x0076a8                  _RTCCGetSRAM
+                  0x00774c                  _RTCCDisplayDateTime
+                  0x00779e                  _EEPROMReadManufID
+                  0x007860                  _EEPROMIdentify
+                  0x0078c0                  _EEPROMRead
+                  0x007928                  _EEPROMWrite
+                  0x007990                  _EEPROMWritePage
+                  0x007a34                  _EEPROMReadSecurity
+                  0x007aa2                  _EEPROMWriteSecurity
+                  0x007afc                  _EEPROMDump
+                  0x007bf0                  _EEPROMLockSecurity
+                  0x007f8a                  _OSCILLATOR_Initialize
+                  0x007fc0                  _SYSTEM_Initialize
                   0x00c2cc                  _FLASH_ADDR_OF_SETTINGS
                   0x00f3c2                  _period
                   0x00f424                  _Image_Arial20_Vert
-                  0x03f9e2                  _UserInterfacePrintNotes
-                  0x03fb1c                  _UserInterfaceSubmenu
-                  0x03fbd8                  _GetCurrentlyUsedLEDCurrent
-                  0x03fbdc                  _ReadUISetting
-                  0x0409fc                  _GenerateCountdownDisplay
-                  0x040a68                  _InitializeUserInterface
-                  0x040a9e                  _UpdateUIStateMachine
-                  0x040b50                  _WriteLEDBoardEEPROM
-                  0x040c8a                  _ReadLEDBoardEEPROM
-                  0x040fce                  _TestLEDBoardEEPROM
-                  0x04108c                  _ReadLEDBoardSpecifiedCurrent
-                  0x041106                  _TestLEDBoardTemp
-                  0x041214                  _TestLEDCurrent
-                  0x041290                  _ReadLEDVoltage
-                  0x04129e                  _WriteLEDCurrent
-                  0x0413fe                  _TestLEDCurrentOffset
-                  0x0414da                  _LEDBoardEEPROMPrintNotes
-                  0x041582                  _LEDBoardEEPROMSubmenu
-                  0x04167c                  _LEDCurrentOn
-                  0x041680                  _MCAReadSerialNumber
-                  0x041710                  _MCAWriteSerialNumber
-                  0x04179e                  _MCASetSerialNumber
-                  0x0417f6                  _MCAReadCompletedTherapies
-                  0x041828                  _MCAWriteCompletedTherapies
-                  0x041848                  _MCAEnterCompletedTherapies
-                  0x0418a8                  _MCAReadElapsedTherapyTime
-                  0x0418da                  _MCAWriteElapsedTherapyTime
-                  0x0418fa                  _MCAIncrementWriteElapsedTherapyTime
-                  0x041964                  _MCASetElapsedTherapyTime
-                  0x0419c4                  _MCAReadMaxNumOfTherapies
-                  0x0419fa                  _MCAWriteMaxNumOfTherapies
-                  0x041a1a                  _MCAEnterMaxNumOfTherapies
-                  0x041a7a                  _MCAReadCalibration
-                  0x041aac                  _MCAWriteCalibration
-                  0x041acc                  _MCASetCalibration
-                  0x041b2c                  _MCAReadTimeStamp
-                  0x041ba4                  _MCADisplayContents
-                  0x041c64                  _MCAWriteTimeStamp
-                  0x041caa                  _MCASetTimeStamp
-                  0x041d88                  _MCADataIntegrityCheck
-                  0x041ecc                  _MCAMemoryRead
-                  0x041f2e                  _MCAMemoryWrite
-                  0x041fa4                  _MCAMemoryErase
-                  0x041ff2                  _MCALockSerial
-                  0x042002                  _MCAGetStatus
-                  0x04223a                  _InitializeLCDDMA
-                  0x042264                  _LCDWriteCommand
-                  0x042284                  _LCDWriteData
-                  0x0423fc                  _InitializeLCD
-                  0x0424fa                  _LCDDisplayHome
-                  0x042528                  _DisplayTestImage
-                  0x042600                  _DisplayImageAtRandomLocation
-                  0x04273c                  _TurnBacklightOff
-                  0x042740                  _BlankOutDisplay
-                  0x0427ac                  _WriteImageToLCD
-                  0x042834                  _TurnBacklightOn
-                  0x042838                  _TestLCD
-                  0x042962                  _LCDTest
-                  0x04298e                  _DisplayText
-                  0x042a72                  _GetChar
-                  0x042a86                  _GetYesOrNo
-                  0x042abc                  _GetZeroOneOrCancel
-                  0x042af6                  _GetCharWithinLimits
-                  0x042b10                  _ReadFloat
-                  0x042b50                  _ReadString
-                  0x042ba0                  _ReadFloatOrCancel
-                  0x042c16                  _WaitForValidFloat
-                  0x042c3c                  _ReadUInt32OrCancel
-                  0x042c94                  _WaitForValidUInt32WithLimits
-                  0x042d08                  _WaitForValidUInt32
-                  0x042d2e                  _ReadUInt32
-                  0x042d4e                  _ReadUInt16OrCancel
-                  0x042dbe                  _WaitForValidUInt16WithLimits
-                  0x042e1e                  _WaitForValidUInt16
-                  0x042e44                  _ReadUInt16
-                  0x042e64                  _DisableNonDMAInterrupts
-                  0x042e72                  _EnableNonDMAInterrupts
-                  0x042e80                  _crc8
-                  0x042e9c                  _strnlen
-                  0x042eb0                  _InitializeHW_WatchdogData
-                  0x042eb4                  _UpdateMouthpieceStatus
-                  0x042ef4                  _TestHWWdog
-                  0x0431ac                  _SetLedRGB
-                  0x0431c6                  _WriteRGBLED
-                  0x0432b4                  _TestRGBLED
-                  0x043342                  _TestLights
-                  0x04344e                  _SWIInit
-                  0x043454                  _SWIStartAndStopCondition
-                  0x043472                  _SWIGetAck
-                  0x0434d6                  _SWIResetAndDiscoveryResponse
-                  0x043524                  _SWISendBit
-                  0x0435c8                  _SWISendData
-                  0x0435de                  _SWISendAddress
-                  0x0435ee                  _SWIRecvBit
-                  0x043662                  _SWIReadData
-                  0x04368e                  _SWISendAck
-                  0x043694                  _SWISendNack
-                  0x0436d0                  _RTCC_Initialize
-                  0x04371a                  _RTCC_TimeGet
-                  0x043776                  _RTCC_TimeSet
-                  0x0437d2                  _RTCC_BCDTimeGet
-                  0x043810                  _RTCC_BCDTimeSet
-                  0x04384c                  _RTCC_TimeReset
-                  0x043850                  _RTCC_TimestampAEventManualSet
-                  0x043854                  _RTCC_TimestampADataGet
-                  0x0438a6                  _RTCC_TimestampA_BCDDataGet
-                  0x0438da                  _GetADCReadingCh8
-                  0x0438e0                  _GetADCReadingCh9
-                  0x0438e6                  _GetADCReadingCh10
-                  0x0438ec                  _GetADCReadingCh11
-                  0x0438f2                  _ClearADCCh11Offset
-                  0x0438f8                  _SetADCCh11Offset
-                  0x043902                  _GetADCReadingCh12
-                  0x043908                  _WriteDAC
-                  0x043ac8                  _PIN_MANAGER_Initialize
-                  0x043bd6                  _SPI1_Initialize
-                  0x043bf0                  _SPI1_Exchange
-                  0x043c0e                  _SPI1_ExchangeBuffer
-                  0x043ca4                  _SPI1_Exchange32bit
-                  0x043cbc                  _SPI1_Exchange32bitBuffer
-                  0x043cc0                  _SPI1_TransferModeGet
-                  0x043cd0                  _SPI1_StatusGet
-                  0x043cd4                  _SPI2_Initialize
-                  0x043cea                  _SPI2_Exchange
-                  0x043d08                  _SPI2_ExchangeBuffer
-                  0x043d9e                  _SPI2_Exchange32bit
-                  0x043db6                  _SPI2_Exchange32bitBuffer
-                  0x043dba                  _SPI2_TransferModeGet
-                  0x043dca                  _SPI2_StatusGet
-                  0x043dce                  _TimerDelay
-                  0x043df2                  _StartTimer
-                  0x043e0e                  _WaitForTimer
-                  0x043e18                  _TimerDone
-                  0x043e26                  _ClearTimer
-                  0x043e30                  _SetLedBlinkPattern
-                  0x043e6a                  _DisableLedBlinking
-                  0x043e6e                  _Timer2Handler
-                  0x043eae                  _SPI3_Initialize
-                  0x043ec6                  _SPI3_Exchange
-                  0x043edc                  _SPI3_ExchangeBuffer
-                  0x043f62                  _SPI3_Exchange8bit
-                  0x043f72                  _SPI3_Exchange8bitBuffer
-                  0x043f76                  _SPI3_TransferModeGet
-                  0x043f86                  _SPI3_StatusGet
-                  0x043f8a                  _StartGenericCountdownTimer
-                  0x043f90                  _ClearGenericCountdownTimer
-                  0x043f94                  _GenericCountdownTimerElapsed
-                  0x043f9e                  _WaitForGenericCountdownTimer
-                  0x043fac                  _StartOperationStateCountdown
-                  0x043fd2                  _PauseOperationStateCountdown
-                  0x043fd8                  _ResumeOperationStateCountdown
-                  0x043fe0                  _TimeToUpdateDisplay
-                  0x044006                  _TimeToPerformBIST
-                  0x04400e                  _GetOperationStateTimer
-                  0x044012                  _OperationCountDownNewlyRestarted
-                  0x04401e                  _ResetScreenSaverTimer
-                  0x044036                  _StopScreenSaverTimer
-                  0x04403a                  _OC1_Initialize
-                  0x044054                  _OC1_Tasks
-                  0x04405c                  _OC1_Start
-                  0x04406c                  _OC1_Stop
-                  0x044072                  _OC1_SingleCompareValueSet
-                  0x044076                  _OC1_DualCompareValueSet
-                  0x04407c                  _OC1_CentreAlignedPWMConfig
-                  0x044082                  _OC1_EdgeAlignedPWMConfig
-                  0x044088                  _OC1_SecondaryValueSet
-                  0x04408c                  _OC1_PrimaryValueSet
-                  0x044090                  _OC1_IsCompareCycleComplete
-                  0x044098                  _OC1_FaultStatusGet
-                  0x0440c0                  _OC1_FaultStatusClear
-                  0x0440d8                  _OC1_ManualTriggerSet
-                  0x0440dc                  _OC1_TriggerStatusGet
-                  0x0440e4                  _OC1_TriggerStatusClear
-                  0x0440e8                  _OC2_Initialize
-                  0x044102                  _OC2_Tasks
-                  0x04410a                  _OC2_Start
-                  0x04411a                  _OC2_Stop
-                  0x044120                  _OC2_SingleCompareValueSet
-                  0x044124                  _OC2_DualCompareValueSet
-                  0x04412a                  _OC2_CentreAlignedPWMConfig
-                  0x044130                  _OC2_EdgeAlignedPWMConfig
-                  0x044136                  _OC2_SecondaryValueSet
-                  0x04413a                  _OC2_PrimaryValueSet
-                  0x04413e                  _OC2_IsCompareCycleComplete
-                  0x044146                  _OC2_FaultStatusGet
-                  0x04416e                  _OC2_FaultStatusClear
-                  0x044186                  _OC2_ManualTriggerSet
-                  0x04418a                  _OC2_TriggerStatusGet
-                  0x044192                  _OC2_TriggerStatusClear
-                  0x044196                  _OC3_Initialize
-                  0x0441b0                  _OC3_Tasks
-                  0x0441b8                  _OC3_Start
-                  0x0441c8                  _OC3_Stop
-                  0x0441ce                  _OC3_SingleCompareValueSet
-                  0x0441d2                  _OC3_DualCompareValueSet
-                  0x0441d8                  _OC3_CentreAlignedPWMConfig
-                  0x0441de                  _OC3_EdgeAlignedPWMConfig
-                  0x0441e4                  _OC3_SecondaryValueSet
-                  0x0441e8                  _OC3_PrimaryValueSet
-                  0x0441ec                  _OC3_IsCompareCycleComplete
-                  0x0441f4                  _OC3_FaultStatusGet
-                  0x04421c                  _OC3_FaultStatusClear
-                  0x044234                  _OC3_ManualTriggerSet
-                  0x044238                  _OC3_TriggerStatusGet
-                  0x044240                  _OC3_TriggerStatusClear
-                  0x044244                  _PushbuttonPressed
-                  0x044258                  _TestPushbutton
-                  0x0442de                  _OSCILLATOR_Initialize
-                  0x044314                  _SYSTEM_Initialize
-                  0x044354                  _ScreenSaverInit
-                  0x044362                  _EnableScreenSaver
-                  0x044370                  _DisableScreenSaver
-                  0x04437c                  _ActivateScreenSaver
-                  0x044382                  _ActivateBlankScreen
-                  0x044388                  _ScreenSaverIsActive
-                  0x04438c                  _ScreenShouldBeBlank
-                  0x044390                  _ExecuteScreenSaverMode
-                  0x0443c6                  _TMR1_Initialize
-                  0x0443d6                  _TMR1_Tasks_16BitOperation
-                  0x0443e8                  _TMR1_Period16BitSet
-                  0x0443f0                  _TMR1_Period16BitGet
-                  0x0443f4                  _TMR1_Counter16BitSet
-                  0x0443fc                  _TMR1_Counter16BitGet
-                  0x044400                  _TMR1_Start
-                  0x044408                  _TMR1_Stop
-                  0x04440c                  _TMR1_GetElapsedThenClear
-                  0x04441a                  _TMR1_SoftwareCounterGet
-                  0x044420                  _TMR1_SoftwareCounterClear
-                  0x044426                  _ADC1_Initialize
-                  0x044456                  _ADC1_Start
-                  0x04445a                  _ADC1_Stop
-                  0x04445e                  _ADC1_ConversionResultBufferGet
-                  0x044476                  _ADC1_ConversionResultGet
-                  0x04447a                  _ADC1_IsConversionComplete
-                  0x044480                  _ADC1_ChannelSelect
-                  0x044484                  _TMR2_Initialize
-                  0x044498                  _TMR2_Period16BitSet
-                  0x0444a0                  _TMR2_Period16BitGet
-                  0x0444a4                  _TMR2_Counter16BitSet
-                  0x0444ac                  _TMR2_Counter16BitGet
-                  0x0444b6                  _TMR2_Start
-                  0x0444c0                  _TMR2_Stop
-                  0x0444c6                  _TMR2_GetElapsedThenClear
-                  0x0444d4                  _TMR2_SoftwareCounterGet
-                  0x0444da                  _TMR2_SoftwareCounterClear
-                  0x0444e0                  _IC1_Initialize
-                  0x0444f6                  _IC1_Start
-                  0x044506                  _IC1_Stop
-                  0x04450c                  _IC1_CaptureDataRead
-                  0x044510                  _IC1_ManualTriggerSet
-                  0x044514                  _IC1_TriggerStatusGet
-                  0x04451c                  _IC1_TriggerStatusClear
-                  0x044520                  _IC1_HasCaptureBufferOverflowed
-                  0x044528                  _IC1_IsCaptureBufferEmpty
-                  0x044532                  _main
-                  0x044574                  _TestFan
-                  0x0445a6                  _DetectedStalledTachometer
-                  0x0445b0                  _INTERRUPT_Initialize
-                  0x0445e2                  _UART1_Initialize
-                  0x0445f4                  _UART1_Read
-                  0x044602                  _UART1_Write
-                  0x044610                  _UART1_StatusGet
-                  0x044614                  ___delay32
+                  0x03fdb2                  _Test5VDC
+                  0x040078                  _TestPOST
+                  0x0401b4                  _TestBIST
+                  0x0402be                  _PrintMenu
+                  0x040672                  _TestInterface
+                  0x040c14                  _WriteLEDBoardEEPROM
+                  0x040d4e                  _ReadLEDBoardEEPROM
+                  0x041092                  _TestLEDBoardEEPROM
+                  0x041150                  _ReadLEDBoardSpecifiedCurrent
+                  0x0411ca                  _TestLEDBoardTemp
+                  0x0412d8                  _TestLEDCurrent
+                  0x041354                  _ReadLEDVoltage
+                  0x041362                  _WriteLEDCurrent
+                  0x0414c2                  _TestLEDCurrentOffset
+                  0x04159e                  _LEDBoardEEPROMPrintNotes
+                  0x041646                  _LEDBoardEEPROMSubmenu
+                  0x041740                  _LEDCurrentOn
+                  0x041744                  _MCAReadSerialNumber
+                  0x0417d4                  _MCAWriteSerialNumber
+                  0x041862                  _MCASetSerialNumber
+                  0x0418ba                  _MCAReadCompletedTherapies
+                  0x0418ec                  _MCAWriteCompletedTherapies
+                  0x04190c                  _MCAEnterCompletedTherapies
+                  0x04196c                  _MCAReadElapsedTherapyTime
+                  0x04199e                  _MCAWriteElapsedTherapyTime
+                  0x0419be                  _MCAIncrementWriteElapsedTherapyTime
+                  0x041a28                  _MCASetElapsedTherapyTime
+                  0x041a88                  _MCAReadMaxNumOfTherapies
+                  0x041abe                  _MCAWriteMaxNumOfTherapies
+                  0x041ade                  _MCAEnterMaxNumOfTherapies
+                  0x041b3e                  _MCAReadCalibration
+                  0x041b70                  _MCAWriteCalibration
+                  0x041b90                  _MCASetCalibration
+                  0x041bf0                  _MCAReadTimeStamp
+                  0x041c68                  _MCADisplayContents
+                  0x041d28                  _MCAWriteTimeStamp
+                  0x041d6e                  _MCASetTimeStamp
+                  0x041e4c                  _MCADataIntegrityCheck
+                  0x041f90                  _MCAMemoryRead
+                  0x041ff2                  _MCAMemoryWrite
+                  0x042068                  _MCAMemoryErase
+                  0x0420b6                  _MCALockSerial
+                  0x0420c6                  _MCAGetStatus
+                  0x042330                  _InitializeLCDDMA
+                  0x04235a                  _LCDWriteCommand
+                  0x04237a                  _LCDWriteData
+                  0x0424f2                  _InitializeLCD
+                  0x0425f0                  _LCDDisplayHome
+                  0x04261e                  _DisplayTestImage
+                  0x0426f6                  _DisplayImageAtRandomLocation
+                  0x042832                  _TurnBacklightOff
+                  0x042836                  _BlankOutDisplay
+                  0x0428a2                  _WriteImageToLCD
+                  0x04292a                  _TurnBacklightOn
+                  0x04292e                  _TestLCD
+                  0x042a58                  _LCDTest
+                  0x042a84                  _DisplayText
+                  0x042b68                  _GetChar
+                  0x042b7c                  _GetYesOrNo
+                  0x042bb2                  _GetZeroOneOrCancel
+                  0x042bec                  _GetCharWithinLimits
+                  0x042c06                  _ReadFloat
+                  0x042c46                  _ReadString
+                  0x042c96                  _ReadFloatOrCancel
+                  0x042d0c                  _WaitForValidFloat
+                  0x042d32                  _ReadUInt32OrCancel
+                  0x042d8a                  _WaitForValidUInt32WithLimits
+                  0x042dfe                  _WaitForValidUInt32
+                  0x042e24                  _ReadUInt32
+                  0x042e44                  _ReadUInt16OrCancel
+                  0x042eb4                  _WaitForValidUInt16WithLimits
+                  0x042f14                  _WaitForValidUInt16
+                  0x042f3a                  _ReadUInt16
+                  0x042f5a                  _DisableNonDMAInterrupts
+                  0x042f68                  _EnableNonDMAInterrupts
+                  0x042f76                  _crc8
+                  0x042f92                  _strnlen
+                  0x042fa6                  _InitializeHW_WatchdogData
+                  0x042faa                  _UpdateMouthpieceStatus
+                  0x042fea                  _TestHWWdog
+                  0x0432a2                  _SetLedRGB
+                  0x0432bc                  _WriteRGBLED
+                  0x0433aa                  _TestRGBLED
+                  0x043438                  _TestLights
+                  0x043544                  _SWIInit
+                  0x04354a                  _SWIStartAndStopCondition
+                  0x043568                  _SWIGetAck
+                  0x0435cc                  _SWIResetAndDiscoveryResponse
+                  0x04361a                  _SWISendBit
+                  0x0436be                  _SWISendData
+                  0x0436d4                  _SWISendAddress
+                  0x0436e4                  _SWIRecvBit
+                  0x043758                  _SWIReadData
+                  0x043784                  _SWISendAck
+                  0x04378a                  _SWISendNack
+                  0x0437c6                  _RTCC_Initialize
+                  0x043810                  _RTCC_TimeGet
+                  0x04386c                  _RTCC_TimeSet
+                  0x0438c8                  _RTCC_BCDTimeGet
+                  0x043906                  _RTCC_BCDTimeSet
+                  0x043942                  _RTCC_TimeReset
+                  0x043946                  _RTCC_TimestampAEventManualSet
+                  0x04394a                  _RTCC_TimestampADataGet
+                  0x04399c                  _RTCC_TimestampA_BCDDataGet
+                  0x0439d0                  _GetADCReadingCh8
+                  0x0439d6                  _GetADCReadingCh9
+                  0x0439dc                  _GetADCReadingCh10
+                  0x0439e2                  _GetADCReadingCh11
+                  0x0439e8                  _ClearADCCh11Offset
+                  0x0439ee                  _SetADCCh11Offset
+                  0x0439f8                  _GetADCReadingCh12
+                  0x0439fe                  _WriteDAC
+                  0x043bbe                  _PIN_MANAGER_Initialize
+                  0x043ccc                  _SPI1_Initialize
+                  0x043ce6                  _SPI1_Exchange
+                  0x043d04                  _SPI1_ExchangeBuffer
+                  0x043d9a                  _SPI1_Exchange32bit
+                  0x043db2                  _SPI1_Exchange32bitBuffer
+                  0x043db6                  _SPI1_TransferModeGet
+                  0x043dc6                  _SPI1_StatusGet
+                  0x043dca                  _SPI2_Initialize
+                  0x043de0                  _SPI2_Exchange
+                  0x043dfe                  _SPI2_ExchangeBuffer
+                  0x043e94                  _SPI2_Exchange32bit
+                  0x043eac                  _SPI2_Exchange32bitBuffer
+                  0x043eb0                  _SPI2_TransferModeGet
+                  0x043ec0                  _SPI2_StatusGet
+                  0x043eea                  _I2C1_Initialize
+                  0x043f0e                  _I2C1_ErrorCountGet
+                  0x043f12                  _I2C1_MasterTRBInsert
+                  0x043f52                  _I2C1_MasterReadTRBBuild
+                  0x043f5e                  _I2C1_MasterRead
+                  0x043f80                  _I2C1_MasterWriteTRBBuild
+                  0x043f88                  _I2C1_MasterWrite
+                  0x043faa                  _I2C1_MasterQueueIsEmpty
+                  0x043fb0                  _I2C1_MasterQueueIsFull
+                  0x043fb6                  _TimerDelay
+                  0x043fda                  _StartTimer
+                  0x043ff6                  _WaitForTimer
+                  0x044000                  _TimerDone
+                  0x04400e                  _ClearTimer
+                  0x044018                  _SetLedBlinkPattern
+                  0x044052                  _DisableLedBlinking
+                  0x044056                  _Timer2Handler
+                  0x044096                  _SPI3_Initialize
+                  0x0440ae                  _SPI3_Exchange
+                  0x0440c4                  _SPI3_ExchangeBuffer
+                  0x04414a                  _SPI3_Exchange8bit
+                  0x04415a                  _SPI3_Exchange8bitBuffer
+                  0x04415e                  _SPI3_TransferModeGet
+                  0x04416e                  _SPI3_StatusGet
+                  0x044172                  _StartGenericCountdownTimer
+                  0x044178                  _ClearGenericCountdownTimer
+                  0x04417c                  _GenericCountdownTimerElapsed
+                  0x044186                  _WaitForGenericCountdownTimer
+                  0x044194                  _StartOperationStateCountdown
+                  0x0441ba                  _PauseOperationStateCountdown
+                  0x0441c0                  _ResumeOperationStateCountdown
+                  0x0441c8                  _TimeToUpdateDisplay
+                  0x0441ee                  _TimeToPerformBIST
+                  0x0441f6                  _GetOperationStateTimer
+                  0x0441fa                  _OperationCountDownNewlyRestarted
+                  0x044206                  _ResetScreenSaverTimer
+                  0x04421e                  _StopScreenSaverTimer
+                  0x044222                  _OC1_Initialize
+                  0x04423c                  _OC1_Tasks
+                  0x044244                  _OC1_Start
+                  0x044254                  _OC1_Stop
+                  0x04425a                  _OC1_SingleCompareValueSet
+                  0x04425e                  _OC1_DualCompareValueSet
+                  0x044264                  _OC1_CentreAlignedPWMConfig
+                  0x04426a                  _OC1_EdgeAlignedPWMConfig
+                  0x044270                  _OC1_SecondaryValueSet
+                  0x044274                  _OC1_PrimaryValueSet
+                  0x044278                  _OC1_IsCompareCycleComplete
+                  0x044280                  _OC1_FaultStatusGet
+                  0x0442a8                  _OC1_FaultStatusClear
+                  0x0442c0                  _OC1_ManualTriggerSet
+                  0x0442c4                  _OC1_TriggerStatusGet
+                  0x0442cc                  _OC1_TriggerStatusClear
+                  0x0442d0                  _OC2_Initialize
+                  0x0442ea                  _OC2_Tasks
+                  0x0442f2                  _OC2_Start
+                  0x044302                  _OC2_Stop
+                  0x044308                  _OC2_SingleCompareValueSet
+                  0x04430c                  _OC2_DualCompareValueSet
+                  0x044312                  _OC2_CentreAlignedPWMConfig
+                  0x044318                  _OC2_EdgeAlignedPWMConfig
+                  0x04431e                  _OC2_SecondaryValueSet
+                  0x044322                  _OC2_PrimaryValueSet
+                  0x044326                  _OC2_IsCompareCycleComplete
+                  0x04432e                  _OC2_FaultStatusGet
+                  0x044356                  _OC2_FaultStatusClear
+                  0x04436e                  _OC2_ManualTriggerSet
+                  0x044372                  _OC2_TriggerStatusGet
+                  0x04437a                  _OC2_TriggerStatusClear
+                  0x04437e                  _OC3_Initialize
+                  0x044398                  _OC3_Tasks
+                  0x0443a0                  _OC3_Start
+                  0x0443b0                  _OC3_Stop
+                  0x0443b6                  _OC3_SingleCompareValueSet
+                  0x0443ba                  _OC3_DualCompareValueSet
+                  0x0443c0                  _OC3_CentreAlignedPWMConfig
+                  0x0443c6                  _OC3_EdgeAlignedPWMConfig
+                  0x0443cc                  _OC3_SecondaryValueSet
+                  0x0443d0                  _OC3_PrimaryValueSet
+                  0x0443d4                  _OC3_IsCompareCycleComplete
+                  0x0443dc                  _OC3_FaultStatusGet
+                  0x044404                  _OC3_FaultStatusClear
+                  0x04441c                  _OC3_ManualTriggerSet
+                  0x044420                  _OC3_TriggerStatusGet
+                  0x044428                  _OC3_TriggerStatusClear
+                  0x04442c                  _PushbuttonPressed
+                  0x044440                  _TestPushbutton
+                  0x0444c6                  _ScreenSaverInit
+                  0x0444d4                  _EnableScreenSaver
+                  0x0444e2                  _DisableScreenSaver
+                  0x0444ee                  _ActivateScreenSaver
+                  0x0444f4                  _ActivateBlankScreen
+                  0x0444fa                  _ScreenSaverIsActive
+                  0x0444fe                  _ScreenShouldBeBlank
+                  0x044502                  _ExecuteScreenSaverMode
+                  0x044538                  _TMR1_Initialize
+                  0x044548                  _TMR1_Tasks_16BitOperation
+                  0x04455a                  _TMR1_Period16BitSet
+                  0x044562                  _TMR1_Period16BitGet
+                  0x044566                  _TMR1_Counter16BitSet
+                  0x04456e                  _TMR1_Counter16BitGet
+                  0x044572                  _TMR1_Start
+                  0x04457a                  _TMR1_Stop
+                  0x04457e                  _TMR1_GetElapsedThenClear
+                  0x04458c                  _TMR1_SoftwareCounterGet
+                  0x044592                  _TMR1_SoftwareCounterClear
+                  0x044598                  _ADC1_Initialize
+                  0x0445c8                  _ADC1_Start
+                  0x0445cc                  _ADC1_Stop
+                  0x0445d0                  _ADC1_ConversionResultBufferGet
+                  0x0445e8                  _ADC1_ConversionResultGet
+                  0x0445ec                  _ADC1_IsConversionComplete
+                  0x0445f2                  _ADC1_ChannelSelect
+                  0x0445f6                  _TMR2_Initialize
+                  0x04460a                  _TMR2_Period16BitSet
+                  0x044612                  _TMR2_Period16BitGet
+                  0x044616                  _TMR2_Counter16BitSet
+                  0x04461e                  _TMR2_Counter16BitGet
+                  0x044628                  _TMR2_Start
+                  0x044632                  _TMR2_Stop
+                  0x044638                  _TMR2_GetElapsedThenClear
+                  0x044646                  _TMR2_SoftwareCounterGet
+                  0x04464c                  _TMR2_SoftwareCounterClear
+                  0x044652                  _IC1_Initialize
+                  0x044668                  _IC1_Start
+                  0x044678                  _IC1_Stop
+                  0x04467e                  _IC1_CaptureDataRead
+                  0x044682                  _IC1_ManualTriggerSet
+                  0x044686                  _IC1_TriggerStatusGet
+                  0x04468e                  _IC1_TriggerStatusClear
+                  0x044692                  _IC1_HasCaptureBufferOverflowed
+                  0x04469a                  _IC1_IsCaptureBufferEmpty
+                  0x0446a4                  _main
+                  0x0446e6                  _TestFan
+                  0x044718                  _DetectedStalledTachometer
+                  0x044722                  _INTERRUPT_Initialize
+                  0x044754                  _UART1_Initialize
+                  0x044766                  _UART1_Read
+                  0x044774                  _UART1_Write
+                  0x044782                  _UART1_StatusGet
+                  0x044786                  ___delay32
                   0x0abf00                  __FSEC.sec
 
 External Symbols in Program Memory (by name):
 
-                  0x044480                  _ADC1_ChannelSelect
-                  0x04445e                  _ADC1_ConversionResultBufferGet
-                  0x044476                  _ADC1_ConversionResultGet
-                  0x044426                  _ADC1_Initialize
-                  0x04447a                  _ADC1_IsConversionComplete
-                  0x044456                  _ADC1_Start
-                  0x04445a                  _ADC1_Stop
-                  0x044382                  _ActivateBlankScreen
-                  0x04437c                  _ActivateScreenSaver
-                  0x042740                  _BlankOutDisplay
-                  0x0438f2                  _ClearADCCh11Offset
-                  0x043f90                  _ClearGenericCountdownTimer
-                  0x043e26                  _ClearTimer
-                  0x0445a6                  _DetectedStalledTachometer
-                  0x043e6a                  _DisableLedBlinking
-                  0x042e64                  _DisableNonDMAInterrupts
-                  0x044370                  _DisableScreenSaver
-                  0x042600                  _DisplayImageAtRandomLocation
-                  0x042528                  _DisplayTestImage
-                  0x04298e                  _DisplayText
-                  0x007a7e                  _EEPROMDump
-                  0x0077e2                  _EEPROMIdentify
-                  0x007b72                  _EEPROMLockSecurity
-                  0x007842                  _EEPROMRead
-                  0x007720                  _EEPROMReadManufID
-                  0x0079b6                  _EEPROMReadSecurity
-                  0x0078aa                  _EEPROMWrite
-                  0x007912                  _EEPROMWritePage
-                  0x007a24                  _EEPROMWriteSecurity
-                  0x042e72                  _EnableNonDMAInterrupts
-                  0x044362                  _EnableScreenSaver
+                  0x0445f2                  _ADC1_ChannelSelect
+                  0x0445d0                  _ADC1_ConversionResultBufferGet
+                  0x0445e8                  _ADC1_ConversionResultGet
+                  0x044598                  _ADC1_Initialize
+                  0x0445ec                  _ADC1_IsConversionComplete
+                  0x0445c8                  _ADC1_Start
+                  0x0445cc                  _ADC1_Stop
+                  0x0444f4                  _ActivateBlankScreen
+                  0x0444ee                  _ActivateScreenSaver
+                  0x042836                  _BlankOutDisplay
+                  0x0439e8                  _ClearADCCh11Offset
+                  0x044178                  _ClearGenericCountdownTimer
+                  0x04400e                  _ClearTimer
+                  0x044718                  _DetectedStalledTachometer
+                  0x044052                  _DisableLedBlinking
+                  0x042f5a                  _DisableNonDMAInterrupts
+                  0x0444e2                  _DisableScreenSaver
+                  0x0426f6                  _DisplayImageAtRandomLocation
+                  0x04261e                  _DisplayTestImage
+                  0x042a84                  _DisplayText
+                  0x007afc                  _EEPROMDump
+                  0x007860                  _EEPROMIdentify
+                  0x007bf0                  _EEPROMLockSecurity
+                  0x0078c0                  _EEPROMRead
+                  0x00779e                  _EEPROMReadManufID
+                  0x007a34                  _EEPROMReadSecurity
+                  0x007928                  _EEPROMWrite
+                  0x007990                  _EEPROMWritePage
+                  0x007aa2                  _EEPROMWriteSecurity
+                  0x042f68                  _EnableNonDMAInterrupts
+                  0x0444d4                  _EnableScreenSaver
                   0x00485c                  _EraseDataFromFlash
                   0x0046e2                  _EraseDataFromFlashInPages
                   0x004108                  _EraseFlashPages
-                  0x044390                  _ExecuteScreenSaverMode
+                  0x044502                  _ExecuteScreenSaverMode
                   0x00c2cc                  _FLASH_ADDR_OF_SETTINGS
-                  0x0409fc                  _GenerateCountdownDisplay
-                  0x043f94                  _GenericCountdownTimerElapsed
-                  0x0438e6                  _GetADCReadingCh10
-                  0x0438ec                  _GetADCReadingCh11
-                  0x043902                  _GetADCReadingCh12
-                  0x0438da                  _GetADCReadingCh8
-                  0x0438e0                  _GetADCReadingCh9
-                  0x042a72                  _GetChar
-                  0x042af6                  _GetCharWithinLimits
-                  0x03fbd8                  _GetCurrentlyUsedLEDCurrent
-                  0x04400e                  _GetOperationStateTimer
-                  0x042a86                  _GetYesOrNo
-                  0x042abc                  _GetZeroOneOrCancel
-                  0x007f56                  _I2C1_ErrorCountGet
-                  0x007f32                  _I2C1_Initialize
-                  0x007ff2                  _I2C1_MasterQueueIsEmpty
-                  0x007ff8                  _I2C1_MasterQueueIsFull
-                  0x007fa6                  _I2C1_MasterRead
-                  0x007f9a                  _I2C1_MasterReadTRBBuild
-                  0x007f5a                  _I2C1_MasterTRBInsert
-                  0x007fd0                  _I2C1_MasterWrite
-                  0x007fc8                  _I2C1_MasterWriteTRBBuild
-                  0x04450c                  _IC1_CaptureDataRead
-                  0x044520                  _IC1_HasCaptureBufferOverflowed
-                  0x0444e0                  _IC1_Initialize
-                  0x044528                  _IC1_IsCaptureBufferEmpty
-                  0x044510                  _IC1_ManualTriggerSet
-                  0x0444f6                  _IC1_Start
-                  0x044506                  _IC1_Stop
-                  0x04451c                  _IC1_TriggerStatusClear
-                  0x044514                  _IC1_TriggerStatusGet
-                  0x0445b0                  _INTERRUPT_Initialize
+                  0x0068da                  _GenerateCountdownDisplay
+                  0x04417c                  _GenericCountdownTimerElapsed
+                  0x0439dc                  _GetADCReadingCh10
+                  0x0439e2                  _GetADCReadingCh11
+                  0x0439f8                  _GetADCReadingCh12
+                  0x0439d0                  _GetADCReadingCh8
+                  0x0439d6                  _GetADCReadingCh9
+                  0x042b68                  _GetChar
+                  0x042bec                  _GetCharWithinLimits
+                  0x005982                  _GetCurrentlyUsedLEDCurrent
+                  0x0441f6                  _GetOperationStateTimer
+                  0x042b7c                  _GetYesOrNo
+                  0x042bb2                  _GetZeroOneOrCancel
+                  0x043f0e                  _I2C1_ErrorCountGet
+                  0x043eea                  _I2C1_Initialize
+                  0x043faa                  _I2C1_MasterQueueIsEmpty
+                  0x043fb0                  _I2C1_MasterQueueIsFull
+                  0x043f5e                  _I2C1_MasterRead
+                  0x043f52                  _I2C1_MasterReadTRBBuild
+                  0x043f12                  _I2C1_MasterTRBInsert
+                  0x043f88                  _I2C1_MasterWrite
+                  0x043f80                  _I2C1_MasterWriteTRBBuild
+                  0x04467e                  _IC1_CaptureDataRead
+                  0x044692                  _IC1_HasCaptureBufferOverflowed
+                  0x044652                  _IC1_Initialize
+                  0x04469a                  _IC1_IsCaptureBufferEmpty
+                  0x044682                  _IC1_ManualTriggerSet
+                  0x044668                  _IC1_Start
+                  0x044678                  _IC1_Stop
+                  0x04468e                  _IC1_TriggerStatusClear
+                  0x044686                  _IC1_TriggerStatusGet
+                  0x044722                  _INTERRUPT_Initialize
                   0x00f424                  _Image_Arial20_Vert
-                  0x042eb0                  _InitializeHW_WatchdogData
-                  0x0423fc                  _InitializeLCD
-                  0x04223a                  _InitializeLCDDMA
-                  0x040a68                  _InitializeUserInterface
-                  0x0424fa                  _LCDDisplayHome
-                  0x042962                  _LCDTest
-                  0x042264                  _LCDWriteCommand
-                  0x042284                  _LCDWriteData
-                  0x0414da                  _LEDBoardEEPROMPrintNotes
-                  0x041582                  _LEDBoardEEPROMSubmenu
-                  0x04167c                  _LEDCurrentOn
-                  0x041d88                  _MCADataIntegrityCheck
-                  0x041ba4                  _MCADisplayContents
-                  0x041848                  _MCAEnterCompletedTherapies
-                  0x041a1a                  _MCAEnterMaxNumOfTherapies
-                  0x042002                  _MCAGetStatus
-                  0x0418fa                  _MCAIncrementWriteElapsedTherapyTime
-                  0x041ff2                  _MCALockSerial
-                  0x041fa4                  _MCAMemoryErase
-                  0x041ecc                  _MCAMemoryRead
-                  0x041f2e                  _MCAMemoryWrite
-                  0x041a7a                  _MCAReadCalibration
-                  0x0417f6                  _MCAReadCompletedTherapies
-                  0x0418a8                  _MCAReadElapsedTherapyTime
-                  0x0419c4                  _MCAReadMaxNumOfTherapies
-                  0x041680                  _MCAReadSerialNumber
-                  0x041b2c                  _MCAReadTimeStamp
-                  0x041acc                  _MCASetCalibration
-                  0x041964                  _MCASetElapsedTherapyTime
-                  0x04179e                  _MCASetSerialNumber
-                  0x041caa                  _MCASetTimeStamp
-                  0x041aac                  _MCAWriteCalibration
-                  0x041828                  _MCAWriteCompletedTherapies
-                  0x0418da                  _MCAWriteElapsedTherapyTime
-                  0x0419fa                  _MCAWriteMaxNumOfTherapies
-                  0x041710                  _MCAWriteSerialNumber
-                  0x041c64                  _MCAWriteTimeStamp
-                  0x04407c                  _OC1_CentreAlignedPWMConfig
-                  0x044076                  _OC1_DualCompareValueSet
-                  0x044082                  _OC1_EdgeAlignedPWMConfig
-                  0x0440c0                  _OC1_FaultStatusClear
-                  0x044098                  _OC1_FaultStatusGet
-                  0x04403a                  _OC1_Initialize
-                  0x044090                  _OC1_IsCompareCycleComplete
-                  0x0440d8                  _OC1_ManualTriggerSet
-                  0x04408c                  _OC1_PrimaryValueSet
-                  0x044088                  _OC1_SecondaryValueSet
-                  0x044072                  _OC1_SingleCompareValueSet
-                  0x04405c                  _OC1_Start
-                  0x04406c                  _OC1_Stop
-                  0x044054                  _OC1_Tasks
-                  0x0440e4                  _OC1_TriggerStatusClear
-                  0x0440dc                  _OC1_TriggerStatusGet
-                  0x04412a                  _OC2_CentreAlignedPWMConfig
-                  0x044124                  _OC2_DualCompareValueSet
-                  0x044130                  _OC2_EdgeAlignedPWMConfig
-                  0x04416e                  _OC2_FaultStatusClear
-                  0x044146                  _OC2_FaultStatusGet
-                  0x0440e8                  _OC2_Initialize
-                  0x04413e                  _OC2_IsCompareCycleComplete
-                  0x044186                  _OC2_ManualTriggerSet
-                  0x04413a                  _OC2_PrimaryValueSet
-                  0x044136                  _OC2_SecondaryValueSet
-                  0x044120                  _OC2_SingleCompareValueSet
-                  0x04410a                  _OC2_Start
-                  0x04411a                  _OC2_Stop
-                  0x044102                  _OC2_Tasks
-                  0x044192                  _OC2_TriggerStatusClear
-                  0x04418a                  _OC2_TriggerStatusGet
-                  0x0441d8                  _OC3_CentreAlignedPWMConfig
-                  0x0441d2                  _OC3_DualCompareValueSet
-                  0x0441de                  _OC3_EdgeAlignedPWMConfig
-                  0x04421c                  _OC3_FaultStatusClear
-                  0x0441f4                  _OC3_FaultStatusGet
-                  0x044196                  _OC3_Initialize
-                  0x0441ec                  _OC3_IsCompareCycleComplete
-                  0x044234                  _OC3_ManualTriggerSet
-                  0x0441e8                  _OC3_PrimaryValueSet
-                  0x0441e4                  _OC3_SecondaryValueSet
-                  0x0441ce                  _OC3_SingleCompareValueSet
-                  0x0441b8                  _OC3_Start
-                  0x0441c8                  _OC3_Stop
-                  0x0441b0                  _OC3_Tasks
-                  0x044240                  _OC3_TriggerStatusClear
-                  0x044238                  _OC3_TriggerStatusGet
-                  0x0442de                  _OSCILLATOR_Initialize
-                  0x044012                  _OperationCountDownNewlyRestarted
-                  0x043ac8                  _PIN_MANAGER_Initialize
-                  0x043fd2                  _PauseOperationStateCountdown
+                  0x042fa6                  _InitializeHW_WatchdogData
+                  0x0424f2                  _InitializeLCD
+                  0x042330                  _InitializeLCDDMA
+                  0x006946                  _InitializeUserInterface
+                  0x0425f0                  _LCDDisplayHome
+                  0x042a58                  _LCDTest
+                  0x04235a                  _LCDWriteCommand
+                  0x04237a                  _LCDWriteData
+                  0x04159e                  _LEDBoardEEPROMPrintNotes
+                  0x041646                  _LEDBoardEEPROMSubmenu
+                  0x041740                  _LEDCurrentOn
+                  0x041e4c                  _MCADataIntegrityCheck
+                  0x041c68                  _MCADisplayContents
+                  0x04190c                  _MCAEnterCompletedTherapies
+                  0x041ade                  _MCAEnterMaxNumOfTherapies
+                  0x0420c6                  _MCAGetStatus
+                  0x0419be                  _MCAIncrementWriteElapsedTherapyTime
+                  0x0420b6                  _MCALockSerial
+                  0x042068                  _MCAMemoryErase
+                  0x041f90                  _MCAMemoryRead
+                  0x041ff2                  _MCAMemoryWrite
+                  0x041b3e                  _MCAReadCalibration
+                  0x0418ba                  _MCAReadCompletedTherapies
+                  0x04196c                  _MCAReadElapsedTherapyTime
+                  0x041a88                  _MCAReadMaxNumOfTherapies
+                  0x041744                  _MCAReadSerialNumber
+                  0x041bf0                  _MCAReadTimeStamp
+                  0x041b90                  _MCASetCalibration
+                  0x041a28                  _MCASetElapsedTherapyTime
+                  0x041862                  _MCASetSerialNumber
+                  0x041d6e                  _MCASetTimeStamp
+                  0x041b70                  _MCAWriteCalibration
+                  0x0418ec                  _MCAWriteCompletedTherapies
+                  0x04199e                  _MCAWriteElapsedTherapyTime
+                  0x041abe                  _MCAWriteMaxNumOfTherapies
+                  0x0417d4                  _MCAWriteSerialNumber
+                  0x041d28                  _MCAWriteTimeStamp
+                  0x044264                  _OC1_CentreAlignedPWMConfig
+                  0x04425e                  _OC1_DualCompareValueSet
+                  0x04426a                  _OC1_EdgeAlignedPWMConfig
+                  0x0442a8                  _OC1_FaultStatusClear
+                  0x044280                  _OC1_FaultStatusGet
+                  0x044222                  _OC1_Initialize
+                  0x044278                  _OC1_IsCompareCycleComplete
+                  0x0442c0                  _OC1_ManualTriggerSet
+                  0x044274                  _OC1_PrimaryValueSet
+                  0x044270                  _OC1_SecondaryValueSet
+                  0x04425a                  _OC1_SingleCompareValueSet
+                  0x044244                  _OC1_Start
+                  0x044254                  _OC1_Stop
+                  0x04423c                  _OC1_Tasks
+                  0x0442cc                  _OC1_TriggerStatusClear
+                  0x0442c4                  _OC1_TriggerStatusGet
+                  0x044312                  _OC2_CentreAlignedPWMConfig
+                  0x04430c                  _OC2_DualCompareValueSet
+                  0x044318                  _OC2_EdgeAlignedPWMConfig
+                  0x044356                  _OC2_FaultStatusClear
+                  0x04432e                  _OC2_FaultStatusGet
+                  0x0442d0                  _OC2_Initialize
+                  0x044326                  _OC2_IsCompareCycleComplete
+                  0x04436e                  _OC2_ManualTriggerSet
+                  0x044322                  _OC2_PrimaryValueSet
+                  0x04431e                  _OC2_SecondaryValueSet
+                  0x044308                  _OC2_SingleCompareValueSet
+                  0x0442f2                  _OC2_Start
+                  0x044302                  _OC2_Stop
+                  0x0442ea                  _OC2_Tasks
+                  0x04437a                  _OC2_TriggerStatusClear
+                  0x044372                  _OC2_TriggerStatusGet
+                  0x0443c0                  _OC3_CentreAlignedPWMConfig
+                  0x0443ba                  _OC3_DualCompareValueSet
+                  0x0443c6                  _OC3_EdgeAlignedPWMConfig
+                  0x044404                  _OC3_FaultStatusClear
+                  0x0443dc                  _OC3_FaultStatusGet
+                  0x04437e                  _OC3_Initialize
+                  0x0443d4                  _OC3_IsCompareCycleComplete
+                  0x04441c                  _OC3_ManualTriggerSet
+                  0x0443d0                  _OC3_PrimaryValueSet
+                  0x0443cc                  _OC3_SecondaryValueSet
+                  0x0443b6                  _OC3_SingleCompareValueSet
+                  0x0443a0                  _OC3_Start
+                  0x0443b0                  _OC3_Stop
+                  0x044398                  _OC3_Tasks
+                  0x044428                  _OC3_TriggerStatusClear
+                  0x044420                  _OC3_TriggerStatusGet
+                  0x007f8a                  _OSCILLATOR_Initialize
+                  0x0441fa                  _OperationCountDownNewlyRestarted
+                  0x043bbe                  _PIN_MANAGER_Initialize
+                  0x0441ba                  _PauseOperationStateCountdown
                   0x003fd4                  _PrintLEDBoardEEPROMDefaultsFromFlash
-                  0x006064                  _PrintMenu
-                  0x044244                  _PushbuttonPressed
-                  0x006c56                  _RTCCCalcLCUTimestamp
-                  0x007014                  _RTCCClearPWRFAIL
-                  0x0076ce                  _RTCCDisplayDateTime
-                  0x0070e6                  _RTCCDisplayPowerFailStatus
-                  0x0071d4                  _RTCCDumpRegisters
-                  0x006b32                  _RTCCGetDateTimeData
-                  0x006f86                  _RTCCGetPWRFAIL
-                  0x00762a                  _RTCCGetSRAM
-                  0x0069be                  _RTCCGetStartStatus
-                  0x006de0                  _RTCCGetTimestamp
-                  0x006df8                  _RTCCGetVBATEN
-                  0x0069ba                  _RTCCIdentify
-                  0x006f6e                  _RTCCInit
-                  0x0074de                  _RTCCInitSRAM
-                  0x006c16                  _RTCCPrint
-                  0x007388                  _RTCCReadRegister
-                  0x00755a                  _RTCCSetDate
-                  0x006bbc                  _RTCCSetDateTimeData
-                  0x006a4a                  _RTCCSetStartStatus
-                  0x007100                  _RTCCSetTime
-                  0x006e86                  _RTCCSetVBATEN
-                  0x007448                  _RTCCWriteRegister
-                  0x0437d2                  _RTCC_BCDTimeGet
-                  0x043810                  _RTCC_BCDTimeSet
-                  0x0436d0                  _RTCC_Initialize
-                  0x04371a                  _RTCC_TimeGet
-                  0x04384c                  _RTCC_TimeReset
-                  0x043776                  _RTCC_TimeSet
-                  0x043854                  _RTCC_TimestampADataGet
-                  0x043850                  _RTCC_TimestampAEventManualSet
-                  0x0438a6                  _RTCC_TimestampA_BCDDataGet
+                  0x0402be                  _PrintMenu
+                  0x04442c                  _PushbuttonPressed
+                  0x006cd4                  _RTCCCalcLCUTimestamp
+                  0x007092                  _RTCCClearPWRFAIL
+                  0x00774c                  _RTCCDisplayDateTime
+                  0x007164                  _RTCCDisplayPowerFailStatus
+                  0x007252                  _RTCCDumpRegisters
+                  0x006bb0                  _RTCCGetDateTimeData
+                  0x007004                  _RTCCGetPWRFAIL
+                  0x0076a8                  _RTCCGetSRAM
+                  0x006a3c                  _RTCCGetStartStatus
+                  0x006e5e                  _RTCCGetTimestamp
+                  0x006e76                  _RTCCGetVBATEN
+                  0x006a38                  _RTCCIdentify
+                  0x006fec                  _RTCCInit
+                  0x00755c                  _RTCCInitSRAM
+                  0x006c94                  _RTCCPrint
+                  0x007406                  _RTCCReadRegister
+                  0x0075d8                  _RTCCSetDate
+                  0x006c3a                  _RTCCSetDateTimeData
+                  0x006ac8                  _RTCCSetStartStatus
+                  0x00717e                  _RTCCSetTime
+                  0x006f04                  _RTCCSetVBATEN
+                  0x0074c6                  _RTCCWriteRegister
+                  0x0438c8                  _RTCC_BCDTimeGet
+                  0x043906                  _RTCC_BCDTimeSet
+                  0x0437c6                  _RTCC_Initialize
+                  0x043810                  _RTCC_TimeGet
+                  0x043942                  _RTCC_TimeReset
+                  0x04386c                  _RTCC_TimeSet
+                  0x04394a                  _RTCC_TimestampADataGet
+                  0x043946                  _RTCC_TimestampAEventManualSet
+                  0x04399c                  _RTCC_TimestampA_BCDDataGet
                   0x00472e                  _ReadDataFromFlash
                   0x003b7e                  _ReadFlash
                   0x005104                  _ReadFlashDMA
                   0x003748                  _ReadFlashStatus
                   0x003c48                  _ReadFlashWordsSwapped
-                  0x042b10                  _ReadFloat
-                  0x042ba0                  _ReadFloatOrCancel
-                  0x040c8a                  _ReadLEDBoardEEPROM
+                  0x042c06                  _ReadFloat
+                  0x042c96                  _ReadFloatOrCancel
+                  0x040d4e                  _ReadLEDBoardEEPROM
                   0x003c82                  _ReadLEDBoardEEPROMDefaultsFromFlash
-                  0x04108c                  _ReadLEDBoardSpecifiedCurrent
-                  0x041290                  _ReadLEDVoltage
-                  0x042b50                  _ReadString
-                  0x03fbdc                  _ReadUISetting
-                  0x042e44                  _ReadUInt16
-                  0x042d4e                  _ReadUInt16OrCancel
-                  0x042d2e                  _ReadUInt32
-                  0x042c3c                  _ReadUInt32OrCancel
-                  0x04401e                  _ResetScreenSaverTimer
-                  0x043fd8                  _ResumeOperationStateCountdown
-                  0x043bf0                  _SPI1_Exchange
-                  0x043ca4                  _SPI1_Exchange32bit
-                  0x043cbc                  _SPI1_Exchange32bitBuffer
-                  0x043c0e                  _SPI1_ExchangeBuffer
-                  0x043bd6                  _SPI1_Initialize
-                  0x043cd0                  _SPI1_StatusGet
-                  0x043cc0                  _SPI1_TransferModeGet
-                  0x043cea                  _SPI2_Exchange
-                  0x043d9e                  _SPI2_Exchange32bit
-                  0x043db6                  _SPI2_Exchange32bitBuffer
-                  0x043d08                  _SPI2_ExchangeBuffer
-                  0x043cd4                  _SPI2_Initialize
-                  0x043dca                  _SPI2_StatusGet
-                  0x043dba                  _SPI2_TransferModeGet
-                  0x043ec6                  _SPI3_Exchange
-                  0x043f62                  _SPI3_Exchange8bit
-                  0x043f72                  _SPI3_Exchange8bitBuffer
-                  0x043edc                  _SPI3_ExchangeBuffer
-                  0x043eae                  _SPI3_Initialize
-                  0x043f86                  _SPI3_StatusGet
-                  0x043f76                  _SPI3_TransferModeGet
-                  0x043472                  _SWIGetAck
-                  0x04344e                  _SWIInit
-                  0x043662                  _SWIReadData
-                  0x0435ee                  _SWIRecvBit
-                  0x0434d6                  _SWIResetAndDiscoveryResponse
-                  0x04368e                  _SWISendAck
-                  0x0435de                  _SWISendAddress
-                  0x043524                  _SWISendBit
-                  0x0435c8                  _SWISendData
-                  0x043694                  _SWISendNack
-                  0x043454                  _SWIStartAndStopCondition
-                  0x044314                  _SYSTEM_Initialize
-                  0x044354                  _ScreenSaverInit
-                  0x044388                  _ScreenSaverIsActive
-                  0x04438c                  _ScreenShouldBeBlank
-                  0x0438f8                  _SetADCCh11Offset
-                  0x043e30                  _SetLedBlinkPattern
-                  0x0431ac                  _SetLedRGB
-                  0x043f8a                  _StartGenericCountdownTimer
-                  0x043fac                  _StartOperationStateCountdown
-                  0x043df2                  _StartTimer
-                  0x044036                  _StopScreenSaverTimer
+                  0x041150                  _ReadLEDBoardSpecifiedCurrent
+                  0x041354                  _ReadLEDVoltage
+                  0x042c46                  _ReadString
+                  0x005986                  _ReadUISetting
+                  0x042f3a                  _ReadUInt16
+                  0x042e44                  _ReadUInt16OrCancel
+                  0x042e24                  _ReadUInt32
+                  0x042d32                  _ReadUInt32OrCancel
+                  0x044206                  _ResetScreenSaverTimer
+                  0x0441c0                  _ResumeOperationStateCountdown
+                  0x043ce6                  _SPI1_Exchange
+                  0x043d9a                  _SPI1_Exchange32bit
+                  0x043db2                  _SPI1_Exchange32bitBuffer
+                  0x043d04                  _SPI1_ExchangeBuffer
+                  0x043ccc                  _SPI1_Initialize
+                  0x043dc6                  _SPI1_StatusGet
+                  0x043db6                  _SPI1_TransferModeGet
+                  0x043de0                  _SPI2_Exchange
+                  0x043e94                  _SPI2_Exchange32bit
+                  0x043eac                  _SPI2_Exchange32bitBuffer
+                  0x043dfe                  _SPI2_ExchangeBuffer
+                  0x043dca                  _SPI2_Initialize
+                  0x043ec0                  _SPI2_StatusGet
+                  0x043eb0                  _SPI2_TransferModeGet
+                  0x0440ae                  _SPI3_Exchange
+                  0x04414a                  _SPI3_Exchange8bit
+                  0x04415a                  _SPI3_Exchange8bitBuffer
+                  0x0440c4                  _SPI3_ExchangeBuffer
+                  0x044096                  _SPI3_Initialize
+                  0x04416e                  _SPI3_StatusGet
+                  0x04415e                  _SPI3_TransferModeGet
+                  0x043568                  _SWIGetAck
+                  0x043544                  _SWIInit
+                  0x043758                  _SWIReadData
+                  0x0436e4                  _SWIRecvBit
+                  0x0435cc                  _SWIResetAndDiscoveryResponse
+                  0x043784                  _SWISendAck
+                  0x0436d4                  _SWISendAddress
+                  0x04361a                  _SWISendBit
+                  0x0436be                  _SWISendData
+                  0x04378a                  _SWISendNack
+                  0x04354a                  _SWIStartAndStopCondition
+                  0x007fc0                  _SYSTEM_Initialize
+                  0x0444c6                  _ScreenSaverInit
+                  0x0444fa                  _ScreenSaverIsActive
+                  0x0444fe                  _ScreenShouldBeBlank
+                  0x0439ee                  _SetADCCh11Offset
+                  0x044018                  _SetLedBlinkPattern
+                  0x0432a2                  _SetLedRGB
+                  0x044172                  _StartGenericCountdownTimer
+                  0x044194                  _StartOperationStateCountdown
+                  0x043fda                  _StartTimer
+                  0x04421e                  _StopScreenSaverTimer
                   0x00448a                  _StoreLEDBoardDefaultCurrentToFlash
                   0x004534                  _StoreLEDBoardEEPROMDefaultsToFlash
-                  0x0443fc                  _TMR1_Counter16BitGet
-                  0x0443f4                  _TMR1_Counter16BitSet
-                  0x04440c                  _TMR1_GetElapsedThenClear
-                  0x0443c6                  _TMR1_Initialize
-                  0x0443f0                  _TMR1_Period16BitGet
-                  0x0443e8                  _TMR1_Period16BitSet
-                  0x044420                  _TMR1_SoftwareCounterClear
-                  0x04441a                  _TMR1_SoftwareCounterGet
-                  0x044400                  _TMR1_Start
-                  0x044408                  _TMR1_Stop
-                  0x0443d6                  _TMR1_Tasks_16BitOperation
-                  0x0444ac                  _TMR2_Counter16BitGet
-                  0x0444a4                  _TMR2_Counter16BitSet
-                  0x0444c6                  _TMR2_GetElapsedThenClear
-                  0x044484                  _TMR2_Initialize
-                  0x0444a0                  _TMR2_Period16BitGet
-                  0x044498                  _TMR2_Period16BitSet
-                  0x0444da                  _TMR2_SoftwareCounterClear
-                  0x0444d4                  _TMR2_SoftwareCounterGet
-                  0x0444b6                  _TMR2_Start
-                  0x0444c0                  _TMR2_Stop
-                  0x005b58                  _Test5VDC
-                  0x005f5a                  _TestBIST
-                  0x044574                  _TestFan
+                  0x04456e                  _TMR1_Counter16BitGet
+                  0x044566                  _TMR1_Counter16BitSet
+                  0x04457e                  _TMR1_GetElapsedThenClear
+                  0x044538                  _TMR1_Initialize
+                  0x044562                  _TMR1_Period16BitGet
+                  0x04455a                  _TMR1_Period16BitSet
+                  0x044592                  _TMR1_SoftwareCounterClear
+                  0x04458c                  _TMR1_SoftwareCounterGet
+                  0x044572                  _TMR1_Start
+                  0x04457a                  _TMR1_Stop
+                  0x044548                  _TMR1_Tasks_16BitOperation
+                  0x04461e                  _TMR2_Counter16BitGet
+                  0x044616                  _TMR2_Counter16BitSet
+                  0x044638                  _TMR2_GetElapsedThenClear
+                  0x0445f6                  _TMR2_Initialize
+                  0x044612                  _TMR2_Period16BitGet
+                  0x04460a                  _TMR2_Period16BitSet
+                  0x04464c                  _TMR2_SoftwareCounterClear
+                  0x044646                  _TMR2_SoftwareCounterGet
+                  0x044628                  _TMR2_Start
+                  0x044632                  _TMR2_Stop
+                  0x03fdb2                  _Test5VDC
+                  0x0401b4                  _TestBIST
+                  0x0446e6                  _TestFan
                   0x0036f8                  _TestFlash
-                  0x042ef4                  _TestHWWdog
-                  0x006418                  _TestInterface
-                  0x042838                  _TestLCD
-                  0x040fce                  _TestLEDBoardEEPROM
-                  0x041106                  _TestLEDBoardTemp
-                  0x041214                  _TestLEDCurrent
-                  0x0413fe                  _TestLEDCurrentOffset
-                  0x043342                  _TestLights
-                  0x005e1e                  _TestPOST
-                  0x044258                  _TestPushbutton
-                  0x0432b4                  _TestRGBLED
-                  0x044006                  _TimeToPerformBIST
-                  0x043fe0                  _TimeToUpdateDisplay
-                  0x043e6e                  _Timer2Handler
-                  0x043dce                  _TimerDelay
-                  0x043e18                  _TimerDone
-                  0x04273c                  _TurnBacklightOff
-                  0x042834                  _TurnBacklightOn
-                  0x0445e2                  _UART1_Initialize
-                  0x0445f4                  _UART1_Read
-                  0x044610                  _UART1_StatusGet
-                  0x044602                  _UART1_Write
-                  0x042eb4                  _UpdateMouthpieceStatus
-                  0x040a9e                  _UpdateUIStateMachine
-                  0x03f9e2                  _UserInterfacePrintNotes
-                  0x03fb1c                  _UserInterfaceSubmenu
-                  0x043f9e                  _WaitForGenericCountdownTimer
-                  0x043e0e                  _WaitForTimer
-                  0x042c16                  _WaitForValidFloat
-                  0x042e1e                  _WaitForValidUInt16
-                  0x042dbe                  _WaitForValidUInt16WithLimits
-                  0x042d08                  _WaitForValidUInt32
-                  0x042c94                  _WaitForValidUInt32WithLimits
-                  0x043908                  _WriteDAC
+                  0x042fea                  _TestHWWdog
+                  0x040672                  _TestInterface
+                  0x04292e                  _TestLCD
+                  0x041092                  _TestLEDBoardEEPROM
+                  0x0411ca                  _TestLEDBoardTemp
+                  0x0412d8                  _TestLEDCurrent
+                  0x0414c2                  _TestLEDCurrentOffset
+                  0x043438                  _TestLights
+                  0x040078                  _TestPOST
+                  0x044440                  _TestPushbutton
+                  0x0433aa                  _TestRGBLED
+                  0x0441ee                  _TimeToPerformBIST
+                  0x0441c8                  _TimeToUpdateDisplay
+                  0x044056                  _Timer2Handler
+                  0x043fb6                  _TimerDelay
+                  0x044000                  _TimerDone
+                  0x042832                  _TurnBacklightOff
+                  0x04292a                  _TurnBacklightOn
+                  0x044754                  _UART1_Initialize
+                  0x044766                  _UART1_Read
+                  0x044782                  _UART1_StatusGet
+                  0x044774                  _UART1_Write
+                  0x042faa                  _UpdateMouthpieceStatus
+                  0x00697c                  _UpdateUIStateMachine
+                  0x00578c                  _UserInterfacePrintNotes
+                  0x0058c6                  _UserInterfaceSubmenu
+                  0x044186                  _WaitForGenericCountdownTimer
+                  0x043ff6                  _WaitForTimer
+                  0x042d0c                  _WaitForValidFloat
+                  0x042f14                  _WaitForValidUInt16
+                  0x042eb4                  _WaitForValidUInt16WithLimits
+                  0x042dfe                  _WaitForValidUInt32
+                  0x042d8a                  _WaitForValidUInt32WithLimits
+                  0x0439fe                  _WriteDAC
                   0x004790                  _WriteDataToFlash
                   0x003c92                  _WriteFlash
                   0x0048ac                  _WriteImageToFlash
-                  0x0427ac                  _WriteImageToLCD
-                  0x040b50                  _WriteLEDBoardEEPROM
-                  0x04129e                  _WriteLEDCurrent
-                  0x0431c6                  _WriteRGBLED
+                  0x0428a2                  _WriteImageToLCD
+                  0x040c14                  _WriteLEDBoardEEPROM
+                  0x041362                  _WriteLEDCurrent
+                  0x0432bc                  _WriteRGBLED
                   0x000436                  __ADC1Interrupt
                   0x00021c                  __AddressError
                   0x000682                  __DefaultInterrupt
@@ -1186,7 +1186,7 @@ External Symbols in Program Memory (by name):
                   0x0003ec                  __T2Interrupt
                   0x0030e0                  ___adddf3
                   0x0006ee                  ___addsf3
-                  0x044614                  ___delay32
+                  0x044786                  ___delay32
                   0x0031f0                  ___divdf3
                   0x0007ac                  ___divsf3
                   0x0031dc                  ___eqdf2
@@ -1263,7 +1263,7 @@ External Symbols in Program Memory (by name):
                   0x00134e                  __vfprintf_s
                   0x000e4a                  _atof
                   0x0007a8                  _cosf
-                  0x042e80                  _crc8
+                  0x042f76                  _crc8
                   0x000be2                  _fmodf
                   0x001132                  _fputs
                   0x0033e0                  _frexp
@@ -1271,7 +1271,7 @@ External Symbols in Program Memory (by name):
                   0x0033e0                  _frexpl
                   0x000686                  _isalpha
                   0x00069a                  _isspace
-                  0x044532                  _main
+                  0x0446a4                  _main
                   0x00110e                  _memcpy
                   0x00f3c2                  _period
                   0x001124                  _printf
@@ -1286,7 +1286,7 @@ External Symbols in Program Memory (by name):
                   0x000ede                  _strcpy
                   0x00116c                  _strlen
                   0x001186                  _strncmp
-                  0x042e9c                  _strnlen
+                  0x042f92                  _strnlen
                   0x000e48                  _strtod
                   0x000c84                  _strtof
                   0x000ff0                  _strtol
@@ -1700,7 +1700,7 @@ __FDEVOPT1
 .comment
  *(.comment)
 
-.debug_info       0x000000      0x195bd
+.debug_info       0x000000      0x1963d
  *(.debug_info)
  .debug_info      0x000000        0x953 build/default/debug/mcc_generated_files/interrupt_manager.o
  .debug_info      0x000953        0x404 build/default/debug/mcc_generated_files/traps.o
@@ -1721,23 +1721,23 @@ __FDEVOPT1
  .debug_info      0x009d4a        0x74e build/default/debug/mcc_generated_files/tmr1.o
  .debug_info      0x00a498        0x6dc build/default/debug/main.o
  .debug_info      0x00ab74       0x18be build/default/debug/Test_Functions.o
- .debug_info      0x00c432       0x1d32 build/default/debug/UI_Functions.o
- .debug_info      0x00e164        0xdec build/default/debug/Support_Functions.o
- .debug_info      0x00ef50        0xae9 build/default/debug/timers.o
- .debug_info      0x00fa39       0x1dc0 build/default/debug/flashmem.o
- .debug_info      0x0117f9        0x589 build/default/debug/pushbuttons.o
- .debug_info      0x011d82        0xdfa build/default/debug/ledboard.o
- .debug_info      0x012b7c        0x8a0 build/default/debug/analog.o
- .debug_info      0x01341c        0x831 build/default/debug/rtc.o
- .debug_info      0x013c4d        0x41f build/default/debug/tachometer.o
- .debug_info      0x01406c        0x681 build/default/debug/hw_watchdog.o
- .debug_info      0x0146ed       0x1a5e build/default/debug/lcd.o
- .debug_info      0x01614b        0x442 build/default/debug/screensaver.o
- .debug_info      0x01658d        0x64a build/default/debug/rgbled.o
- .debug_info      0x016bd7        0x607 build/default/debug/eeprom.o
- .debug_info      0x0171de        0x667 build/default/debug/swi.o
- .debug_info      0x017845        0xecc build/default/debug/mca.o
- .debug_info      0x018711        0xeac build/default/debug/rtcc.o
+ .debug_info      0x00c432       0x1d99 build/default/debug/UI_Functions.o
+ .debug_info      0x00e1cb        0xdec build/default/debug/Support_Functions.o
+ .debug_info      0x00efb7        0xae9 build/default/debug/timers.o
+ .debug_info      0x00faa0       0x1dc0 build/default/debug/flashmem.o
+ .debug_info      0x011860        0x589 build/default/debug/pushbuttons.o
+ .debug_info      0x011de9        0xdfa build/default/debug/ledboard.o
+ .debug_info      0x012be3        0x8a0 build/default/debug/analog.o
+ .debug_info      0x013483        0x831 build/default/debug/rtc.o
+ .debug_info      0x013cb4        0x41f build/default/debug/tachometer.o
+ .debug_info      0x0140d3        0x681 build/default/debug/hw_watchdog.o
+ .debug_info      0x014754       0x1a77 build/default/debug/lcd.o
+ .debug_info      0x0161cb        0x442 build/default/debug/screensaver.o
+ .debug_info      0x01660d        0x64a build/default/debug/rgbled.o
+ .debug_info      0x016c57        0x607 build/default/debug/eeprom.o
+ .debug_info      0x01725e        0x667 build/default/debug/swi.o
+ .debug_info      0x0178c5        0xecc build/default/debug/mca.o
+ .debug_info      0x018791        0xeac build/default/debug/rtcc.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000       0x33fc
@@ -1779,7 +1779,7 @@ __FDEVOPT1
  .debug_abbrev    0x003047        0x1bd build/default/debug/mca.o
  .debug_abbrev    0x003204        0x1f8 build/default/debug/rtcc.o
 
-.debug_line       0x000000       0x4112
+.debug_line       0x000000       0x413e
  *(.debug_line)
  .debug_line      0x000000        0x111 build/default/debug/mcc_generated_files/interrupt_manager.o
  .debug_line      0x000111        0x130 build/default/debug/mcc_generated_files/traps.o
@@ -1800,25 +1800,25 @@ __FDEVOPT1
  .debug_line      0x00147b        0x11f build/default/debug/mcc_generated_files/tmr1.o
  .debug_line      0x00159a         0xf8 build/default/debug/main.o
  .debug_line      0x001692        0x51c build/default/debug/Test_Functions.o
- .debug_line      0x001bae        0x4d4 build/default/debug/UI_Functions.o
- .debug_line      0x002082        0x224 build/default/debug/Support_Functions.o
- .debug_line      0x0022a6        0x12d build/default/debug/timers.o
- .debug_line      0x0023d3        0x55a build/default/debug/flashmem.o
- .debug_line      0x00292d        0x141 build/default/debug/pushbuttons.o
- .debug_line      0x002a6e        0x306 build/default/debug/ledboard.o
- .debug_line      0x002d74        0x180 build/default/debug/analog.o
- .debug_line      0x002ef4        0x13d build/default/debug/rtc.o
- .debug_line      0x003031        0x118 build/default/debug/tachometer.o
- .debug_line      0x003149        0x16b build/default/debug/hw_watchdog.o
- .debug_line      0x0032b4        0x312 build/default/debug/lcd.o
- .debug_line      0x0035c6         0xaa build/default/debug/screensaver.o
- .debug_line      0x003670        0x17c build/default/debug/rgbled.o
- .debug_line      0x0037ec        0x1f3 build/default/debug/eeprom.o
- .debug_line      0x0039df        0x162 build/default/debug/swi.o
- .debug_line      0x003b41        0x2ed build/default/debug/mca.o
- .debug_line      0x003e2e        0x2e4 build/default/debug/rtcc.o
+ .debug_line      0x001bae        0x4f4 build/default/debug/UI_Functions.o
+ .debug_line      0x0020a2        0x224 build/default/debug/Support_Functions.o
+ .debug_line      0x0022c6        0x12d build/default/debug/timers.o
+ .debug_line      0x0023f3        0x55a build/default/debug/flashmem.o
+ .debug_line      0x00294d        0x141 build/default/debug/pushbuttons.o
+ .debug_line      0x002a8e        0x306 build/default/debug/ledboard.o
+ .debug_line      0x002d94        0x180 build/default/debug/analog.o
+ .debug_line      0x002f14        0x13d build/default/debug/rtc.o
+ .debug_line      0x003051        0x118 build/default/debug/tachometer.o
+ .debug_line      0x003169        0x16b build/default/debug/hw_watchdog.o
+ .debug_line      0x0032d4        0x312 build/default/debug/lcd.o
+ .debug_line      0x0035e6         0xaa build/default/debug/screensaver.o
+ .debug_line      0x003690        0x17c build/default/debug/rgbled.o
+ .debug_line      0x00380c        0x1f3 build/default/debug/eeprom.o
+ .debug_line      0x0039ff        0x162 build/default/debug/swi.o
+ .debug_line      0x003b61        0x2f9 build/default/debug/mca.o
+ .debug_line      0x003e5a        0x2e4 build/default/debug/rtcc.o
 
-.debug_frame      0x000000       0x4f14
+.debug_frame      0x000000       0x4f1c
  *(.debug_frame)
  .debug_frame     0x000000         0x24 build/default/debug/mcc_generated_files/interrupt_manager.o
  .debug_frame     0x000024         0x84 build/default/debug/mcc_generated_files/traps.o
@@ -1839,25 +1839,25 @@ __FDEVOPT1
  .debug_frame     0x000ac6         0xc4 build/default/debug/mcc_generated_files/tmr1.o
  .debug_frame     0x000b8a         0x24 build/default/debug/main.o
  .debug_frame     0x000bae        0xcc2 build/default/debug/Test_Functions.o
- .debug_frame     0x001870        0x834 build/default/debug/UI_Functions.o
- .debug_frame     0x0020a4        0x38a build/default/debug/Support_Functions.o
- .debug_frame     0x00242e         0x9e build/default/debug/timers.o
- .debug_frame     0x0024cc        0xa24 build/default/debug/flashmem.o
- .debug_frame     0x002ef0         0xa6 build/default/debug/pushbuttons.o
- .debug_frame     0x002f96        0x5a2 build/default/debug/ledboard.o
- .debug_frame     0x003538        0x1c6 build/default/debug/analog.o
- .debug_frame     0x0036fe        0x118 build/default/debug/rtc.o
- .debug_frame     0x003816         0x9e build/default/debug/tachometer.o
- .debug_frame     0x0038b4        0x152 build/default/debug/hw_watchdog.o
- .debug_frame     0x003a06        0x378 build/default/debug/lcd.o
- .debug_frame     0x003d7e         0x94 build/default/debug/screensaver.o
- .debug_frame     0x003e12        0x1a0 build/default/debug/rgbled.o
- .debug_frame     0x003fb2        0x244 build/default/debug/eeprom.o
- .debug_frame     0x0041f6        0x112 build/default/debug/swi.o
- .debug_frame     0x004308        0x722 build/default/debug/mca.o
- .debug_frame     0x004a2a        0x4ea build/default/debug/rtcc.o
+ .debug_frame     0x001870        0x836 build/default/debug/UI_Functions.o
+ .debug_frame     0x0020a6        0x38a build/default/debug/Support_Functions.o
+ .debug_frame     0x002430         0x9e build/default/debug/timers.o
+ .debug_frame     0x0024ce        0xa24 build/default/debug/flashmem.o
+ .debug_frame     0x002ef2         0xa6 build/default/debug/pushbuttons.o
+ .debug_frame     0x002f98        0x5a2 build/default/debug/ledboard.o
+ .debug_frame     0x00353a        0x1c6 build/default/debug/analog.o
+ .debug_frame     0x003700        0x118 build/default/debug/rtc.o
+ .debug_frame     0x003818         0x9e build/default/debug/tachometer.o
+ .debug_frame     0x0038b6        0x152 build/default/debug/hw_watchdog.o
+ .debug_frame     0x003a08        0x378 build/default/debug/lcd.o
+ .debug_frame     0x003d80         0x94 build/default/debug/screensaver.o
+ .debug_frame     0x003e14        0x1a0 build/default/debug/rgbled.o
+ .debug_frame     0x003fb4        0x244 build/default/debug/eeprom.o
+ .debug_frame     0x0041f8        0x112 build/default/debug/swi.o
+ .debug_frame     0x00430a        0x728 build/default/debug/mca.o
+ .debug_frame     0x004a32        0x4ea build/default/debug/rtcc.o
 
-.debug_str        0x000000        0xd71
+.debug_str        0x000000        0xd63
  *(.debug_str)
  .debug_str       0x000000         0x25 build/default/debug/mcc_generated_files/interrupt_manager.o
  .debug_str       0x000025         0x18 build/default/debug/mcc_generated_files/traps.o
@@ -1878,22 +1878,22 @@ __FDEVOPT1
  .debug_str       0x0005a9         0x13 build/default/debug/mcc_generated_files/tmr1.o
  .debug_str       0x0005bc         0x27 build/default/debug/main.o
  .debug_str       0x0005e3         0xd6 build/default/debug/Test_Functions.o
- .debug_str       0x0006b9         0xbc build/default/debug/UI_Functions.o
- .debug_str       0x000775         0x4e build/default/debug/Support_Functions.o
- .debug_str       0x0007c3         0x25 build/default/debug/timers.o
- .debug_str       0x0007e8        0x152 build/default/debug/flashmem.o
- .debug_str       0x00093a         0x1d build/default/debug/pushbuttons.o
- .debug_str       0x000957         0xa8 build/default/debug/ledboard.o
- .debug_str       0x0009ff         0x42 build/default/debug/analog.o
- .debug_str       0x000a41         0x46 build/default/debug/rtc.o
- .debug_str       0x000a87          0x9 build/default/debug/tachometer.o
- .debug_str       0x000a90         0x64 build/default/debug/hw_watchdog.o
- .debug_str       0x000af4         0xd5 build/default/debug/lcd.o
- .debug_str       0x000bc9         0x14 build/default/debug/rgbled.o
- .debug_str       0x000bdd         0x3f build/default/debug/eeprom.o
- .debug_str       0x000c1c         0x27 build/default/debug/swi.o
- .debug_str       0x000c43         0xcc build/default/debug/mca.o
- .debug_str       0x000d0f         0x62 build/default/debug/rtcc.o
+ .debug_str       0x0006b9         0xae build/default/debug/UI_Functions.o
+ .debug_str       0x000767         0x4e build/default/debug/Support_Functions.o
+ .debug_str       0x0007b5         0x25 build/default/debug/timers.o
+ .debug_str       0x0007da        0x152 build/default/debug/flashmem.o
+ .debug_str       0x00092c         0x1d build/default/debug/pushbuttons.o
+ .debug_str       0x000949         0xa8 build/default/debug/ledboard.o
+ .debug_str       0x0009f1         0x42 build/default/debug/analog.o
+ .debug_str       0x000a33         0x46 build/default/debug/rtc.o
+ .debug_str       0x000a79          0x9 build/default/debug/tachometer.o
+ .debug_str       0x000a82         0x64 build/default/debug/hw_watchdog.o
+ .debug_str       0x000ae6         0xd5 build/default/debug/lcd.o
+ .debug_str       0x000bbb         0x14 build/default/debug/rgbled.o
+ .debug_str       0x000bcf         0x3f build/default/debug/eeprom.o
+ .debug_str       0x000c0e         0x27 build/default/debug/swi.o
+ .debug_str       0x000c35         0xcc build/default/debug/mca.o
+ .debug_str       0x000d01         0x62 build/default/debug/rtcc.o
 
 .debug_loc
  *(.debug_loc)
@@ -4485,13 +4485,13 @@ __c30_signature
                   0x00f3c2                  _period
  .const           0x00f3f2         0x32 build/default/debug/tachometer.o
 
-_051ddbe0629b9b05
+_0518dbe0629e06ca
                   0x00f424      0x30000
- _051ddbe0629b9b05
+ _0518dbe0629e06ca
                   0x00f424      0x30000 build/default/debug/lcd.o
                   0x00f424                  _Image_Arial20_Vert
 
-.text             0x0036c2       0x32f8
+.text             0x0036c2       0x3376
  .text            0x0036c2       0x1b08 build/default/debug/flashmem.o
                   0x0036f8                  _TestFlash
                   0x003748                  _ReadFlashStatus
@@ -4509,372 +4509,372 @@ _051ddbe0629b9b05
                   0x00485c                  _EraseDataFromFlash
                   0x0048ac                  _WriteImageToFlash
                   0x005104                  _ReadFlashDMA
- .text            0x0051ca       0x17f0 build/default/debug/Test_Functions.o
-                  0x005b58                  _Test5VDC
-                  0x005e1e                  _TestPOST
-                  0x005f5a                  _TestBIST
-                  0x006064                  _PrintMenu
-                  0x006418                  _TestInterface
+ .text            0x0051ca       0x186e build/default/debug/UI_Functions.o
+                  0x00578c                  _UserInterfacePrintNotes
+                  0x0058c6                  _UserInterfaceSubmenu
+                  0x005982                  _GetCurrentlyUsedLEDCurrent
+                  0x005986                  _ReadUISetting
+                  0x0068da                  _GenerateCountdownDisplay
+                  0x006946                  _InitializeUserInterface
+                  0x00697c                  _UpdateUIStateMachine
 
-.text             0x03f424       0x172c
- .text            0x03f424       0x172c build/default/debug/UI_Functions.o
-                  0x03f9e2                  _UserInterfacePrintNotes
-                  0x03fb1c                  _UserInterfaceSubmenu
-                  0x03fbd8                  _GetCurrentlyUsedLEDCurrent
-                  0x03fbdc                  _ReadUISetting
-                  0x0409fc                  _GenerateCountdownDisplay
-                  0x040a68                  _InitializeUserInterface
-                  0x040a9e                  _UpdateUIStateMachine
+.text             0x03f424       0x17f0
+ .text            0x03f424       0x17f0 build/default/debug/Test_Functions.o
+                  0x03fdb2                  _Test5VDC
+                  0x040078                  _TestPOST
+                  0x0401b4                  _TestBIST
+                  0x0402be                  _PrintMenu
+                  0x040672                  _TestInterface
 
-.text             0x0069ba        0xd66
- .text            0x0069ba        0xd66 build/default/debug/rtcc.o
-                  0x0069ba                  _RTCCIdentify
-                  0x0069be                  _RTCCGetStartStatus
-                  0x006a4a                  _RTCCSetStartStatus
-                  0x006b32                  _RTCCGetDateTimeData
-                  0x006bbc                  _RTCCSetDateTimeData
-                  0x006c16                  _RTCCPrint
-                  0x006c56                  _RTCCCalcLCUTimestamp
-                  0x006de0                  _RTCCGetTimestamp
-                  0x006df8                  _RTCCGetVBATEN
-                  0x006e86                  _RTCCSetVBATEN
-                  0x006f6e                  _RTCCInit
-                  0x006f86                  _RTCCGetPWRFAIL
-                  0x007014                  _RTCCClearPWRFAIL
-                  0x0070e6                  _RTCCDisplayPowerFailStatus
-                  0x007100                  _RTCCSetTime
-                  0x0071d4                  _RTCCDumpRegisters
-                  0x007388                  _RTCCReadRegister
-                  0x007448                  _RTCCWriteRegister
-                  0x0074de                  _RTCCInitSRAM
-                  0x00755a                  _RTCCSetDate
-                  0x00762a                  _RTCCGetSRAM
-                  0x0076ce                  _RTCCDisplayDateTime
+.text             0x006a38        0xd66
+ .text            0x006a38        0xd66 build/default/debug/rtcc.o
+                  0x006a38                  _RTCCIdentify
+                  0x006a3c                  _RTCCGetStartStatus
+                  0x006ac8                  _RTCCSetStartStatus
+                  0x006bb0                  _RTCCGetDateTimeData
+                  0x006c3a                  _RTCCSetDateTimeData
+                  0x006c94                  _RTCCPrint
+                  0x006cd4                  _RTCCCalcLCUTimestamp
+                  0x006e5e                  _RTCCGetTimestamp
+                  0x006e76                  _RTCCGetVBATEN
+                  0x006f04                  _RTCCSetVBATEN
+                  0x006fec                  _RTCCInit
+                  0x007004                  _RTCCGetPWRFAIL
+                  0x007092                  _RTCCClearPWRFAIL
+                  0x007164                  _RTCCDisplayPowerFailStatus
+                  0x00717e                  _RTCCSetTime
+                  0x007252                  _RTCCDumpRegisters
+                  0x007406                  _RTCCReadRegister
+                  0x0074c6                  _RTCCWriteRegister
+                  0x00755c                  _RTCCInitSRAM
+                  0x0075d8                  _RTCCSetDate
+                  0x0076a8                  _RTCCGetSRAM
+                  0x00774c                  _RTCCDisplayDateTime
 
-.text             0x040b50       0x1f22
- .text            0x040b50        0xb30 build/default/debug/ledboard.o
-                  0x040b50                  _WriteLEDBoardEEPROM
-                  0x040c8a                  _ReadLEDBoardEEPROM
-                  0x040fce                  _TestLEDBoardEEPROM
-                  0x04108c                  _ReadLEDBoardSpecifiedCurrent
-                  0x041106                  _TestLEDBoardTemp
-                  0x041214                  _TestLEDCurrent
-                  0x041290                  _ReadLEDVoltage
-                  0x04129e                  _WriteLEDCurrent
-                  0x0413fe                  _TestLEDCurrentOffset
-                  0x0414da                  _LEDBoardEEPROMPrintNotes
-                  0x041582                  _LEDBoardEEPROMSubmenu
-                  0x04167c                  _LEDCurrentOn
- .text            0x041680        0xa90 build/default/debug/mca.o
-                  0x041680                  _MCAReadSerialNumber
-                  0x041710                  _MCAWriteSerialNumber
-                  0x04179e                  _MCASetSerialNumber
-                  0x0417f6                  _MCAReadCompletedTherapies
-                  0x041828                  _MCAWriteCompletedTherapies
-                  0x041848                  _MCAEnterCompletedTherapies
-                  0x0418a8                  _MCAReadElapsedTherapyTime
-                  0x0418da                  _MCAWriteElapsedTherapyTime
-                  0x0418fa                  _MCAIncrementWriteElapsedTherapyTime
-                  0x041964                  _MCASetElapsedTherapyTime
-                  0x0419c4                  _MCAReadMaxNumOfTherapies
-                  0x0419fa                  _MCAWriteMaxNumOfTherapies
-                  0x041a1a                  _MCAEnterMaxNumOfTherapies
-                  0x041a7a                  _MCAReadCalibration
-                  0x041aac                  _MCAWriteCalibration
-                  0x041acc                  _MCASetCalibration
-                  0x041b2c                  _MCAReadTimeStamp
-                  0x041ba4                  _MCADisplayContents
-                  0x041c64                  _MCAWriteTimeStamp
-                  0x041caa                  _MCASetTimeStamp
-                  0x041d88                  _MCADataIntegrityCheck
-                  0x041ecc                  _MCAMemoryRead
-                  0x041f2e                  _MCAMemoryWrite
-                  0x041fa4                  _MCAMemoryErase
-                  0x041ff2                  _MCALockSerial
-                  0x042002                  _MCAGetStatus
- .text            0x042110        0x962 build/default/debug/lcd.o
-                  0x04223a                  _InitializeLCDDMA
-                  0x042264                  _LCDWriteCommand
-                  0x042284                  _LCDWriteData
-                  0x0423fc                  _InitializeLCD
-                  0x0424fa                  _LCDDisplayHome
-                  0x042528                  _DisplayTestImage
-                  0x042600                  _DisplayImageAtRandomLocation
-                  0x04273c                  _TurnBacklightOff
-                  0x042740                  _BlankOutDisplay
-                  0x0427ac                  _WriteImageToLCD
-                  0x042834                  _TurnBacklightOn
-                  0x042838                  _TestLCD
-                  0x042962                  _LCDTest
-                  0x04298e                  _DisplayText
+.text             0x040c14       0x1f54
+ .text            0x040c14        0xb30 build/default/debug/ledboard.o
+                  0x040c14                  _WriteLEDBoardEEPROM
+                  0x040d4e                  _ReadLEDBoardEEPROM
+                  0x041092                  _TestLEDBoardEEPROM
+                  0x041150                  _ReadLEDBoardSpecifiedCurrent
+                  0x0411ca                  _TestLEDBoardTemp
+                  0x0412d8                  _TestLEDCurrent
+                  0x041354                  _ReadLEDVoltage
+                  0x041362                  _WriteLEDCurrent
+                  0x0414c2                  _TestLEDCurrentOffset
+                  0x04159e                  _LEDBoardEEPROMPrintNotes
+                  0x041646                  _LEDBoardEEPROMSubmenu
+                  0x041740                  _LEDCurrentOn
+ .text            0x041744        0xac2 build/default/debug/mca.o
+                  0x041744                  _MCAReadSerialNumber
+                  0x0417d4                  _MCAWriteSerialNumber
+                  0x041862                  _MCASetSerialNumber
+                  0x0418ba                  _MCAReadCompletedTherapies
+                  0x0418ec                  _MCAWriteCompletedTherapies
+                  0x04190c                  _MCAEnterCompletedTherapies
+                  0x04196c                  _MCAReadElapsedTherapyTime
+                  0x04199e                  _MCAWriteElapsedTherapyTime
+                  0x0419be                  _MCAIncrementWriteElapsedTherapyTime
+                  0x041a28                  _MCASetElapsedTherapyTime
+                  0x041a88                  _MCAReadMaxNumOfTherapies
+                  0x041abe                  _MCAWriteMaxNumOfTherapies
+                  0x041ade                  _MCAEnterMaxNumOfTherapies
+                  0x041b3e                  _MCAReadCalibration
+                  0x041b70                  _MCAWriteCalibration
+                  0x041b90                  _MCASetCalibration
+                  0x041bf0                  _MCAReadTimeStamp
+                  0x041c68                  _MCADisplayContents
+                  0x041d28                  _MCAWriteTimeStamp
+                  0x041d6e                  _MCASetTimeStamp
+                  0x041e4c                  _MCADataIntegrityCheck
+                  0x041f90                  _MCAMemoryRead
+                  0x041ff2                  _MCAMemoryWrite
+                  0x042068                  _MCAMemoryErase
+                  0x0420b6                  _MCALockSerial
+                  0x0420c6                  _MCAGetStatus
+ .text            0x042206        0x962 build/default/debug/lcd.o
+                  0x042330                  _InitializeLCDDMA
+                  0x04235a                  _LCDWriteCommand
+                  0x04237a                  _LCDWriteData
+                  0x0424f2                  _InitializeLCD
+                  0x0425f0                  _LCDDisplayHome
+                  0x04261e                  _DisplayTestImage
+                  0x0426f6                  _DisplayImageAtRandomLocation
+                  0x042832                  _TurnBacklightOff
+                  0x042836                  _BlankOutDisplay
+                  0x0428a2                  _WriteImageToLCD
+                  0x04292a                  _TurnBacklightOn
+                  0x04292e                  _TestLCD
+                  0x042a58                  _LCDTest
+                  0x042a84                  _DisplayText
 
-.text             0x007720        0x4aa
- .text            0x007720        0x4aa build/default/debug/eeprom.o
-                  0x007720                  _EEPROMReadManufID
-                  0x0077e2                  _EEPROMIdentify
-                  0x007842                  _EEPROMRead
-                  0x0078aa                  _EEPROMWrite
-                  0x007912                  _EEPROMWritePage
-                  0x0079b6                  _EEPROMReadSecurity
-                  0x007a24                  _EEPROMWriteSecurity
-                  0x007a7e                  _EEPROMDump
-                  0x007b72                  _EEPROMLockSecurity
+.text             0x00779e        0x4aa
+ .text            0x00779e        0x4aa build/default/debug/eeprom.o
+                  0x00779e                  _EEPROMReadManufID
+                  0x007860                  _EEPROMIdentify
+                  0x0078c0                  _EEPROMRead
+                  0x007928                  _EEPROMWrite
+                  0x007990                  _EEPROMWritePage
+                  0x007a34                  _EEPROMReadSecurity
+                  0x007aa2                  _EEPROMWriteSecurity
+                  0x007afc                  _EEPROMDump
+                  0x007bf0                  _EEPROMLockSecurity
 
-.text             0x042a72        0x43e
- .text            0x042a72        0x43e build/default/debug/Support_Functions.o
-                  0x042a72                  _GetChar
-                  0x042a86                  _GetYesOrNo
-                  0x042abc                  _GetZeroOneOrCancel
-                  0x042af6                  _GetCharWithinLimits
-                  0x042b10                  _ReadFloat
-                  0x042b50                  _ReadString
-                  0x042ba0                  _ReadFloatOrCancel
-                  0x042c16                  _WaitForValidFloat
-                  0x042c3c                  _ReadUInt32OrCancel
-                  0x042c94                  _WaitForValidUInt32WithLimits
-                  0x042d08                  _WaitForValidUInt32
-                  0x042d2e                  _ReadUInt32
-                  0x042d4e                  _ReadUInt16OrCancel
-                  0x042dbe                  _WaitForValidUInt16WithLimits
-                  0x042e1e                  _WaitForValidUInt16
-                  0x042e44                  _ReadUInt16
-                  0x042e64                  _DisableNonDMAInterrupts
-                  0x042e72                  _EnableNonDMAInterrupts
-                  0x042e80                  _crc8
-                  0x042e9c                  _strnlen
+.text             0x042b68        0x43e
+ .text            0x042b68        0x43e build/default/debug/Support_Functions.o
+                  0x042b68                  _GetChar
+                  0x042b7c                  _GetYesOrNo
+                  0x042bb2                  _GetZeroOneOrCancel
+                  0x042bec                  _GetCharWithinLimits
+                  0x042c06                  _ReadFloat
+                  0x042c46                  _ReadString
+                  0x042c96                  _ReadFloatOrCancel
+                  0x042d0c                  _WaitForValidFloat
+                  0x042d32                  _ReadUInt32OrCancel
+                  0x042d8a                  _WaitForValidUInt32WithLimits
+                  0x042dfe                  _WaitForValidUInt32
+                  0x042e24                  _ReadUInt32
+                  0x042e44                  _ReadUInt16OrCancel
+                  0x042eb4                  _WaitForValidUInt16WithLimits
+                  0x042f14                  _WaitForValidUInt16
+                  0x042f3a                  _ReadUInt16
+                  0x042f5a                  _DisableNonDMAInterrupts
+                  0x042f68                  _EnableNonDMAInterrupts
+                  0x042f76                  _crc8
+                  0x042f92                  _strnlen
 
-.dinit            0x007bca        0x342
- .dinit           0x007bca        0x342 data_init
+.dinit            0x007c48        0x342
+ .dinit           0x007c48        0x342 data_init
 
-.text             0x042eb0        0xf1e
- .text            0x042eb0        0x2fc build/default/debug/hw_watchdog.o
-                  0x042eb0                  _InitializeHW_WatchdogData
-                  0x042eb4                  _UpdateMouthpieceStatus
-                  0x042ef4                  _TestHWWdog
- .text            0x0431ac        0x2a2 build/default/debug/rgbled.o
-                  0x0431ac                  _SetLedRGB
-                  0x0431c6                  _WriteRGBLED
-                  0x0432b4                  _TestRGBLED
-                  0x043342                  _TestLights
- .text            0x04344e        0x24c build/default/debug/swi.o
-                  0x04344e                  _SWIInit
-                  0x043454                  _SWIStartAndStopCondition
-                  0x043472                  _SWIGetAck
-                  0x0434d6                  _SWIResetAndDiscoveryResponse
-                  0x043524                  _SWISendBit
-                  0x0435c8                  _SWISendData
-                  0x0435de                  _SWISendAddress
-                  0x0435ee                  _SWIRecvBit
-                  0x043662                  _SWIReadData
-                  0x04368e                  _SWISendAck
-                  0x043694                  _SWISendNack
- .text            0x04369a        0x240 build/default/debug/mcc_generated_files/rtcc.o
-                  0x0436d0                  _RTCC_Initialize
-                  0x04371a                  _RTCC_TimeGet
-                  0x043776                  _RTCC_TimeSet
-                  0x0437d2                  _RTCC_BCDTimeGet
-                  0x043810                  _RTCC_BCDTimeSet
-                  0x04384c                  _RTCC_TimeReset
-                  0x043850                  _RTCC_TimestampAEventManualSet
-                  0x043854                  _RTCC_TimestampADataGet
-                  0x0438a6                  _RTCC_TimestampA_BCDDataGet
- .text            0x0438da        0x1ee build/default/debug/analog.o
-                  0x0438da                  _GetADCReadingCh8
-                  0x0438e0                  _GetADCReadingCh9
-                  0x0438e6                  _GetADCReadingCh10
-                  0x0438ec                  _GetADCReadingCh11
-                  0x0438f2                  _ClearADCCh11Offset
-                  0x0438f8                  _SetADCCh11Offset
-                  0x043902                  _GetADCReadingCh12
-                  0x043908                  _WriteDAC
- .text            0x043ac8        0x10e build/default/debug/mcc_generated_files/pin_manager.o
-                  0x043ac8                  _PIN_MANAGER_Initialize
- .text            0x043bd6         0xfe build/default/debug/mcc_generated_files/spi1.o
-                  0x043bd6                  _SPI1_Initialize
-                  0x043bf0                  _SPI1_Exchange
-                  0x043c0e                  _SPI1_ExchangeBuffer
-                  0x043ca4                  _SPI1_Exchange32bit
-                  0x043cbc                  _SPI1_Exchange32bitBuffer
-                  0x043cc0                  _SPI1_TransferModeGet
-                  0x043cd0                  _SPI1_StatusGet
- .text            0x043cd4         0xfa build/default/debug/mcc_generated_files/spi2.o
-                  0x043cd4                  _SPI2_Initialize
-                  0x043cea                  _SPI2_Exchange
-                  0x043d08                  _SPI2_ExchangeBuffer
-                  0x043d9e                  _SPI2_Exchange32bit
-                  0x043db6                  _SPI2_Exchange32bitBuffer
-                  0x043dba                  _SPI2_TransferModeGet
-                  0x043dca                  _SPI2_StatusGet
+.text             0x042fa6       0x1520
+ .text            0x042fa6        0x2fc build/default/debug/hw_watchdog.o
+                  0x042fa6                  _InitializeHW_WatchdogData
+                  0x042faa                  _UpdateMouthpieceStatus
+                  0x042fea                  _TestHWWdog
+ .text            0x0432a2        0x2a2 build/default/debug/rgbled.o
+                  0x0432a2                  _SetLedRGB
+                  0x0432bc                  _WriteRGBLED
+                  0x0433aa                  _TestRGBLED
+                  0x043438                  _TestLights
+ .text            0x043544        0x24c build/default/debug/swi.o
+                  0x043544                  _SWIInit
+                  0x04354a                  _SWIStartAndStopCondition
+                  0x043568                  _SWIGetAck
+                  0x0435cc                  _SWIResetAndDiscoveryResponse
+                  0x04361a                  _SWISendBit
+                  0x0436be                  _SWISendData
+                  0x0436d4                  _SWISendAddress
+                  0x0436e4                  _SWIRecvBit
+                  0x043758                  _SWIReadData
+                  0x043784                  _SWISendAck
+                  0x04378a                  _SWISendNack
+ .text            0x043790        0x240 build/default/debug/mcc_generated_files/rtcc.o
+                  0x0437c6                  _RTCC_Initialize
+                  0x043810                  _RTCC_TimeGet
+                  0x04386c                  _RTCC_TimeSet
+                  0x0438c8                  _RTCC_BCDTimeGet
+                  0x043906                  _RTCC_BCDTimeSet
+                  0x043942                  _RTCC_TimeReset
+                  0x043946                  _RTCC_TimestampAEventManualSet
+                  0x04394a                  _RTCC_TimestampADataGet
+                  0x04399c                  _RTCC_TimestampA_BCDDataGet
+ .text            0x0439d0        0x1ee build/default/debug/analog.o
+                  0x0439d0                  _GetADCReadingCh8
+                  0x0439d6                  _GetADCReadingCh9
+                  0x0439dc                  _GetADCReadingCh10
+                  0x0439e2                  _GetADCReadingCh11
+                  0x0439e8                  _ClearADCCh11Offset
+                  0x0439ee                  _SetADCCh11Offset
+                  0x0439f8                  _GetADCReadingCh12
+                  0x0439fe                  _WriteDAC
+ .text            0x043bbe        0x10e build/default/debug/mcc_generated_files/pin_manager.o
+                  0x043bbe                  _PIN_MANAGER_Initialize
+ .text            0x043ccc         0xfe build/default/debug/mcc_generated_files/spi1.o
+                  0x043ccc                  _SPI1_Initialize
+                  0x043ce6                  _SPI1_Exchange
+                  0x043d04                  _SPI1_ExchangeBuffer
+                  0x043d9a                  _SPI1_Exchange32bit
+                  0x043db2                  _SPI1_Exchange32bitBuffer
+                  0x043db6                  _SPI1_TransferModeGet
+                  0x043dc6                  _SPI1_StatusGet
+ .text            0x043dca         0xfa build/default/debug/mcc_generated_files/spi2.o
+                  0x043dca                  _SPI2_Initialize
+                  0x043de0                  _SPI2_Exchange
+                  0x043dfe                  _SPI2_ExchangeBuffer
+                  0x043e94                  _SPI2_Exchange32bit
+                  0x043eac                  _SPI2_Exchange32bitBuffer
+                  0x043eb0                  _SPI2_TransferModeGet
+                  0x043ec0                  _SPI2_StatusGet
+ .text            0x043ec4         0xf2 build/default/debug/mcc_generated_files/i2c1.o
+                  0x043eea                  _I2C1_Initialize
+                  0x043f0e                  _I2C1_ErrorCountGet
+                  0x043f12                  _I2C1_MasterTRBInsert
+                  0x043f52                  _I2C1_MasterReadTRBBuild
+                  0x043f5e                  _I2C1_MasterRead
+                  0x043f80                  _I2C1_MasterWriteTRBBuild
+                  0x043f88                  _I2C1_MasterWrite
+                  0x043faa                  _I2C1_MasterQueueIsEmpty
+                  0x043fb0                  _I2C1_MasterQueueIsFull
+ .text            0x043fb6         0xe0 build/default/debug/timers.o
+                  0x043fb6                  _TimerDelay
+                  0x043fda                  _StartTimer
+                  0x043ff6                  _WaitForTimer
+                  0x044000                  _TimerDone
+                  0x04400e                  _ClearTimer
+                  0x044018                  _SetLedBlinkPattern
+                  0x044052                  _DisableLedBlinking
+                  0x044056                  _Timer2Handler
+ .text            0x044096         0xdc build/default/debug/mcc_generated_files/spi3.o
+                  0x044096                  _SPI3_Initialize
+                  0x0440ae                  _SPI3_Exchange
+                  0x0440c4                  _SPI3_ExchangeBuffer
+                  0x04414a                  _SPI3_Exchange8bit
+                  0x04415a                  _SPI3_Exchange8bitBuffer
+                  0x04415e                  _SPI3_TransferModeGet
+                  0x04416e                  _SPI3_StatusGet
+ .text            0x044172         0xb0 build/default/debug/rtc.o
+                  0x044172                  _StartGenericCountdownTimer
+                  0x044178                  _ClearGenericCountdownTimer
+                  0x04417c                  _GenericCountdownTimerElapsed
+                  0x044186                  _WaitForGenericCountdownTimer
+                  0x044194                  _StartOperationStateCountdown
+                  0x0441ba                  _PauseOperationStateCountdown
+                  0x0441c0                  _ResumeOperationStateCountdown
+                  0x0441c8                  _TimeToUpdateDisplay
+                  0x0441ee                  _TimeToPerformBIST
+                  0x0441f6                  _GetOperationStateTimer
+                  0x0441fa                  _OperationCountDownNewlyRestarted
+                  0x044206                  _ResetScreenSaverTimer
+                  0x04421e                  _StopScreenSaverTimer
+ .text            0x044222         0xae build/default/debug/mcc_generated_files/oc1.o
+                  0x044222                  _OC1_Initialize
+                  0x04423c                  _OC1_Tasks
+                  0x044244                  _OC1_Start
+                  0x044254                  _OC1_Stop
+                  0x04425a                  _OC1_SingleCompareValueSet
+                  0x04425e                  _OC1_DualCompareValueSet
+                  0x044264                  _OC1_CentreAlignedPWMConfig
+                  0x04426a                  _OC1_EdgeAlignedPWMConfig
+                  0x044270                  _OC1_SecondaryValueSet
+                  0x044274                  _OC1_PrimaryValueSet
+                  0x044278                  _OC1_IsCompareCycleComplete
+                  0x044280                  _OC1_FaultStatusGet
+                  0x0442a8                  _OC1_FaultStatusClear
+                  0x0442c0                  _OC1_ManualTriggerSet
+                  0x0442c4                  _OC1_TriggerStatusGet
+                  0x0442cc                  _OC1_TriggerStatusClear
+ .text            0x0442d0         0xae build/default/debug/mcc_generated_files/oc2.o
+                  0x0442d0                  _OC2_Initialize
+                  0x0442ea                  _OC2_Tasks
+                  0x0442f2                  _OC2_Start
+                  0x044302                  _OC2_Stop
+                  0x044308                  _OC2_SingleCompareValueSet
+                  0x04430c                  _OC2_DualCompareValueSet
+                  0x044312                  _OC2_CentreAlignedPWMConfig
+                  0x044318                  _OC2_EdgeAlignedPWMConfig
+                  0x04431e                  _OC2_SecondaryValueSet
+                  0x044322                  _OC2_PrimaryValueSet
+                  0x044326                  _OC2_IsCompareCycleComplete
+                  0x04432e                  _OC2_FaultStatusGet
+                  0x044356                  _OC2_FaultStatusClear
+                  0x04436e                  _OC2_ManualTriggerSet
+                  0x044372                  _OC2_TriggerStatusGet
+                  0x04437a                  _OC2_TriggerStatusClear
+ .text            0x04437e         0xae build/default/debug/mcc_generated_files/oc3.o
+                  0x04437e                  _OC3_Initialize
+                  0x044398                  _OC3_Tasks
+                  0x0443a0                  _OC3_Start
+                  0x0443b0                  _OC3_Stop
+                  0x0443b6                  _OC3_SingleCompareValueSet
+                  0x0443ba                  _OC3_DualCompareValueSet
+                  0x0443c0                  _OC3_CentreAlignedPWMConfig
+                  0x0443c6                  _OC3_EdgeAlignedPWMConfig
+                  0x0443cc                  _OC3_SecondaryValueSet
+                  0x0443d0                  _OC3_PrimaryValueSet
+                  0x0443d4                  _OC3_IsCompareCycleComplete
+                  0x0443dc                  _OC3_FaultStatusGet
+                  0x044404                  _OC3_FaultStatusClear
+                  0x04441c                  _OC3_ManualTriggerSet
+                  0x044420                  _OC3_TriggerStatusGet
+                  0x044428                  _OC3_TriggerStatusClear
+ .text            0x04442c         0x9a build/default/debug/pushbuttons.o
+                  0x04442c                  _PushbuttonPressed
+                  0x044440                  _TestPushbutton
 
-.text             0x007f0c         0xf2
- .text            0x007f0c         0xf2 build/default/debug/mcc_generated_files/i2c1.o
-                  0x007f32                  _I2C1_Initialize
-                  0x007f56                  _I2C1_ErrorCountGet
-                  0x007f5a                  _I2C1_MasterTRBInsert
-                  0x007f9a                  _I2C1_MasterReadTRBBuild
-                  0x007fa6                  _I2C1_MasterRead
-                  0x007fc8                  _I2C1_MasterWriteTRBBuild
-                  0x007fd0                  _I2C1_MasterWrite
-                  0x007ff2                  _I2C1_MasterQueueIsEmpty
-                  0x007ff8                  _I2C1_MasterQueueIsFull
+.text             0x007f8a         0x76
+ .text            0x007f8a         0x76 build/default/debug/mcc_generated_files/mcc.o
+                  0x007f8a                  _OSCILLATOR_Initialize
+                  0x007fc0                  _SYSTEM_Initialize
 
-.text             0x043dce        0x846
- .text            0x043dce         0xe0 build/default/debug/timers.o
-                  0x043dce                  _TimerDelay
-                  0x043df2                  _StartTimer
-                  0x043e0e                  _WaitForTimer
-                  0x043e18                  _TimerDone
-                  0x043e26                  _ClearTimer
-                  0x043e30                  _SetLedBlinkPattern
-                  0x043e6a                  _DisableLedBlinking
-                  0x043e6e                  _Timer2Handler
- .text            0x043eae         0xdc build/default/debug/mcc_generated_files/spi3.o
-                  0x043eae                  _SPI3_Initialize
-                  0x043ec6                  _SPI3_Exchange
-                  0x043edc                  _SPI3_ExchangeBuffer
-                  0x043f62                  _SPI3_Exchange8bit
-                  0x043f72                  _SPI3_Exchange8bitBuffer
-                  0x043f76                  _SPI3_TransferModeGet
-                  0x043f86                  _SPI3_StatusGet
- .text            0x043f8a         0xb0 build/default/debug/rtc.o
-                  0x043f8a                  _StartGenericCountdownTimer
-                  0x043f90                  _ClearGenericCountdownTimer
-                  0x043f94                  _GenericCountdownTimerElapsed
-                  0x043f9e                  _WaitForGenericCountdownTimer
-                  0x043fac                  _StartOperationStateCountdown
-                  0x043fd2                  _PauseOperationStateCountdown
-                  0x043fd8                  _ResumeOperationStateCountdown
-                  0x043fe0                  _TimeToUpdateDisplay
-                  0x044006                  _TimeToPerformBIST
-                  0x04400e                  _GetOperationStateTimer
-                  0x044012                  _OperationCountDownNewlyRestarted
-                  0x04401e                  _ResetScreenSaverTimer
-                  0x044036                  _StopScreenSaverTimer
- .text            0x04403a         0xae build/default/debug/mcc_generated_files/oc1.o
-                  0x04403a                  _OC1_Initialize
-                  0x044054                  _OC1_Tasks
-                  0x04405c                  _OC1_Start
-                  0x04406c                  _OC1_Stop
-                  0x044072                  _OC1_SingleCompareValueSet
-                  0x044076                  _OC1_DualCompareValueSet
-                  0x04407c                  _OC1_CentreAlignedPWMConfig
-                  0x044082                  _OC1_EdgeAlignedPWMConfig
-                  0x044088                  _OC1_SecondaryValueSet
-                  0x04408c                  _OC1_PrimaryValueSet
-                  0x044090                  _OC1_IsCompareCycleComplete
-                  0x044098                  _OC1_FaultStatusGet
-                  0x0440c0                  _OC1_FaultStatusClear
-                  0x0440d8                  _OC1_ManualTriggerSet
-                  0x0440dc                  _OC1_TriggerStatusGet
-                  0x0440e4                  _OC1_TriggerStatusClear
- .text            0x0440e8         0xae build/default/debug/mcc_generated_files/oc2.o
-                  0x0440e8                  _OC2_Initialize
-                  0x044102                  _OC2_Tasks
-                  0x04410a                  _OC2_Start
-                  0x04411a                  _OC2_Stop
-                  0x044120                  _OC2_SingleCompareValueSet
-                  0x044124                  _OC2_DualCompareValueSet
-                  0x04412a                  _OC2_CentreAlignedPWMConfig
-                  0x044130                  _OC2_EdgeAlignedPWMConfig
-                  0x044136                  _OC2_SecondaryValueSet
-                  0x04413a                  _OC2_PrimaryValueSet
-                  0x04413e                  _OC2_IsCompareCycleComplete
-                  0x044146                  _OC2_FaultStatusGet
-                  0x04416e                  _OC2_FaultStatusClear
-                  0x044186                  _OC2_ManualTriggerSet
-                  0x04418a                  _OC2_TriggerStatusGet
-                  0x044192                  _OC2_TriggerStatusClear
- .text            0x044196         0xae build/default/debug/mcc_generated_files/oc3.o
-                  0x044196                  _OC3_Initialize
-                  0x0441b0                  _OC3_Tasks
-                  0x0441b8                  _OC3_Start
-                  0x0441c8                  _OC3_Stop
-                  0x0441ce                  _OC3_SingleCompareValueSet
-                  0x0441d2                  _OC3_DualCompareValueSet
-                  0x0441d8                  _OC3_CentreAlignedPWMConfig
-                  0x0441de                  _OC3_EdgeAlignedPWMConfig
-                  0x0441e4                  _OC3_SecondaryValueSet
-                  0x0441e8                  _OC3_PrimaryValueSet
-                  0x0441ec                  _OC3_IsCompareCycleComplete
-                  0x0441f4                  _OC3_FaultStatusGet
-                  0x04421c                  _OC3_FaultStatusClear
-                  0x044234                  _OC3_ManualTriggerSet
-                  0x044238                  _OC3_TriggerStatusGet
-                  0x044240                  _OC3_TriggerStatusClear
- .text            0x044244         0x9a build/default/debug/pushbuttons.o
-                  0x044244                  _PushbuttonPressed
-                  0x044258                  _TestPushbutton
- .text            0x0442de         0x76 build/default/debug/mcc_generated_files/mcc.o
-                  0x0442de                  _OSCILLATOR_Initialize
-                  0x044314                  _SYSTEM_Initialize
- .text            0x044354         0x72 build/default/debug/screensaver.o
-                  0x044354                  _ScreenSaverInit
-                  0x044362                  _EnableScreenSaver
-                  0x044370                  _DisableScreenSaver
-                  0x04437c                  _ActivateScreenSaver
-                  0x044382                  _ActivateBlankScreen
-                  0x044388                  _ScreenSaverIsActive
-                  0x04438c                  _ScreenShouldBeBlank
-                  0x044390                  _ExecuteScreenSaverMode
- .text            0x0443c6         0x60 build/default/debug/mcc_generated_files/tmr1.o
-                  0x0443c6                  _TMR1_Initialize
-                  0x0443d6                  _TMR1_Tasks_16BitOperation
-                  0x0443e8                  _TMR1_Period16BitSet
-                  0x0443f0                  _TMR1_Period16BitGet
-                  0x0443f4                  _TMR1_Counter16BitSet
-                  0x0443fc                  _TMR1_Counter16BitGet
-                  0x044400                  _TMR1_Start
-                  0x044408                  _TMR1_Stop
-                  0x04440c                  _TMR1_GetElapsedThenClear
-                  0x04441a                  _TMR1_SoftwareCounterGet
-                  0x044420                  _TMR1_SoftwareCounterClear
- .text            0x044426         0x5e build/default/debug/mcc_generated_files/adc1.o
-                  0x044426                  _ADC1_Initialize
-                  0x044456                  _ADC1_Start
-                  0x04445a                  _ADC1_Stop
-                  0x04445e                  _ADC1_ConversionResultBufferGet
-                  0x044476                  _ADC1_ConversionResultGet
-                  0x04447a                  _ADC1_IsConversionComplete
-                  0x044480                  _ADC1_ChannelSelect
- .text            0x044484         0x5c build/default/debug/mcc_generated_files/tmr2.o
-                  0x044484                  _TMR2_Initialize
-                  0x044498                  _TMR2_Period16BitSet
-                  0x0444a0                  _TMR2_Period16BitGet
-                  0x0444a4                  _TMR2_Counter16BitSet
-                  0x0444ac                  _TMR2_Counter16BitGet
-                  0x0444b0                  _TMR2_CallBack
-                  0x0444b6                  _TMR2_Start
-                  0x0444c0                  _TMR2_Stop
-                  0x0444c6                  _TMR2_GetElapsedThenClear
-                  0x0444d4                  _TMR2_SoftwareCounterGet
-                  0x0444da                  _TMR2_SoftwareCounterClear
- .text            0x0444e0         0x52 build/default/debug/mcc_generated_files/ic1.o
-                  0x0444e0                  _IC1_Initialize
-                  0x0444f6                  _IC1_Start
-                  0x044506                  _IC1_Stop
-                  0x04450c                  _IC1_CaptureDataRead
-                  0x044510                  _IC1_ManualTriggerSet
-                  0x044514                  _IC1_TriggerStatusGet
-                  0x04451c                  _IC1_TriggerStatusClear
-                  0x044520                  _IC1_HasCaptureBufferOverflowed
-                  0x044528                  _IC1_IsCaptureBufferEmpty
- .text            0x044532         0x42 build/default/debug/main.o
-                  0x044532                  _main
- .text            0x044574         0x3c build/default/debug/tachometer.o
-                  0x044574                  _TestFan
-                  0x0445a6                  _DetectedStalledTachometer
- .text            0x0445b0         0x32 build/default/debug/mcc_generated_files/interrupt_manager.o
-                  0x0445b0                  _INTERRUPT_Initialize
- .text            0x0445e2         0x32 build/default/debug/mcc_generated_files/uart1.o
-                  0x0445e2                  _UART1_Initialize
-                  0x0445f4                  _UART1_Read
-                  0x044602                  _UART1_Write
-                  0x044610                  _UART1_StatusGet
+.text             0x0444c6        0x2c0
+ .text            0x0444c6         0x72 build/default/debug/screensaver.o
+                  0x0444c6                  _ScreenSaverInit
+                  0x0444d4                  _EnableScreenSaver
+                  0x0444e2                  _DisableScreenSaver
+                  0x0444ee                  _ActivateScreenSaver
+                  0x0444f4                  _ActivateBlankScreen
+                  0x0444fa                  _ScreenSaverIsActive
+                  0x0444fe                  _ScreenShouldBeBlank
+                  0x044502                  _ExecuteScreenSaverMode
+ .text            0x044538         0x60 build/default/debug/mcc_generated_files/tmr1.o
+                  0x044538                  _TMR1_Initialize
+                  0x044548                  _TMR1_Tasks_16BitOperation
+                  0x04455a                  _TMR1_Period16BitSet
+                  0x044562                  _TMR1_Period16BitGet
+                  0x044566                  _TMR1_Counter16BitSet
+                  0x04456e                  _TMR1_Counter16BitGet
+                  0x044572                  _TMR1_Start
+                  0x04457a                  _TMR1_Stop
+                  0x04457e                  _TMR1_GetElapsedThenClear
+                  0x04458c                  _TMR1_SoftwareCounterGet
+                  0x044592                  _TMR1_SoftwareCounterClear
+ .text            0x044598         0x5e build/default/debug/mcc_generated_files/adc1.o
+                  0x044598                  _ADC1_Initialize
+                  0x0445c8                  _ADC1_Start
+                  0x0445cc                  _ADC1_Stop
+                  0x0445d0                  _ADC1_ConversionResultBufferGet
+                  0x0445e8                  _ADC1_ConversionResultGet
+                  0x0445ec                  _ADC1_IsConversionComplete
+                  0x0445f2                  _ADC1_ChannelSelect
+ .text            0x0445f6         0x5c build/default/debug/mcc_generated_files/tmr2.o
+                  0x0445f6                  _TMR2_Initialize
+                  0x04460a                  _TMR2_Period16BitSet
+                  0x044612                  _TMR2_Period16BitGet
+                  0x044616                  _TMR2_Counter16BitSet
+                  0x04461e                  _TMR2_Counter16BitGet
+                  0x044622                  _TMR2_CallBack
+                  0x044628                  _TMR2_Start
+                  0x044632                  _TMR2_Stop
+                  0x044638                  _TMR2_GetElapsedThenClear
+                  0x044646                  _TMR2_SoftwareCounterGet
+                  0x04464c                  _TMR2_SoftwareCounterClear
+ .text            0x044652         0x52 build/default/debug/mcc_generated_files/ic1.o
+                  0x044652                  _IC1_Initialize
+                  0x044668                  _IC1_Start
+                  0x044678                  _IC1_Stop
+                  0x04467e                  _IC1_CaptureDataRead
+                  0x044682                  _IC1_ManualTriggerSet
+                  0x044686                  _IC1_TriggerStatusGet
+                  0x04468e                  _IC1_TriggerStatusClear
+                  0x044692                  _IC1_HasCaptureBufferOverflowed
+                  0x04469a                  _IC1_IsCaptureBufferEmpty
+ .text            0x0446a4         0x42 build/default/debug/main.o
+                  0x0446a4                  _main
+ .text            0x0446e6         0x3c build/default/debug/tachometer.o
+                  0x0446e6                  _TestFan
+                  0x044718                  _DetectedStalledTachometer
+ .text            0x044722         0x32 build/default/debug/mcc_generated_files/interrupt_manager.o
+                  0x044722                  _INTERRUPT_Initialize
+ .text            0x044754         0x32 build/default/debug/mcc_generated_files/uart1.o
+                  0x044754                  _UART1_Initialize
+                  0x044766                  _UART1_Read
+                  0x044774                  _UART1_Write
+                  0x044782                  _UART1_StatusGet
 
-.init.delay32     0x044614         0x1c
- .init.delay32    0x044614         0x1c c:/program files (x86)/microchip/xc16/bin/bin/../../lib\libpic30-elf.a(delay32da.eo)
-                  0x044614                  ___delay32
+.init.delay32     0x044786         0x1c
+ .init.delay32    0x044786         0x1c c:/program files (x86)/microchip/xc16/bin/bin/../../lib\libpic30-elf.a(delay32da.eo)
+                  0x044786                  ___delay32
 
-.text             0x044630         0x10
- .text            0x044630         0x10 build/default/debug/mcc_generated_files/traps.o
-                  0x04463a                  _TRAPS_halt_on_error
+.text             0x0447a2         0x10
+ .text            0x0447a2         0x10 build/default/debug/mcc_generated_files/traps.o
+                  0x0447ac                  _TRAPS_halt_on_error

@@ -14,7 +14,7 @@
 
 // Debugging macros, ensure they are NOT defined for production builds
 //#define TESTING_MOUTHPIECE_EXPIRED 1
-#define USE_SHORT_THERAPY_TIME 1
+//#define USE_SHORT_THERAPY_TIME 1
 
 #define    FCY    16000000UL  // required by libpic30.h    
 #include <libpic30.h>
@@ -131,19 +131,18 @@ static bool g_mouthpiece_removed_during_operation = false;
 static bool g_MCA_error = false;
 static uint8_t g_MCA_SwitchDebounceCounter; 
 
-static uint8_t g_display_xpos = 75;
-
+const static uint8_t g_display_xpos = 75;
 //static uint8_t g_display_ypos_1_4 = 90;
-static uint8_t g_display_ypos_2_4 = 123;
+const static uint8_t g_display_ypos_2_4 = 123;
 //static uint8_t g_display_ypos_3_4 = 156;
 //static uint8_t g_display_ypos_4_4 = 190;
 
-static uint8_t g_display_ypos_1_3 = 100;
-static uint8_t g_display_ypos_2_3 = 140;
-static uint8_t g_display_ypos_3_3 = 180;
+const static uint8_t g_display_ypos_1_3 = 100;
+const static uint8_t g_display_ypos_2_3 = 140;
+const static uint8_t g_display_ypos_3_3 = 180;
 
-static uint8_t g_display_ypos_1_2 = 115;
-static uint8_t g_display_ypos_2_2 = 165;
+const static uint8_t g_display_ypos_1_2 = 115;
+const static uint8_t g_display_ypos_2_2 = 165;
 
 static bool g_ResumeFromPause = false;
 
@@ -167,6 +166,8 @@ static void ExecuteVerifySNStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *current_phase);
 static void ExecuteReadyStateEvents(uint16_t hw_wdog_status,
                                     ui_state_t *current_phase);
+static void ExecuteResumeMCAStateEvents(uint16_t hw_wdog_status,
+                                      ui_state_t *current_phase);
 static void ExecuteOperationStateEvents(uint16_t hw_wdog_status,
                                         ui_state_t *current_phase);
 static void ExecuteTherapyCompleteStateEvents(uint16_t hw_wdog_status,
@@ -190,7 +191,7 @@ static void InitializeUISettings(void);
 static void SetUISetting(void);
 static void EnterSettingIntoFlash(uint32_t phase, uint32_t setting,
                                   uint32_t value);
-static void GetSystemStatus(uint16_t *system_status);
+//static void GetSystemStatus(uint16_t *system_status);
 
 void InitializeUserInterface(void)
 {
@@ -447,6 +448,10 @@ void UpdateUIStateMachine(void)
             ExecuteReadyStateEvents(local_hw_wdog_status, &current_phase);
             break;  
 
+        case MCA_RESUME_CONFIRM_STATE:
+            ExecuteResumeMCAStateEvents(local_hw_wdog_status, &current_phase);
+            break;
+            
         case OPERATION_STATE: 
             ExecuteOperationStateEvents(local_hw_wdog_status, &current_phase);
             break;  
@@ -814,7 +819,7 @@ static void ExecuteDetachedMCAStateEvents(uint16_t hw_wdog_status,
 static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *p_current_phase)
 {
-    uint16_t system_status;
+    uint8_t MCAStatus;
     uint16_t timer;
     uint16_t ndx, i;
     bool first_minute; // Should be true within the first minute of countdown
@@ -833,30 +838,32 @@ static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
     }
     else if (hw_wdog_status & MOUTHPIECE_ATTACHED)
     {
-        GetSystemStatus(&system_status);
+        // Changed to simply call MCAGetStatus since that's all that it does.
+        // GetSystemStatus(&system_status);
+        MCAGetStatus(&MCAStatus);
         // Get Serial number of attached MCA
         MCAReadSerialNumber(g_MCA_SN);
 
-        if (system_status & MCA_READING_ERROR)
+        if (MCAStatus & MCA_READING_ERROR)
         {
             // If error reading EEPROM, Go to Insert Mouthpiece
             EnterUIState(p_current_phase, MCA_READING_ERROR_STATE, IMAGE_1, 0);
         }
-        else if (system_status & MCA_EXPIRED)
+        else if (MCAStatus & MCA_EXPIRED)
         {
             // If error MCA expired, Go to Insert Mouthpiece
             EnterUIState(p_current_phase, MCA_EXPIRED_STATE, IMAGE_1, 0);
         }
-        else if (system_status & MCA_PERIOD)
+        else if (MCAStatus & MCA_PERIOD)
         {
             // If error MCA expired, Go to Insert Mouthpiece
             EnterUIState(p_current_phase, MCA_PERIOD_ERROR_STATE, IMAGE_1, 0);
         }
-        else if (system_status & MCA_ERROR)	// Attention, this must be bitwise operator, not logic as was before
+        else if (MCAStatus & MCA_ERROR)	// Attention, this must be bitwise operator, not logic as was before
         {
             //If there has been another error, go to the error state
             g_MCA_error = true;
-            EnterUIState(p_current_phase, ERROR_STATE, IMAGE_1, (((uint64_t)system_status)<<32) | (hw_wdog_status & STARTUP_ERROR)); 
+            EnterUIState(p_current_phase, ERROR_STATE, IMAGE_1, (((uint64_t)MCAStatus)<<32) | (hw_wdog_status & STARTUP_ERROR)); 
         }
         else if (g_mouthpiece_removed_during_operation && strcmp((const char*)g_MCA_SN_old, (const char*)g_MCA_SN) == 0)
         {
@@ -883,7 +890,7 @@ static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
                 WriteImageToLCD(CNTDWN_DISPLAY_BASE + i, false, false);
             }
             //UpdateTimerDial (timer); // this is called by UpdateTimerDisplay()
-            WriteImageToLCD (2008, false, false);   // "PAUSED".
+            WriteImageToLCD (PAUSED_TEXT_IMAGE, false, false);   // "PAUSED".
 
 //            //Write whole clock image
 //            WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_1), false, false);  
@@ -919,21 +926,11 @@ static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
 static void ExecuteVerifySNStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *p_current_phase)
 {
-    //char p_String[12];
+	uint16_t elapsedTherapyTime = 0;
     
     if (!ScreenSaverIsActive())
     {
-        //Display message on LCD        
-        //DisplayText("      S/N"          , g_display_xpos, g_display_ypos_1_4);
-        DisplayText((char *)g_MCA_SN    , g_display_xpos, g_display_ypos_2_4);
-        
-        //strcpy(p_String,"   Press ");
-        // strcat(p_String, (char *)31);
-        //p_String[9] = 31;
-        //p_String[10] = '\0';
-        
-        //DisplayText(p_String            , g_display_xpos, g_display_ypos_3_4);
-        //DisplayText("  if correct"      , g_display_xpos, g_display_ypos_4_4);
+        DisplayText((char *)g_MCA_SN, g_display_xpos, g_display_ypos_2_4);
     }
     
     if(ScreenShouldBeBlank())
@@ -951,28 +948,26 @@ static void ExecuteVerifySNStateEvents(uint16_t hw_wdog_status,
          * the button to be pressed and execute screensaver ops as needed */
         if (PushbuttonPressed(PUSHBUTTON_1))
         {
-            BlankOutDisplay(false);
-            if (g_mouthpiece_removed_during_operation)
+            if(!ScreenSaverIsActive())
             {
-                // Normally this state never occurs,
-                // because from Operation if mouthpiece is removed
-                // goes to Reading, and if same MCA, jump to Paused directly
-                EnterUIState(p_current_phase, PAUSED_STATE, IMAGE_1, 0);
-            }
-            else
-            {
-                if(!ScreenSaverIsActive())
+                // Determine if we need to Start a New Therapy session or
+                // continue with a previous but interrupted Therapy session.
+                MCAReadElapsedTherapyTime (&elapsedTherapyTime);
+                if (elapsedTherapyTime == 0)
                 {
                     // Normal state
                     EnterUIState(p_current_phase, READY_STATE, IMAGE_1, 0);
                 }
-                else
+                else if (elapsedTherapyTime < MCA_THERAPY_COMPLETE_TIME)
                 {
-                    // Wake up after pressed button
-                    EnterUIState(p_current_phase, READING_MCA_STATE, IMAGE_1, 0);
+                    EnterUIState(p_current_phase, MCA_RESUME_CONFIRM_STATE, IMAGE_1, 0);
                 }
             }
-            
+            else
+            {
+                // Wake up after pressed button
+                EnterUIState(p_current_phase, READING_MCA_STATE, IMAGE_1, 0);
+            }
         }
         else if ((hw_wdog_status & MOUTHPIECE_ATTACHED) ==0)
         {
@@ -999,6 +994,10 @@ static void ExecuteVerifySNStateEvents(uint16_t hw_wdog_status,
 static void ExecuteReadyStateEvents(uint16_t hw_wdog_status,
                                     ui_state_t *p_current_phase)
 {
+    uint32_t therapy_on_time;
+	uint16_t elapsedTherapyTime = 0;
+    uint32_t currentTime, MCA_LastTherapyTime;
+    
 //    if (!ScreenSaverIsActive())
 //    {
 //        //Display message on LCD                       
@@ -1042,19 +1041,31 @@ static void ExecuteReadyStateEvents(uint16_t hw_wdog_status,
         }
         else if (PushbuttonPressed(PUSHBUTTON_1))
         {
-            uint32_t therapy_on_time = ReadUISetting(OPERATION_STATE, SPARE0);
+            //uint32_t therapy_on_time = ReadUISetting(OPERATION_STATE, SPARE0);
+            therapy_on_time = 5 * 60;  // 5 minutes in seconds.
+            MCAReadElapsedTherapyTime (&elapsedTherapyTime);
+            // We should only have to check for a time if therapy was started
+            // and not completed.
+            if (elapsedTherapyTime != MCA_THERAPY_COMPLETE_TIME)
+                therapy_on_time = MCA_THERAPY_COMPLETE_TIME - elapsedTherapyTime;
+            
 #ifdef USE_SHORT_THERAPY_TIME
             therapy_on_time = 30;
 #endif
             EnterUIState(p_current_phase, OPERATION_STATE, IMAGE_2,
                             therapy_on_time/60);
+            RTCCGetTimestamp(&currentTime);
+            MCAReadTimeStamp(&MCA_LastTherapyTime);
+            if ((currentTime - MCA_LastTherapyTime) > (uint32_t)MCA_TIME_LIMIT)  // 12 hours in seconds.
+            {
+                MCAWriteTimeStamp (currentTime);
+            }
             WriteLEDCurrent(((float) g_specified_LED_current)/1000.0, false); 
+            // Update MCA with current LCU time, if appropriate.
+
             // Set number of seconds of operation
-#ifdef USE_SHORT_THERAPY_TIME
             StartOperationStateCountdown(therapy_on_time);
-#else
-            StartOperationStateCountdown(ReadUISetting(OPERATION_STATE, SPARE0));
-#endif
+            //StartOperationStateCountdown(ReadUISetting(OPERATION_STATE, SPARE0));
             /*  Elsewhere in the code, g_most_recent_update_time is used to
              *  determine which clock ticks need to be erased. If the 
              *  therapy time is an even multiple of 60 (i.e. an even number
@@ -1073,6 +1084,88 @@ static void ExecuteReadyStateEvents(uint16_t hw_wdog_status,
     }
 }
 
+/*
+ This state is entered when the MCA is trying to recover from an
+ operation that was interrupted by a power cycle.
+ */
+static void ExecuteResumeMCAStateEvents(uint16_t hw_wdog_status,
+                                      ui_state_t *p_current_phase)
+{
+    uint32_t therapy_on_time;
+	uint16_t elapsedTherapyTime = 0;
+    uint32_t currentTime, MCA_LastTherapyTime;
+    
+    if(ScreenShouldBeBlank())
+    {
+        EnterUIState(p_current_phase, STANDBY_STATE, IMAGE_1, 0);
+    }    
+    else if (hw_wdog_status & STARTUP_ERROR)
+    {
+        EnterUIState(p_current_phase, ERROR_STATE, IMAGE_1, hw_wdog_status & STARTUP_ERROR);
+    }
+    else if ((hw_wdog_status & MOUTHPIECE_ATTACHED)==0)
+    {
+        //EnterUIState(p_current_phase, MCA_DETACHED_STATE, IMAGE_1, 0);
+        // If Mouthpiece is removed, let's go back to the
+        // "Insert Mouthpiece" state.
+        EnterUIState(p_current_phase, INSERT_MCA_STATE, IMAGE_1, 0);
+    }
+    else if (!EnterErrorStateIfBistFails(p_current_phase, false))
+    {
+        // We execute this if BIST did not generate any errors
+        if (ScreenSaverIsActive())
+        {
+            if (PushbuttonPressed(PUSHBUTTON_1))
+            {
+                // Return to Reading state after waking up
+                EnterUIState(p_current_phase, READING_MCA_STATE, IMAGE_1, 0);
+            }      
+            ExecuteScreenSaverMode();
+        }
+        else if (PushbuttonPressed(PUSHBUTTON_1))
+        {
+            //uint32_t therapy_on_time = ReadUISetting(OPERATION_STATE, SPARE0);
+            therapy_on_time = 5 * 60;  // 5 minutes in seconds.
+            MCAReadElapsedTherapyTime (&elapsedTherapyTime);
+            // We should only have to check for a time if therapy was started
+            // and not completed.
+            if (elapsedTherapyTime != MCA_THERAPY_COMPLETE_TIME)
+                therapy_on_time = MCA_THERAPY_COMPLETE_TIME - elapsedTherapyTime;
+            
+#ifdef USE_SHORT_THERAPY_TIME
+            therapy_on_time = 30;
+#endif
+            EnterUIState(p_current_phase, OPERATION_STATE, IMAGE_2,
+                            therapy_on_time/60);
+            RTCCGetTimestamp(&currentTime);
+            MCAReadTimeStamp(&MCA_LastTherapyTime);
+            if ((currentTime - MCA_LastTherapyTime) > (uint32_t)MCA_TIME_LIMIT)  // 12 hours in seconds.
+            {
+                MCAWriteTimeStamp (currentTime);
+            }
+            WriteLEDCurrent(((float) g_specified_LED_current)/1000.0, false); 
+            // Update MCA with current LCU time, if appropriate.
+
+            // Set number of seconds of operation
+            StartOperationStateCountdown(therapy_on_time);
+            //StartOperationStateCountdown(ReadUISetting(OPERATION_STATE, SPARE0));
+            /*  Elsewhere in the code, g_most_recent_update_time is used to
+             *  determine which clock ticks need to be erased. If the 
+             *  therapy time is an even multiple of 60 (i.e. an even number
+             *  of minutes) then we start with a complete dial image.
+             *  Otherwise, we start with that same complete dial but erase
+             *  the first 60 - (therapy_on_time % 60) tick marks before
+             *  counting down.
+             * 
+             *  To ensure that our routines know to erase these initial tick
+             *  marks, we first add a full minute to the therapy time. This has
+             *  the effect of erasing the tick marks in question, as one can
+             *  determine by analyzing the code.  */
+            g_most_recent_update_time = ((therapy_on_time % 60) == 0 ?
+                therapy_on_time : (therapy_on_time + 60));
+        }
+    }
+}
 
 /*  The application iterates through this function while in the 
  *  operation state.
@@ -1095,6 +1188,7 @@ static void ExecuteOperationStateEvents(uint16_t hw_wdog_status,
                                                    // we treat this as an error
     const uint16_t OPERATION_ERROR = (BASIC_DEVICE_READY_ERROR |
             CURRENT_SOURCE_FAULT | CURRENT_TOO_HIGH | CURRENT_TOO_LOW);
+    uint16_t completedTherapies;
     bool MCAReadingSuccess;
     
     if ((hw_wdog_status & MOUTHPIECE_ATTACHED) == 0)
@@ -1186,6 +1280,11 @@ static void ExecuteOperationStateEvents(uint16_t hw_wdog_status,
             {
                 WriteLEDCurrent(0.0, false);
                 EnterUIState(p_current_phase, THERAPY_COMPLETE_STATE, IMAGE_1, 0);
+                // Update the MCA EEPROM's Completed Therapies counter.
+                MCAReadCompletedTherapies (&completedTherapies);
+                ++completedTherapies;
+                MCAWriteCompletedTherapies (completedTherapies);
+                MCAWriteElapsedTherapyTime (MCA_THERAPY_COMPLETE_TIME);
                 g_ResumeFromPause = false;
             }
         }
@@ -1592,6 +1691,12 @@ static void EnterUIState(ui_state_t *p_current_phase, ui_state_t next_phase,
             WriteImageToLCD(2003, false, false);
             EnableScreenSaver();
             break; 
+        case MCA_RESUME_CONFIRM_STATE:
+            PushbuttonPressed(PUSHBUTTON_1);
+            WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
+            WriteImageToLCD(PRESS_TO_RESUME_IMAGE, false, false);
+            EnableScreenSaver();
+            break;
         case PAUSED_STATE:
             //WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
             // Also display overlay indicating number of minutes remaining
@@ -2036,7 +2141,9 @@ static void InitializeUISettings(void)
         {2700,    0,    0,    0,    0,    0,    0,    0,   0,   0, 100, 1000,   0,   0,   0,    0, 0,       0,      0,      0},   // Verify SN
         {2700,    0,    0,    0,    0,    0,    0,    0, 100,   0,   0, 1000,   0,   0,   0,    0, 0,       0,      0,      0},   // MCA Detached
         {2700,    0,    0,    0,    0,    0,    0,    0, 100,   0,   0, 1000,   0,   0,   0,    0, 0,       0,      0,      0},   // MCA Reading Error
-        {2700,    0,    0,    0,    0,    0,    0,    0, 100,   0,   0, 1000,   0,   0,   0,    0, 0,       0,      0,      0}    // MCA Expired
+        {2700,    0,    0,    0,    0,    0,    0,    0, 100,   0,   0, 1000,   0,   0,   0,    0, 0,       0,      0,      0},    // MCA Expired
+        {2700,    0,    0,    0,    0,    0,    0,    0, 100,   0,   0, 1000,   0,   0,   0,    0, 0,       0,      0,      0},    // MCA Daily Limit
+        {2700,    0,    0,    0,    0,    0,    0,    0,   0,   0, 100, 1000,   0,   0,   0,    0, 0,       0,      0,      0}    // MCA_RESUME_CONFIRM_STATE
     };  
     
     printf("\n\r  Are you sure you want to initialize all settings back to default? (Y/N) >");
@@ -2121,10 +2228,12 @@ static void EnterSettingIntoFlash(uint32_t phase, uint32_t setting, uint32_t val
  * Arguments:  pointer to status word
  * Returns:  void
  */
-static void GetSystemStatus(uint16_t *system_status)
-{
-    uint8_t MCAStatus;
-    
-    MCAGetStatus(&MCAStatus);
-    *system_status = (uint16_t)MCAStatus;
-}
+//static void GetSystemStatus(uint16_t *system_status)
+//{
+//    uint8_t MCAStatus;
+//    
+//    MCAGetStatus(&MCAStatus);
+//    *system_status = (uint16_t)MCAStatus;
+//}
+
+

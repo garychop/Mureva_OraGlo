@@ -31,6 +31,7 @@ typedef enum {
     MCA_READING_ERROR_STATE,
     MCA_EXPIRED_STATE,
     MCA_PERIOD_ERROR_STATE,
+    MCA_RESUME_CONFIRM_STATE,
     NUM_UI_STATES // This is not an actual state.
                   // It just reports the number of states in use.
 } ui_state_t;
@@ -59,6 +60,10 @@ typedef enum {
     SPARE3 
 } ui_setting_t;
 
+typedef enum IMAGE_ENUMERATION {
+    PAUSED_TEXT_IMAGE = 2008,
+    PRESS_TO_RESUME_IMAGE = 2012
+} IMAGE_ENUM;
 void InitializeUserInterface(void);
 
 void UserInterfaceSubmenu(void);

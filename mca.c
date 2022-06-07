@@ -24,7 +24,6 @@
 // The serial number is stored in the security register
 #define EEPROM_ADDR_MCA_SERIAL_NUM                      0x10
 
-
 bool MCADisplayContents(void)
 {
 	bool success = true;
@@ -797,26 +796,66 @@ bool MCAGetStatus(uint8_t *MCAStatus)
     printf("\n\r MCA Elapsed Therapy Time = %d", elapsedTherapyTime);
     printf("\n\r MCA Max Number of Therapies = %d", maxNumOfTherapies);
     printf("\n\r MCA Last Time Stamp = %ld", MCATimeStamp);
-    printf("\n\r LCUTimeStamp = %ld", LCUTimeStamp);
+    printf("\n\r LCUTimeStamp = %ld,     diff = %ld", LCUTimeStamp, LCUTimeStamp - MCATimeStamp);
     printf("\n\r");
 
     *MCAStatus = 0;
     //Check for MCA EEPROM reading error
     if (!MCAReadingSuccess)   
     {
-        *MCAStatus = MCA_READING_ERROR;        
+        *MCAStatus = MCA_READING_ERROR;
+        return false;
     }
     //Check to make sure this particular MCA has not exceeded the maximum amount of therapy time allowed
     if (completedTherapies >= maxNumOfTherapies)
     {
         *MCAStatus |= MCA_EXPIRED;
+        return MCAReadingSuccess;    // No need to look any further.
     }
+    // Check to see if the therapy has NOT been started for today. If not started
+    // then simply return with an OK status.
+    if (elapsedTherapyTime == MCA_THERAPY_NOT_STARTED_TIME)
+        return MCAReadingSuccess;    // Return with NO MCA errors and OK to use.
+    
     // [SDS#7.5.19] Check to make sure this particular MCA was not used within the last minimum period
-    if ((LCUTimeStamp - MCATimeStamp) < (uint32_t)(60l*60l*12l))  // 12 hours in seconds. 60*60*ReadUISetting(READING_MCA_STATE, SPARE1))
+    if ((LCUTimeStamp - MCATimeStamp) < (uint32_t)MCA_TIME_LIMIT)  // 12 hours in seconds. 60*60*ReadUISetting(READING_MCA_STATE, SPARE1))
     {
         // Check the Elapsed Therapy time for completed.
-        if ((elapsedTherapyTime == 0) || (elapsedTherapyTime > ((4*60) + 30)))  // 4 minutes 30 seconds.
+        if (elapsedTherapyTime > MCA_MINIMUM_THERAPY_TIME)  // 4 minutes 30 seconds.
+        {
             *MCAStatus |= MCA_PERIOD;
+            if (elapsedTherapyTime != MCA_THERAPY_COMPLETE_TIME)
+            {
+                // update the EEPROM with a completed therapy
+                MCAWriteElapsedTherapyTime (MCA_THERAPY_COMPLETE_TIME);
+                // Indicate that another therapy was completed.
+            }
+            ++completedTherapies;
+            MCAWriteCompletedTherapies (completedTherapies);
+        }
+        else
+        {   // It's within 12 hours and it's less than a completed therapy.
+            // We are going to continue with this therapy session.
+        }
+    }
+    else // It's been at least 12 hours, set Elapsed Time and Number of 
+        // Completed Therapies.
+    {
+        // We need to catch when the Mouthpiece was removed during Therapy
+        // or when attempted to be used within 12 hours and adjust the
+        // number of Completed Therapies appropriately.
+        if (elapsedTherapyTime > MCA_MINIMUM_THERAPY_TIME)
+        {
+            if (elapsedTherapyTime != MCA_THERAPY_COMPLETE_TIME)
+            {
+                // update the EEPROM with a completed therapy
+                MCAWriteElapsedTherapyTime (MCA_THERAPY_COMPLETE_TIME);
+                // Indicate that another therapy was completed.
+            }
+            ++completedTherapies;
+            MCAWriteCompletedTherapies (completedTherapies);
+            MCAWriteElapsedTherapyTime (MCA_THERAPY_NOT_STARTED_TIME); // Set it indicate "Therapy Not Started".
+        }
     }
  
     return MCAReadingSuccess;

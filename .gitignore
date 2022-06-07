@@ -1,5 +1,6 @@
 /nbproject/private
 /dist/default/production
+/dist/default/debug
 *.d
 *.o
 *.tmp
