@@ -489,8 +489,8 @@ bool MCASetCalibration(void)
 
 bool MCAReadTimeStamp(uint32_t *MCATimeStamp)
 {
-	uint8_t data_byte;
-	uint32_t data_lword;
+	uint8_t data_byte = 0;
+	uint32_t data_lword = 0l;
 	bool success;
 	
     *MCATimeStamp = 0;

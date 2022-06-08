@@ -62,7 +62,9 @@ typedef enum {
 
 typedef enum IMAGE_ENUMERATION {
     PAUSED_TEXT_IMAGE = 2008,
-    PRESS_TO_RESUME_IMAGE = 2012
+    PRESS_TO_RESUME_IMAGE = 2012,
+    CLOCK_FULL_IMAGE = 4000,
+    LARGE_TIME0_TEXT = 4100
 } IMAGE_ENUM;
 void InitializeUserInterface(void);
 

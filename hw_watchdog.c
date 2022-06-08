@@ -262,13 +262,4 @@ uint16_t UpdateMouthpieceStatus(void)
     }
     
     return (g_PreviousMouthpieceSwitchStatus);
-    
-//    if (g_PreviousMouthpieceSwitchStatus)   // Active LOW
-//    {
-//        *status &= ~MOUTHPIECE_ATTACHED;
-//    }
-//    else
-//    {
-//        *status |= MOUTHPIECE_ATTACHED;
-//    }
 }

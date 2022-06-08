@@ -823,13 +823,6 @@ static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
     uint16_t timer;
     uint16_t ndx, i;
     bool first_minute; // Should be true within the first minute of countdown
-    //char myString[64];
-    
-//    if (!ScreenSaverIsActive())
-//    {
-//        //Display message on LCD                       
-//        DisplayText("Reading...", g_display_xpos, g_display_ypos_2_3);
-//    }
   
     if (hw_wdog_status & STARTUP_ERROR)
     {
@@ -839,7 +832,6 @@ static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
     else if (hw_wdog_status & MOUTHPIECE_ATTACHED)
     {
         // Changed to simply call MCAGetStatus since that's all that it does.
-        // GetSystemStatus(&system_status);
         MCAGetStatus(&MCAStatus);
         // Get Serial number of attached MCA
         MCAReadSerialNumber(g_MCA_SN);
@@ -867,37 +859,19 @@ static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
         }
         else if (g_mouthpiece_removed_during_operation && strcmp((const char*)g_MCA_SN_old, (const char*)g_MCA_SN) == 0)
         {
-            //ResumeOperationStateCountdown();
-
             // If the MCA was removed during operation, and it is the same as the one inserted before, go directly to Pause. Otherwise, verify
-            //EnterUIState(p_current_phase, OPERATION_STATE, IMAGE_2, g_most_recent_update_time/60);
-//            WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_2) + MAX_NUM_MINUTES + 1, false, false);
-//            WriteImageToLCD (2009, false, false);
             EnterUIState(p_current_phase, PAUSED_STATE, IMAGE_1, 0);
-//            WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_2) + MAX_NUM_MINUTES + 1, false, false);
-            //TimeToUpdateDisplay(&timer, &first_minute);
             timer = GetOperationStateTimer();
             first_minute = true;
             g_ResumeFromPause = true;
-            WriteImageToLCD(ReadUISetting(OPERATION_STATE, IMAGE_1), false, false);  // This displays the full clock tick marks.
-            WriteImageToLCD(ReadUISetting(OPERATION_STATE, IMAGE_2) + timer/60, false, false);  
-            //UpdateTimerDisplay(timer, first_minute);
+            WriteImageToLCD(CLOCK_FULL_IMAGE, false, false);  // This displays the full clock tick marks.
+            WriteImageToLCD(LARGE_TIME0_TEXT + timer/60, false, false);  
             ndx = ((timer % 60) ? (timer % 60) : 60);
-            //sprintf (myString, "@825 timer = %d    FM = %d  ndx = %d\n", timer, first_minute, ndx);
-            //printf (myString);
             for (i = 59; i >= ndx; i--)
             {
                 WriteImageToLCD(CNTDWN_DISPLAY_BASE + i, false, false);
             }
-            //UpdateTimerDial (timer); // this is called by UpdateTimerDisplay()
             WriteImageToLCD (PAUSED_TEXT_IMAGE, false, false);   // "PAUSED".
-
-//            //Write whole clock image
-//            WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_1), false, false);  
-//            // This only updates the minutes numeral within the clock dial
-//            WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_2) + 0, false, false);  
-
-            //g_ResumeFromPause = true;
         }
         else  
         {
