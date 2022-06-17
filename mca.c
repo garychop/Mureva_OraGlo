@@ -820,43 +820,42 @@ bool MCAGetStatus(uint8_t *MCAStatus)
     // [SDS#7.5.19] Check to make sure this particular MCA was not used within the last minimum period
     if ((LCUTimeStamp - MCATimeStamp) < (uint32_t)MCA_TIME_LIMIT)  // 12 hours in seconds. 60*60*ReadUISetting(READING_MCA_STATE, SPARE1))
     {
-        // Check the Elapsed Therapy time for completed.
-        if (elapsedTherapyTime > MCA_MINIMUM_THERAPY_TIME)  // 4 minutes 30 seconds.
+        // If its within 12 hours and the Therapy has been completed,
+        // return a MCA_PERIOD error.
+        if (elapsedTherapyTime == MCA_THERAPY_COMPLETE_TIME)
         {
             *MCAStatus |= MCA_PERIOD;
-            if (elapsedTherapyTime != MCA_THERAPY_COMPLETE_TIME)
-            {
-                // update the EEPROM with a completed therapy
-                MCAWriteElapsedTherapyTime (MCA_THERAPY_COMPLETE_TIME);
-                // Indicate that another therapy was completed.
-            }
-            ++completedTherapies;
-            MCAWriteCompletedTherapies (completedTherapies);
         }
         else
         {   // It's within 12 hours and it's less than a completed therapy.
             // We are going to continue with this therapy session.
+            return MCAReadingSuccess;    // Return with NO MCA errors and OK to use.
         }
     }
     else // It's been at least 12 hours, set Elapsed Time and Number of 
         // Completed Therapies.
     {
         // We need to catch when the Mouthpiece was removed during Therapy
-        // or when attempted to be used within 12 hours and adjust the
-        // number of Completed Therapies appropriately.
-        if (elapsedTherapyTime > MCA_MINIMUM_THERAPY_TIME)
+        if (elapsedTherapyTime > MCA_THERAPY_NOT_STARTED_TIME)
         {
-            if (elapsedTherapyTime != MCA_THERAPY_COMPLETE_TIME)
+            if (elapsedTherapyTime < MCA_THERAPY_COMPLETE_TIME)
             {
                 // update the EEPROM with a completed therapy
-                MCAWriteElapsedTherapyTime (MCA_THERAPY_COMPLETE_TIME);
+                ++completedTherapies;
+                MCAWriteCompletedTherapies (completedTherapies);
+                printf("\n\r -----> Changed MCA Completed Therapies = %d", completedTherapies);
                 // Indicate that another therapy was completed.
+                if (completedTherapies >= maxNumOfTherapies)
+                {
+                    *MCAStatus |= MCA_EXPIRED;
+                    return MCAReadingSuccess;    // No need to look any further.
+                }
             }
-            ++completedTherapies;
-            MCAWriteCompletedTherapies (completedTherapies);
             MCAWriteElapsedTherapyTime (MCA_THERAPY_NOT_STARTED_TIME); // Set it indicate "Therapy Not Started".
+            MCAReadElapsedTherapyTime(&elapsedTherapyTime);
+            printf("\n\r ----_> Changed MCA Elapsed Therapy Time = %d", elapsedTherapyTime);
+            printf("\n\r");
         }
-    }
- 
+    } 
     return MCAReadingSuccess;
 }

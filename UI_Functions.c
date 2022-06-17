@@ -42,6 +42,10 @@
 // Maximum length of setting name as displayed via UART interface
 #define MAXLEN_SETTING_NAME  12
 
+#define SCREEN_SAVER_IMAGE_ID 2100
+
+#define THERAPY_TIME_MAX_SECONDS (5 * 60)       // 5 minutes in seconds
+
 // Starting Address in FLASH where defaults are stored = 513*64, we need 5 pages (13 states * 20 settings * 4 Bytes = 1040 Bytes --> Each page 256 Bytes)
 const uint32_t FLASH_ADDR_OF_SETTINGS = 32832;
 static const uint32_t USER_INTERFACE_SETTINGS_START_PAGE = 513;
@@ -49,12 +53,6 @@ static const uint32_t USER_INTERFACE_SETTINGS_END_PAGE = 517; // +5 Pages
 
 // No need to monitor START_WDOG
 static const uint16_t STARTUP_ERROR = (BASIC_DEVICE_READY_ERROR | THERAPY_ON);
-
-// Used in generating the ID numbers of the countdown tick mark images
-static const uint16_t CNTDWN_DISPLAY_BASE = 4000; 
- 
-// Used in generating the numeral indicating the number of minutes left
-static const uint16_t MINUTE_INDICATOR_BASE = 4100; 
 
 /* These indices are used to identify the proper overlay image
    for a particular error message.  The identifier for this image overlay
@@ -195,10 +193,12 @@ static void EnterSettingIntoFlash(uint32_t phase, uint32_t setting,
 
 void InitializeUserInterface(void)
 {
-    ScreenSaverInit(ReadUISetting(STANDBY_STATE, IMAGE_2),
-                    ReadUISetting(STANDBY_STATE, SPARE0),
-                    ReadUISetting(STANDBY_STATE, SPARE1),
-                    ReadUISetting(STANDBY_STATE, SPARE2));
+//    ScreenSaverInit(ReadUISetting(STANDBY_STATE, IMAGE_2),
+//                    ReadUISetting(STANDBY_STATE, SPARE0),
+//                    ReadUISetting(STANDBY_STATE, SPARE1),
+//                    ReadUISetting(STANDBY_STATE, SPARE2));
+    //ScreenSaverInit (SCREEN_SAVER_IMAGE_ID, 1800, 1800, 10);   // 
+    ScreenSaverInit (SCREEN_SAVER_IMAGE_ID, 180, 1800, 10);
 }
 
 
@@ -329,14 +329,14 @@ void GenerateCountdownDisplay(void)
     for (i = 60; i > 0; i--)
     {
         StartGenericCountdownTimer(1);
-        WriteImageToLCD(CNTDWN_DISPLAY_BASE + i, false, false);
+        WriteImageToLCD(CLOCK_FULL_IMAGE + i, false, false);
         WaitForGenericCountdownTimer(1);
     }
 
     StartGenericCountdownTimer(1);
-    WriteImageToLCD(CNTDWN_DISPLAY_BASE + 61, false, false);
+    WriteImageToLCD(CLOCK_FULL_IMAGE + 61, false, false);
     WaitForGenericCountdownTimer(0);
-    WriteImageToLCD(ReadUISetting(OPERATION_STATE, IMAGE_1), false, false); 
+//    WriteImageToLCD(ReadUISetting(OPERATION_STATE, IMAGE_1), false, false); 
 }
 
 
@@ -643,15 +643,6 @@ static void ExecuteInsertMCAStateEvents(uint16_t hw_wdog_status,
 static void ExecuteReadingErrorMCAStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *p_current_phase)
 {
-//    if (!ScreenSaverIsActive())
-//    {
-//        //Display message on LCD                       
-//        DisplayText("   MOUTH", g_display_xpos , g_display_ypos_1_4);
-//        DisplayText("    PIECE", g_display_xpos, g_display_ypos_2_4);
-//        DisplayText(" READING", g_display_xpos , g_display_ypos_3_4);
-//        DisplayText("    ERROR", g_display_xpos, g_display_ypos_4_4);
-//    }
-    
     if(ScreenShouldBeBlank())
     {
         EnterUIState(p_current_phase, STANDBY_STATE, IMAGE_1, 0);
@@ -766,14 +757,6 @@ static void ExecuteMCAPeriodStateEvents(uint16_t hw_wdog_status,
 static void ExecuteDetachedMCAStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *p_current_phase)
 {
-//    if (!ScreenSaverIsActive())
-//    {
-//        //Display message on LCD                       
-//        DisplayText("   MOUTH", g_display_xpos, g_display_ypos_1_3);
-//        DisplayText("    PIECE", g_display_xpos, g_display_ypos_2_3);
-//        DisplayText("DETACHED", g_display_xpos, g_display_ypos_3_3);
-//    }
-        
     if(ScreenShouldBeBlank())
     {
         EnterUIState(p_current_phase, STANDBY_STATE, IMAGE_1, 0);
@@ -869,13 +852,14 @@ static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
             ndx = ((timer % 60) ? (timer % 60) : 60);
             for (i = 59; i >= ndx; i--)
             {
-                WriteImageToLCD(CNTDWN_DISPLAY_BASE + i, false, false);
+                WriteImageToLCD(CLOCK_FULL_IMAGE + i, false, false);
             }
-            WriteImageToLCD (PAUSED_TEXT_IMAGE, false, false);   // "PAUSED".
+            WriteImageToLCD (PAUSED_TEXT_IMAGE_ID, false, false);   // "PAUSED".
         }
         else  
         {
             // Normal state. Go to Verify SN
+            g_mouthpiece_removed_during_operation = false; // Don't allow continued operation.
             EnterUIState(p_current_phase, VERIFY_SN_STATE, IMAGE_1, 0);
         }
         
@@ -972,20 +956,6 @@ static void ExecuteReadyStateEvents(uint16_t hw_wdog_status,
 	uint16_t elapsedTherapyTime = 0;
     uint32_t currentTime, MCA_LastTherapyTime;
     
-//    if (!ScreenSaverIsActive())
-//    {
-//        //Display message on LCD                       
-//        DisplayText("   READY"          , g_display_xpos, g_display_ypos_1_2);
-//        
-//        char p_String[8];
-//        strcpy(p_String,"   Press ");
-//        // strcat(p_String, (char *)31);
-//        p_String[9] = 31;
-//        p_String[10] = '\0';
-//        
-//        DisplayText(p_String            , g_display_xpos, g_display_ypos_2_2);
-//    }
-        
     if(ScreenShouldBeBlank())
     {
         EnterUIState(p_current_phase, STANDBY_STATE, IMAGE_1, 0);
@@ -1016,7 +986,7 @@ static void ExecuteReadyStateEvents(uint16_t hw_wdog_status,
         else if (PushbuttonPressed(PUSHBUTTON_1))
         {
             //uint32_t therapy_on_time = ReadUISetting(OPERATION_STATE, SPARE0);
-            therapy_on_time = 5 * 60;  // 5 minutes in seconds.
+            therapy_on_time = THERAPY_TIME_MAX_SECONDS;  // 5 minutes in seconds.
             MCAReadElapsedTherapyTime (&elapsedTherapyTime);
             // We should only have to check for a time if therapy was started
             // and not completed.
@@ -1260,6 +1230,7 @@ static void ExecuteOperationStateEvents(uint16_t hw_wdog_status,
                 MCAWriteCompletedTherapies (completedTherapies);
                 MCAWriteElapsedTherapyTime (MCA_THERAPY_COMPLETE_TIME);
                 g_ResumeFromPause = false;
+                EnableScreenSaver(); // Allow the screen saver to execute.
             }
         }
     }
@@ -1504,7 +1475,7 @@ static void UpdateTimerDial(uint16_t timer)
         //printf (myString);
         for (i=start_tick; i>=(timer % 60); i--)
         {
-            WriteImageToLCD(CNTDWN_DISPLAY_BASE + i, false, false); 
+            WriteImageToLCD(CLOCK_FULL_IMAGE + i, false, false); 
         }
     }
     else
@@ -1519,7 +1490,7 @@ static void UpdateTimerDial(uint16_t timer)
         //printf (myString);
         for (i=59; i>=ndx; i--)
         {
-            WriteImageToLCD(CNTDWN_DISPLAY_BASE + i, false, false);
+            WriteImageToLCD(CLOCK_FULL_IMAGE + i, false, false);
         }
     }
 }
@@ -1592,7 +1563,7 @@ static void EnterUIState(ui_state_t *p_current_phase, ui_state_t next_phase,
                 WriteImageToLCD(ReadUISetting(next_phase, IMAGE_1), true, false);
 
                 // Display message on LCD                       
-                DisplayText(" CONTROL", g_display_xpos, g_display_ypos_1_3);
+                DisplayText("   CONTROL", g_display_xpos, g_display_ypos_1_3);
                 DisplayText("     UNIT" , g_display_xpos, g_display_ypos_2_3);
                 sprintf(error_message, " ERROR %02d", (uint16_t)ERROR_IMG_UNKNOWN);
                 DisplayText(error_message, g_display_xpos, g_display_ypos_3_3);
@@ -1648,12 +1619,12 @@ static void EnterUIState(ui_state_t *p_current_phase, ui_state_t next_phase,
             break; 
         case READING_MCA_STATE: 
             WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
-            WriteImageToLCD(2001, false, false);
+            WriteImageToLCD(READING_MCA_IMAGE_ID, false, false);
             EnableScreenSaver();
             break; 
         case VERIFY_SN_STATE: 
             WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
-            WriteImageToLCD(2002, false, false);
+            WriteImageToLCD(VERIFY_MCA_SN_IMAGE_ID, false, false);
             EnableScreenSaver();
             break; 
         case READY_STATE:
@@ -1662,20 +1633,20 @@ static void EnterUIState(ui_state_t *p_current_phase, ui_state_t next_phase,
             // the ready state.
             PushbuttonPressed(PUSHBUTTON_1);
             WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
-            WriteImageToLCD(2003, false, false);
+            WriteImageToLCD(PRESS_WHEN_READY__IMAGE_ID, false, false);
             EnableScreenSaver();
             break; 
         case MCA_RESUME_CONFIRM_STATE:
             PushbuttonPressed(PUSHBUTTON_1);
             WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
-            WriteImageToLCD(PRESS_TO_RESUME_IMAGE, false, false);
+            WriteImageToLCD(PRESS_TO_RESUME_IMAGE_ID, false, false);
             EnableScreenSaver();
             break;
         case PAUSED_STATE:
             //WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
             // Also display overlay indicating number of minutes remaining
             //WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_2) + aux_info, false, false);
-            WriteImageToLCD (2008, false, false);
+            WriteImageToLCD (PAUSED_TEXT_IMAGE_ID, false, false);
             EnableScreenSaver();
             break; 
         case THERAPY_COMPLETE_STATE: 
@@ -1685,27 +1656,27 @@ static void EnterUIState(ui_state_t *p_current_phase, ui_state_t next_phase,
         case MCA_DETACHED_STATE:  
             g_MCA_SwitchDebounceCounter = 0;
             //WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
-            WriteImageToLCD(2005, true, false);    // Red Box 
-            WriteImageToLCD(2007, false, false);    // "MOUTHPIECE DETACHED, Reinsert Mouthpiece"
+            WriteImageToLCD(RED_BOX_IMAGE_ID, true, false);    // Red Box 
+            WriteImageToLCD(MCA_DETACHED_IMAGE_ID, false, false);    // "MOUTHPIECE DETACHED, Reinsert Mouthpiece"
             EnableScreenSaver();
             break;
         case MCA_READING_ERROR_STATE:
             // Turn current off just in case not already done
             WriteLEDCurrent(0.0, false);
             //WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false); 
-            WriteImageToLCD(2005, true, false);    // Red Box 
-            WriteImageToLCD(2004, false, false);    // "Reading Error, Re-insert Mouthpiece"
+            WriteImageToLCD(RED_BOX_IMAGE_ID, true, false);    // Red Box 
+            WriteImageToLCD(MCA_READING_ERROR_IMAGE_ID, false, false);    // "Reading Error, Re-insert Mouthpiece"
             EnableScreenSaver();
             break;
         case MCA_EXPIRED_STATE:
             //WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
-            WriteImageToLCD(2005, true, false);    // Red Box 
-            WriteImageToLCD(2006, false, false);   // "MOUTHPIECE EXPIRED"
+            WriteImageToLCD(RED_BOX_IMAGE_ID, true, false);    // Red Box 
+            WriteImageToLCD(MCA_EXPIRED_IMAGE_ID, false, false);   // "MOUTHPIECE EXPIRED"
             EnableScreenSaver();
             break;
         case MCA_PERIOD_ERROR_STATE:
-            WriteImageToLCD(2005, true, false);    // Red Box 
-            WriteImageToLCD(2011, false, false);   // "MOUTHPIECE DAILY LIMIT REACHED"
+            WriteImageToLCD(RED_BOX_IMAGE_ID, true, false);    // Red Box 
+            WriteImageToLCD(MCA_DAY_LIMIT_IMAGE_ID, false, false);   // "MOUTHPIECE DAILY LIMIT REACHED"
             EnableScreenSaver();
             break;
         default: 
@@ -1948,7 +1919,7 @@ static error_index_t DisplayTestResultsByPriority(uint16_t selftest_status, uint
     
     // Write white background
     //WriteImageToLCD(ReadUISetting(ERROR_STATE, IMAGE_1), true, false);
-    WriteImageToLCD (2005, true, false);    // Draw Red Box
+    WriteImageToLCD (RED_BOX_IMAGE_ID, true, false);    // Draw Red Box
     // Display message on LCD                       
     DisplayText(" SYSTEM", g_display_xpos, g_display_ypos_1_2);
     //DisplayText("UNIT" , g_display_xpos, g_display_ypos_2_3);

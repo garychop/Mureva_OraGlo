@@ -16,7 +16,7 @@
 #include "screensaver.h"
 #include "rtc.h"
 #include "lcd.h"
-
+#include "rgbled.h"
 
 static uint32_t g_screensaver_image_id;
 
@@ -41,7 +41,7 @@ void ScreenSaverInit(uint32_t image_id, uint16_t time_before_screensaver_starts,
     g_time_before_screensaver_starts = time_before_screensaver_starts;
     g_max_screensaver_time = max_screensaver_time;
     //The multiplier of 20 was determined by empirical testing
-    g_screensaver_refresh_interval = 20*screensaver_refresh_interval;
+    g_screensaver_refresh_interval = 5*screensaver_refresh_interval; // it was "20*"
 }
 
 /*  
@@ -115,6 +115,7 @@ void ExecuteScreenSaverMode(void)
          
         if (++g_screensaver_counter >= g_screensaver_refresh_interval)
         {
+            WriteRGBLED(LED_BLUE, 0, 0, 0, 0);
             // Update display here
             BlankOutDisplay(false);
             DisplayImageAtRandomLocation(g_screensaver_image_id);
