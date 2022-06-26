@@ -42,8 +42,6 @@
 // Maximum length of setting name as displayed via UART interface
 #define MAXLEN_SETTING_NAME  12
 
-#define SCREEN_SAVER_IMAGE_ID 2100
-
 #define THERAPY_TIME_MAX_SECONDS (5 * 60)       // 5 minutes in seconds
 
 // Starting Address in FLASH where defaults are stored = 513*64, we need 5 pages (13 states * 20 settings * 4 Bytes = 1040 Bytes --> Each page 256 Bytes)
@@ -126,6 +124,7 @@ static uint16_t g_most_recent_update_time;
 static uint16_t g_specified_LED_current = 0; 
 
 static bool g_mouthpiece_removed_during_operation = false;
+static bool g_MCA_ErrorDuringOperation = false;
 static bool g_MCA_error = false;
 static uint8_t g_MCA_SwitchDebounceCounter; 
 
@@ -193,12 +192,12 @@ static void EnterSettingIntoFlash(uint32_t phase, uint32_t setting,
 
 void InitializeUserInterface(void)
 {
-//    ScreenSaverInit(ReadUISetting(STANDBY_STATE, IMAGE_2),
-//                    ReadUISetting(STANDBY_STATE, SPARE0),
-//                    ReadUISetting(STANDBY_STATE, SPARE1),
-//                    ReadUISetting(STANDBY_STATE, SPARE2));
+    ScreenSaverInit(ReadUISetting(STANDBY_STATE, IMAGE_2),
+                    ReadUISetting(STANDBY_STATE, SPARE0),
+                    ReadUISetting(STANDBY_STATE, SPARE1),
+                    ReadUISetting(STANDBY_STATE, SPARE2));
     //ScreenSaverInit (SCREEN_SAVER_IMAGE_ID, 1800, 1800, 10);   // 
-    ScreenSaverInit (SCREEN_SAVER_IMAGE_ID, 180, 1800, 10);
+    //ScreenSaverInit (SCREEN_SAVER_IMAGE_ID, 180, 1800, 10);
 }
 
 
@@ -602,14 +601,6 @@ static void ExecuteStandbyStateEvents(uint16_t hw_wdog_status,
 static void ExecuteInsertMCAStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *p_current_phase)
 {
-//    if (!ScreenSaverIsActive())
-//    {
-//        //Display message on LCD                
-//        DisplayText("   INSERT", g_display_xpos, g_display_ypos_1_3);
-//        DisplayText("   MOUTH", g_display_xpos, g_display_ypos_2_3);
-//        DisplayText("    PIECE", g_display_xpos, g_display_ypos_3_3);
-//    }
-    
     if(ScreenShouldBeBlank())
     {
         EnterUIState(p_current_phase, STANDBY_STATE, IMAGE_1, 0);
@@ -640,9 +631,23 @@ static void ExecuteInsertMCAStateEvents(uint16_t hw_wdog_status,
     }
 }
 
+/*
+ * This state is entered when the MCA has failed to write to the EEPROM
+ * This state needs to recover if this error occurred during therapy.
+ * 
+ *  Parameters:
+ *    hw_wdog_status:   Bitflags for hardware watchdog results
+ *    p_current_phase:  Pointer used for updating the current state
+ *                       as needed
+ */
+
 static void ExecuteReadingErrorMCAStateEvents(uint16_t hw_wdog_status,
                                       ui_state_t *p_current_phase)
 {
+    uint8_t MCAStatus;
+    uint16_t timer;
+    uint16_t ndx, i;
+
     if(ScreenShouldBeBlank())
     {
         EnterUIState(p_current_phase, STANDBY_STATE, IMAGE_1, 0);
@@ -652,11 +657,65 @@ static void ExecuteReadingErrorMCAStateEvents(uint16_t hw_wdog_status,
         EnterUIState(p_current_phase, ERROR_STATE, IMAGE_1,
                         hw_wdog_status & STARTUP_ERROR);
     }
-    else if ((hw_wdog_status & MOUTHPIECE_ATTACHED) == 0)
+    else if ((hw_wdog_status & MOUTHPIECE_ATTACHED)) // MCA is inserted == 0)
     {
-        // Wait in this state until Mouthpiece removed (== 0)
-        // There is an error with MCA and must be removed to continue
-        EnterUIState(p_current_phase, INSERT_MCA_STATE, IMAGE_1, 0);
+        if (g_MCA_ErrorDuringOperation)
+        {
+            if (MCAGetStatus(&MCAStatus) == true)
+            {
+                // Get Serial number of attached MCA
+                MCAReadSerialNumber(g_MCA_SN);
+                if (MCAStatus & MCA_READING_ERROR)
+                {
+                    // If error reading EEPROM, Go to Insert Mouthpiece
+                    EnterUIState(p_current_phase, MCA_READING_ERROR_STATE, IMAGE_1, 0);
+                }
+                else if (MCAStatus & MCA_EXPIRED)
+                {
+                    // If error MCA expired, Go to Insert Mouthpiece
+                    EnterUIState(p_current_phase, MCA_EXPIRED_STATE, IMAGE_1, 0);
+                }
+                else if (MCAStatus & MCA_PERIOD)
+                {
+                    // If error MCA expired, Go to Insert Mouthpiece
+                    EnterUIState(p_current_phase, MCA_PERIOD_ERROR_STATE, IMAGE_1, 0);
+                }
+                else if (MCAStatus & MCA_ERROR)
+                {
+                    //If there has been another error, go to the error state
+                    g_MCA_error = true;
+                    EnterUIState(p_current_phase, ERROR_STATE, IMAGE_1, (((uint64_t)MCAStatus)<<32) | (hw_wdog_status & STARTUP_ERROR)); 
+                }
+                else if (strcmp((const char*)g_MCA_SN_old, (const char*)g_MCA_SN) == 0)
+                {
+                    // If the MCA was removed during operation, and it is the same as the one inserted before, go directly to Pause. Otherwise, verify
+                    EnterUIState(p_current_phase, PAUSED_STATE, IMAGE_1, 0);
+                    timer = GetOperationStateTimer();
+                    g_ResumeFromPause = true;
+                    WriteImageToLCD(CLOCK_FULL_IMAGE, false, false);  // This displays the full clock tick marks.
+                    WriteImageToLCD(LARGE_TIME0_TEXT + timer/60, false, false);  
+                    ndx = ((timer % 60) ? (timer % 60) : 60);
+                    for (i = 59; i >= ndx; i--)
+                    {
+                        WriteImageToLCD(CLOCK_FULL_IMAGE + i, false, false);
+                    }
+                    WriteImageToLCD (PAUSED_TEXT_IMAGE_ID, false, false);   // "PAUSED".
+                    g_MCA_ErrorDuringOperation = false;
+                }
+                else
+                {
+                    // Normal state. Go to Verify SN
+                    g_mouthpiece_removed_during_operation = false; // Don't allow continued operation.
+                    EnterUIState(p_current_phase, VERIFY_SN_STATE, IMAGE_1, 0);
+                }
+            }
+        }
+        else
+        {
+            // Wait in this state until Mouthpiece removed (== 0)
+            // There is an error with MCA and must be removed to continue
+            EnterUIState(p_current_phase, INSERT_MCA_STATE, IMAGE_1, 0);
+        }
     }
     else if (!EnterErrorStateIfBistFails(p_current_phase, false))
     {
@@ -834,7 +893,7 @@ static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
             // If error MCA expired, Go to Insert Mouthpiece
             EnterUIState(p_current_phase, MCA_PERIOD_ERROR_STATE, IMAGE_1, 0);
         }
-        else if (MCAStatus & MCA_ERROR)	// Attention, this must be bitwise operator, not logic as was before
+        else if (MCAStatus & MCA_ERROR)
         {
             //If there has been another error, go to the error state
             g_MCA_error = true;
@@ -860,6 +919,7 @@ static void ExecuteReadingMCAStateEvents(uint16_t hw_wdog_status,
         {
             // Normal state. Go to Verify SN
             g_mouthpiece_removed_during_operation = false; // Don't allow continued operation.
+            g_ResumeFromPause = false;
             EnterUIState(p_current_phase, VERIFY_SN_STATE, IMAGE_1, 0);
         }
         
@@ -1089,6 +1149,13 @@ static void ExecuteResumeMCAStateEvents(uint16_t hw_wdog_status,
             }
             WriteLEDCurrent(((float) g_specified_LED_current)/1000.0, false); 
             // Update MCA with current LCU time, if appropriate.
+//            WriteImageToLCD(CLOCK_FULL_IMAGE, false, false);  // This displays the full clock tick marks.
+//            WriteImageToLCD(LARGE_TIME0_TEXT + timer/60, false, false);  
+//            ndx = ((timer % 60) ? (timer % 60) : 60);
+//            for (i = 59; i >= ndx; i--)
+//            {
+//                WriteImageToLCD(CLOCK_FULL_IMAGE + i, false, false);
+//            }
 
             // Set number of seconds of operation
             StartOperationStateCountdown(therapy_on_time);
@@ -1154,6 +1221,7 @@ static void ExecuteOperationStateEvents(uint16_t hw_wdog_status,
             {
                 BlankOutDisplay(false); // Blackground to remove the clock in Errors
                 EnterUIState(p_current_phase, ERROR_STATE, IMAGE_1, CURRENT_TOO_LOW);
+                PauseOperationStateCountdown();
             }
             else 
             {   // Ignore CURRENT_TOO_LOW and process any remaining errors
@@ -1161,6 +1229,7 @@ static void ExecuteOperationStateEvents(uint16_t hw_wdog_status,
                 if ((hw_wdog_status & OPERATION_ERROR) != 0)
                 {
                     BlankOutDisplay(false); // Blackground to remove the clock in Errors
+                    PauseOperationStateCountdown();
                     EnterUIState(p_current_phase, ERROR_STATE, IMAGE_1,
                             hw_wdog_status & OPERATION_ERROR);
                 }
@@ -1168,8 +1237,10 @@ static void ExecuteOperationStateEvents(uint16_t hw_wdog_status,
         }
         else
         {
-            BlankOutDisplay(false); // Blackground to remove the clock in Errors
+            BlankOutDisplay(false); // Remove the clock in Errors
             EnterUIState(p_current_phase, ERROR_STATE, IMAGE_1, hw_wdog_status & OPERATION_ERROR);
+            PauseOperationStateCountdown();
+            g_MCA_ErrorDuringOperation = true;
         }
     }
     else 
@@ -1213,10 +1284,13 @@ static void ExecuteOperationStateEvents(uint16_t hw_wdog_status,
                 {
                     // g_MCA_error = true;
                     // EnterUIState(p_current_phase, ERROR_STATE, IMAGE_1, (((uint64_t)MCA_READING_ERROR)<<32) | (hw_wdog_status & STARTUP_ERROR)); 
+                    g_MCA_ErrorDuringOperation = true;
+                    PauseOperationStateCountdown();
                     EnterUIState(p_current_phase, MCA_READING_ERROR_STATE, IMAGE_1, 0);
                 }
                 else
                 {
+                    PauseOperationStateCountdown();
                     EnterErrorStateFromBIST(p_current_phase, bist_results);      
                 }
             }
@@ -1310,6 +1384,9 @@ static void ExecuteTherapyCompleteStateEvents(uint16_t hw_wdog_status,
 static void ExecutePausedStateEvents(uint16_t hw_wdog_status,
                                      ui_state_t *p_current_phase)
 {
+    uint16_t timer;
+    uint16_t ndx, i;
+
     if (!ScreenSaverIsActive())
     {
 		// Do not show only the text with "DisplayText"
@@ -1330,6 +1407,7 @@ static void ExecutePausedStateEvents(uint16_t hw_wdog_status,
     {
         // If Mouthpiece removed, and no 
         g_mouthpiece_removed_during_operation = true;
+        PauseOperationStateCountdown();
         // EnterUIState(p_current_phase, STANDBY_STATE, IMAGE_1, 0);    // <- Never use this state STANDBY_STATE (Only Screensaver)
         EnterUIState(p_current_phase, MCA_DETACHED_STATE, IMAGE_1, 0);  //[CHANGE NOT REQUIERED]    //todohere
     }
@@ -1341,7 +1419,18 @@ static void ExecutePausedStateEvents(uint16_t hw_wdog_status,
             if (PushbuttonPressed(PUSHBUTTON_1))
             {
                 // Go to ready state, since mouthpiece has not been removed
-                EnterUIState(p_current_phase, READY_STATE, IMAGE_1, 0);     
+                //EnterUIState(p_current_phase, READY_STATE, IMAGE_1, 0);     
+                EnterUIState(p_current_phase, PAUSED_STATE, IMAGE_1, 0);
+                timer = GetOperationStateTimer();
+                g_ResumeFromPause = true;
+                WriteImageToLCD(CLOCK_FULL_IMAGE, false, false);  // This displays the full clock tick marks.
+                WriteImageToLCD(LARGE_TIME0_TEXT + timer/60, false, false);  
+                ndx = ((timer % 60) ? (timer % 60) : 60);
+                for (i = 59; i >= ndx; i--)
+                {
+                    WriteImageToLCD(CLOCK_FULL_IMAGE + i, false, false);
+                }
+                WriteImageToLCD (PAUSED_TEXT_IMAGE_ID, false, false);   // "PAUSED".
             }
             else 
             {
@@ -1376,7 +1465,11 @@ static void ExecutePausedStateEvents(uint16_t hw_wdog_status,
 static void ExecuteErrorStateEvents(uint16_t hw_wdog_status,
                                     ui_state_t *p_current_phase)
 {
-     /* Clear the pushbutton status. This ensures that if the button
+    uint8_t MCAStatus;
+    uint16_t timer;
+    uint16_t ndx, i;
+
+    /* Clear the pushbutton status. This ensures that if the button
      * is pressed, the device will not act upon this button press upon
      * emerging from the error state. */
     PushbuttonPressed(PUSHBUTTON_1);
@@ -1400,9 +1493,61 @@ static void ExecuteErrorStateEvents(uint16_t hw_wdog_status,
     //if the error is due to the MCA then this can be cleared by removing the MCA
     else if (g_MCA_error)
     {
-        if (!(hw_wdog_status & MOUTHPIECE_ATTACHED))
+        if ((hw_wdog_status & MOUTHPIECE_ATTACHED) == false)
         {
             EnterUIState(p_current_phase, INSERT_MCA_STATE, IMAGE_1, 0);
+        }
+    }
+    else if (g_MCA_ErrorDuringOperation)
+    {
+        // Changed to simply call MCAGetStatus since that's all that it does.
+        if (MCAGetStatus(&MCAStatus) == true)
+        {
+            // Get Serial number of attached MCA
+            MCAReadSerialNumber(g_MCA_SN);
+            if (MCAStatus & MCA_READING_ERROR)
+            {
+                // If error reading EEPROM, Go to Insert Mouthpiece
+                EnterUIState(p_current_phase, MCA_READING_ERROR_STATE, IMAGE_1, 0);
+            }
+            else if (MCAStatus & MCA_EXPIRED)
+            {
+                // If error MCA expired, Go to Insert Mouthpiece
+                EnterUIState(p_current_phase, MCA_EXPIRED_STATE, IMAGE_1, 0);
+            }
+            else if (MCAStatus & MCA_PERIOD)
+            {
+                // If error MCA expired, Go to Insert Mouthpiece
+                EnterUIState(p_current_phase, MCA_PERIOD_ERROR_STATE, IMAGE_1, 0);
+            }
+            else if (MCAStatus & MCA_ERROR)
+            {
+                //If there has been another error, go to the error state
+                g_MCA_error = true;
+                EnterUIState(p_current_phase, ERROR_STATE, IMAGE_1, (((uint64_t)MCAStatus)<<32) | (hw_wdog_status & STARTUP_ERROR)); 
+            }
+            else if (strcmp((const char*)g_MCA_SN_old, (const char*)g_MCA_SN) == 0)
+            {
+                // If the MCA was removed during operation, and it is the same as the one inserted before, go directly to Pause. Otherwise, verify
+                EnterUIState(p_current_phase, PAUSED_STATE, IMAGE_1, 0);
+                timer = GetOperationStateTimer();
+                g_ResumeFromPause = true;
+                WriteImageToLCD(CLOCK_FULL_IMAGE, false, false);  // This displays the full clock tick marks.
+                WriteImageToLCD(LARGE_TIME0_TEXT + timer/60, false, false);  
+                ndx = ((timer % 60) ? (timer % 60) : 60);
+                for (i = 59; i >= ndx; i--)
+                {
+                    WriteImageToLCD(CLOCK_FULL_IMAGE + i, false, false);
+                }
+                WriteImageToLCD (PAUSED_TEXT_IMAGE_ID, false, false);   // "PAUSED".
+                g_MCA_ErrorDuringOperation = false;
+            }
+            else
+            {
+                // Normal state. Go to Verify SN
+                g_mouthpiece_removed_during_operation = false; // Don't allow continued operation.
+                EnterUIState(p_current_phase, VERIFY_SN_STATE, IMAGE_1, 0);
+            }
         }
     }
     // Otherwise, if error was not caused by mouthpiece being removed
@@ -1633,7 +1778,7 @@ static void EnterUIState(ui_state_t *p_current_phase, ui_state_t next_phase,
             // the ready state.
             PushbuttonPressed(PUSHBUTTON_1);
             WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
-            WriteImageToLCD(PRESS_WHEN_READY__IMAGE_ID, false, false);
+            WriteImageToLCD(PRESS_WHEN_READY_IMAGE_ID, false, false);
             EnableScreenSaver();
             break; 
         case MCA_RESUME_CONFIRM_STATE:
@@ -1919,7 +2064,7 @@ static error_index_t DisplayTestResultsByPriority(uint16_t selftest_status, uint
     
     // Write white background
     //WriteImageToLCD(ReadUISetting(ERROR_STATE, IMAGE_1), true, false);
-    WriteImageToLCD (RED_BOX_IMAGE_ID, true, false);    // Draw Red Box
+    WriteImageToLCD (WHITE_BOX_IMAGE_ID, true, false);    // Draw Red Box
     // Display message on LCD                       
     DisplayText(" SYSTEM", g_display_xpos, g_display_ypos_1_2);
     //DisplayText("UNIT" , g_display_xpos, g_display_ypos_2_3);
