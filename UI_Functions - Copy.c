@@ -14,6 +14,7 @@
 
 // Debugging macros, ensure they are NOT defined for production builds
 //#define TESTING_MOUTHPIECE_EXPIRED 1
+//#define USE_SHORT_THERAPY_TIME 1
 
 #define    FCY    16000000UL  // required by libpic30.h    
 #include <libpic30.h>
@@ -714,7 +715,7 @@ static void ExecuteReadingErrorMCAStateEvents(uint16_t hw_wdog_status,
             // Wait in this state until Mouthpiece removed (== 0)
             // There is an error with MCA and must be removed to continue
             //EnterUIState(p_current_phase, INSERT_MCA_STATE, IMAGE_1, 0);
-            //EnterUIState(p_current_phase, READING_MCA_STATE, IMAGE_1, 0);
+            EnterUIState(p_current_phase, READING_MCA_STATE, IMAGE_1, 0);
         }
     }
     else if (!EnterErrorStateIfBistFails(p_current_phase, false))
@@ -1057,6 +1058,9 @@ static void ExecuteReadyStateEvents(uint16_t hw_wdog_status,
             if (elapsedTherapyTime != MCA_THERAPY_COMPLETE_TIME)
                 therapy_on_time = MCA_THERAPY_COMPLETE_TIME - elapsedTherapyTime;
             
+#ifdef USE_SHORT_THERAPY_TIME
+            therapy_on_time = 30;
+#endif
             EnterUIState(p_current_phase, OPERATION_STATE, IMAGE_2,
                             therapy_on_time/60);
             RTCCGetTimestamp(&currentTime);
@@ -1099,7 +1103,6 @@ static void ExecuteResumeMCAStateEvents(uint16_t hw_wdog_status,
     uint32_t therapy_on_time;
 	uint16_t elapsedTherapyTime = 0;
     uint32_t currentTime, MCA_LastTherapyTime;
-    uint16_t ndx, i;
     
     if(ScreenShouldBeBlank())
     {
@@ -1130,6 +1133,7 @@ static void ExecuteResumeMCAStateEvents(uint16_t hw_wdog_status,
         }
         else if (PushbuttonPressed(PUSHBUTTON_1))
         {
+            //uint32_t therapy_on_time = ReadUISetting(OPERATION_STATE, SPARE0);
             therapy_on_time = 5 * 60;  // 5 minutes in seconds.
             MCAReadElapsedTherapyTime (&elapsedTherapyTime);
             // We should only have to check for a time if therapy was started
@@ -1137,6 +1141,11 @@ static void ExecuteResumeMCAStateEvents(uint16_t hw_wdog_status,
             if (elapsedTherapyTime != MCA_THERAPY_COMPLETE_TIME)
                 therapy_on_time = MCA_THERAPY_COMPLETE_TIME - elapsedTherapyTime;
             
+#ifdef USE_SHORT_THERAPY_TIME
+            therapy_on_time = 30;
+#endif
+            EnterUIState(p_current_phase, OPERATION_STATE, IMAGE_2,
+                            therapy_on_time/60);
             RTCCGetTimestamp(&currentTime);
             MCAReadTimeStamp(&MCA_LastTherapyTime);
             if ((currentTime - MCA_LastTherapyTime) > (uint32_t)MCA_TIME_LIMIT)  // 12 hours in seconds.
@@ -1144,18 +1153,14 @@ static void ExecuteResumeMCAStateEvents(uint16_t hw_wdog_status,
                 MCAWriteTimeStamp (currentTime);
             }
             WriteLEDCurrent(((float) g_specified_LED_current)/1000.0, false); 
-
-            EnterUIState(p_current_phase, PAUSED_STATE, IMAGE_1, 0);
-            //timer = GetOperationStateTimer();
-            g_ResumeFromPause = true;
-            WriteImageToLCD(CLOCK_FULL_IMAGE, false, false);  // This displays the full clock tick marks.
-            WriteImageToLCD(LARGE_TIME0_TEXT + therapy_on_time/60, false, false);  
-            ndx = ((therapy_on_time % 60) ? (therapy_on_time % 60) : 60);
-            for (i = 59; i >= ndx; i--)
-            {
-                WriteImageToLCD(CLOCK_FULL_IMAGE + i, false, false);
-            }
-            WriteImageToLCD (PAUSED_TEXT_IMAGE_ID, false, false);   // "PAUSED".
+            // Update MCA with current LCU time, if appropriate.
+//            WriteImageToLCD(CLOCK_FULL_IMAGE, false, false);  // This displays the full clock tick marks.
+//            WriteImageToLCD(LARGE_TIME0_TEXT + timer/60, false, false);  
+//            ndx = ((timer % 60) ? (timer % 60) : 60);
+//            for (i = 59; i >= ndx; i--)
+//            {
+//                WriteImageToLCD(CLOCK_FULL_IMAGE + i, false, false);
+//            }
 
             // Set number of seconds of operation
             StartOperationStateCountdown(therapy_on_time);
@@ -1791,7 +1796,7 @@ static void EnterUIState(ui_state_t *p_current_phase, ui_state_t next_phase,
             //WriteImageToLCD(ReadUISetting(next_phase, img_setting), true, false);
             // Also display overlay indicating number of minutes remaining
             //WriteImageToLCD(ReadUISetting(PAUSED_STATE, IMAGE_2) + aux_info, false, false);
-            //WriteImageToLCD (PAUSED_TEXT_IMAGE_ID, false, false);
+            WriteImageToLCD (PAUSED_TEXT_IMAGE_ID, false, false);
             EnableScreenSaver();
             break; 
         case THERAPY_COMPLETE_STATE: 

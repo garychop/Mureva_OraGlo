@@ -238,6 +238,31 @@ uint16_t UpdateMouthpieceStatus(void)
     
     switchStatus = MP_ATTACHED_GetValue();
 
+//    // If first time through, then simply get the switch status and exit
+//    // with a detached status.
+//    if (g_MouthpieceDebouncCounter == 0)        // first time after power up
+//    {
+//        g_PreviousMouthpieceSwitchStatus = switchStatus;
+//        ++g_MouthpieceDebouncCounter;
+//    }
+//    else    // We must be stabilizing the input
+//    {
+//        // If the switch has changed status, then we are debouncing
+//        if (g_PreviousMouthpieceSwitchStatus != switchStatus)
+//        {
+//            // If we have waited long enough, use the new switch status.
+//            if (++g_MouthpieceDebouncCounter > DEBOUNCE_COUNT)
+//            {
+//                g_PreviousMouthpieceSwitchStatus = switchStatus;
+//                g_MouthpieceDebouncCounter = 1;
+//            }
+//        }
+//        else    // The switch has not changed status.
+//        {
+//            g_MouthpieceDebouncCounter = 1;
+//        }
+//    }
+
     g_MouthpieceDebouncCounter = 0;
     for (i = 0; i < 100; ++i)
     {
